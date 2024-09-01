@@ -118,5 +118,23 @@
             return false; // Prevent form submission
         }
 
-        
+        function sendAlert() {
+            // Triggering Geolocation API to get the current location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const { latitude, longitude } = position.coords;
+                    alert(`Alert sent with location! Latitude: ${latitude}, Longitude: ${longitude}`);
+                    // Integrate with backend to send the location to guardians
+                }, function(error) {
+                    alert('Unable to retrieve location. Make sure location services are enabled.');
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        }
+    </script>
+</body>
+</html>
+
+
 
