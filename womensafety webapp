@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,6 +56,7 @@
     <div id="registrationForm" class="hidden">
         <h2>Registration</h2>
         <form onsubmit="return registerUser()">
+
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br>
 
@@ -64,4 +66,15 @@
             <label for="mobile">Mobile Number:</label>
             <input type="tel" id="mobile" name="mobile" required><br>
 
+            <label for="guardian1_name">Guardian 1 Name:</label>
+            <input type="text" id="guardian1_name" name="guardian1_name" required><br>
+
+            <label for="guardian1_email">Guardian 1 Email:</label>
+            <input type="email" id="guardian1_email" name="guardian1_email" required><br>
+
+            <label for="guardian1_mobile">Guardian 1 Mobile:</label>
+            <input type="tel" id="guardian1_mobile" name="guardian1_mobile" required><br>
+
             
+
+
