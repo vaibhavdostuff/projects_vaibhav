@@ -16,3 +16,22 @@
         form {
             margin: 10px 0;
         }
+
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+        input[type="text"], input[type="email"], input[type="tel"] {
+            padding: 8px;
+            width: 90%;
+            margin-bottom: 10px;
+        }
+        button, input[type="submit"] {
+            padding: 10px 20px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    
