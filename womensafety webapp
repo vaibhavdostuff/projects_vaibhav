@@ -34,4 +34,11 @@
     </style>
 </head>
 <body>
+    <h1>Welcome to the Women's Safety Web App</h1>
+
+    <div id="userTypeSelection">
+        <p>Are you a new user or an existing user?</p>
+        <button onclick="showLoginForm()">Existing User</button>
+        <button onclick="showRegistrationForm()">New User</button>
+    </div>
     
