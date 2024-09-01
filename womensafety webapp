@@ -75,6 +75,16 @@
             <label for="guardian1_mobile">Guardian 1 Mobile:</label>
             <input type="tel" id="guardian1_mobile" name="guardian1_mobile" required><br>
 
+            <label for="guardian2_name">Guardian 2 Name:</label>
+            <input type="text" id="guardian2_name" name="guardian2_name" required><br>
+
+            <label for="guardian2_email">Guardian 2 Email:</label>
+            <input type="email" id="guardian2_email" name="guardian2_email" required><br>
+
+            <label for="guardian2_mobile">Guardian 2 Mobile:</label>
+            <input type="tel" id="guardian2_mobile" name="guardian2_mobile" required><br>
+
             
+
 
 
