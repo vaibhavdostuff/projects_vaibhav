@@ -84,7 +84,12 @@
             <label for="guardian2_mobile">Guardian 2 Mobile:</label>
             <input type="tel" id="guardian2_mobile" name="guardian2_mobile" required><br>
 
-            
+            <input type="submit" value="Register">
+        </form>
+    </div>
 
-
+    <div id="panicButton" class="hidden">
+        <h2>Panic Button</h2>
+        <button onclick="sendAlert()">Panic Button</button>
+    </div>
 
