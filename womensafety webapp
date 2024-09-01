@@ -93,3 +93,14 @@
         <button onclick="sendAlert()">Panic Button</button>
     </div>
 
+    <script>
+        function showLoginForm() {
+            document.getElementById('userTypeSelection').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        function showRegistrationForm() {
+            document.getElementById('userTypeSelection').style.display = 'none';
+            document.getElementById('registrationForm').style.display = 'block';
+        }
+
