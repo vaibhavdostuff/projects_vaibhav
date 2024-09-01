@@ -104,3 +104,19 @@
             document.getElementById('registrationForm').style.display = 'block';
         }
 
+        function loginUser() {
+            // Handle login logic (to be implemented)
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('panicButton').style.display = 'block';
+            return false; // Prevent form submission
+        }
+
+        function registerUser() {
+            // Handle registration logic (to be implemented)
+            document.getElementById('registrationForm').style.display = 'none';
+            document.getElementById('panicButton').style.display = 'block';
+            return false; // Prevent form submission
+        }
+
+        
+
