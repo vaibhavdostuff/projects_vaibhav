@@ -8,3 +8,13 @@ conn = mysql.connector.connect(
     database="Vaibhav1"
 )
 
+def m():
+    cursor1 = conn.cursor()
+    Name = input("\t\tEnter your full name\t\t\t: ")
+    Email = input("\t\tEnter a valid email ID\t\t\t: ")
+    Mobile_number = input("\t\tEnter mobile number\t\t\t: ")  # Changed to string to handle validation later
+    city = input("\t\tEnter your City\t\t\t\t: ")
+    Address = input("\t\tEnter your Address\t\t\t: ")
+    passw = input('\t\tEnter at least 6 digit numeric password\t: ')
+    
+    
