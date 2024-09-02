@@ -62,3 +62,16 @@ def decrement_quantity():
     finally:
         cursor.close()
 
+# Function to handle staff data entry
+def staff_entry():
+    cursor = conn.cursor()
+    Email = input("\t\tEnter a valid email ID\t\t\t:")
+    Password = input('\t\tEnter at least 6 digit numeric password\t:')
+    BloodGroup = input("\t\tEnter your blood group\t\t\t:")
+    Quantity = int(input("\t\tEnter the quantity\t\t\t:"))
+    
+    query = "INSERT INTO staff (Email, Password, BloodGroup, Quantity) VALUES (%s, %s, %s, %s)"
+    values = (Email, Password, BloodGroup, Quantity)
+    
+
+    
