@@ -46,3 +46,11 @@ def increment_quantity():
     finally:
         cursor.close()
 
+# Function to handle blood quantity decrement
+def decrement_quantity():
+    x = input("Enter the password with which you have signed in:")
+    decqua = int(input("Enter quantity to decrement\t\t\t:"))
+    cursor = conn.cursor()
+    query = "UPDATE staff SET Quantity = Quantity - %s WHERE Password = %s"
+
+    
