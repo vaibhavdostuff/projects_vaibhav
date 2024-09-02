@@ -21,4 +21,12 @@ def sign_up():
     query = "INSERT INTO project (Name, Email, Mobile_number, City, Address, Passw) VALUES (%s, %s, %s, %s, %s, %s)"
     values = (Name, Email, Mobile_number, city, Address, passw)
 
-    
+    try:
+        cursor.execute(query, values)
+        conn.commit()
+        print("Sign up successful!")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+    finally:
+        cursor.close()
+
