@@ -16,5 +16,10 @@ def m():
     city = input("\t\tEnter your City\t\t\t\t: ")
     Address = input("\t\tEnter your Address\t\t\t: ")
     passw = input('\t\tEnter at least 6 digit numeric password\t: ')
-    
+
+    # Validating if the inputs are correct and making sure password is numeric
+    if not passw.isdigit() or len(passw) < 6:
+        print("Password must be at least 6 digits and numeric.")
+        cursor1.close()
+        return
     
