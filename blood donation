@@ -8,3 +8,17 @@ conn = mysql.connector.connect(
     database="Vaibhav1"
 )
 
+# Function to sign up a new user
+def sign_up():
+    cursor = conn.cursor()
+    Name = input("\t\tEnter your full name\t\t\t:")
+    Email = input("\t\tEnter a valid email ID\t\t\t:")
+    Mobile_number = input("\t\tEnter mobile number\t\t\t:")
+    city = input("\t\tEnter your City\t\t\t\t:")
+    Address = input("\t\tEnter your Address\t\t\t:")
+    passw = input('\t\tEnter at least 6 digit numeric password\t:')
+    
+    query = "INSERT INTO project (Name, Email, Mobile_number, City, Address, Passw) VALUES (%s, %s, %s, %s, %s, %s)"
+    values = (Name, Email, Mobile_number, city, Address, passw)
+
+    
