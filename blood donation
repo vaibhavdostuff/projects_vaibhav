@@ -30,3 +30,11 @@ def sign_up():
     finally:
         cursor.close()
 
+# Function to handle blood quantity increment
+def increment_quantity():
+    x = input("Enter the password with which you have signed in:")
+    incqua = int(input("Enter quantity to increment\t\t\t:"))
+    cursor = conn.cursor()
+    query = "UPDATE staff SET Quantity = Quantity + %s WHERE Password = %s"
+    
+    
