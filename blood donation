@@ -53,4 +53,12 @@ def decrement_quantity():
     cursor = conn.cursor()
     query = "UPDATE staff SET Quantity = Quantity - %s WHERE Password = %s"
 
-    
+    try:
+        cursor.execute(query, (decqua, x))
+        conn.commit()
+        print("Quantity decremented successfully.")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+    finally:
+        cursor.close()
+
