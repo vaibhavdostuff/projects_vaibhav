@@ -12,3 +12,10 @@ CREATE TABLE project (
     Passw VARCHAR(20) NOT NULL  -- Password stored as a string
 );
 
+CREATE TABLE staff (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    Password VARCHAR(20) NOT NULL,  -- Password stored as a string
+    BloodGroup VARCHAR(10) NOT NULL,
+    Quantity INT DEFAULT 0  -- Quantity of blood in units
+);
