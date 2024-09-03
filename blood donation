@@ -88,7 +88,14 @@ def check_information():
     cursor = conn.cursor()
     query = "SELECT project.Email, project.Passw, staff.BloodGroup, staff.Quantity FROM project INNER JOIN staff ON project.Email = staff.Email;"
     
+    try:
+        cursor.execute(query)
+        result = cursor.fetchall()
+        for row in result:
+            print(row)
+        
     
+
 
     
     
