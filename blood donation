@@ -105,6 +105,16 @@ def main_menu():
     print("\t\t\t\t\tWELCOME TO ONLINE BLOOD BANK SYSTEM")
     print("-" * 95)
     while True:
+        print("\t\t\t\t\t 1. Sign Up")
+        print("\t\t\t\t\t 2. Staff Entry")
+        print("\t\t\t\t\t 3. Check Information")
+        print("\t\t\t\t\t 4. Increment Blood Quantity")
+        print("\t\t\t\t\t 5. Decrement Blood Quantity")
+        print("\t\t\t\t\t 6. Exit")
+        print("-" * 95)
+        choice = int(input("\t\t\t\tEnter your choice:"))
+        
+
         
 
 
