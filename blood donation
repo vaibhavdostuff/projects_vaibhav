@@ -115,11 +115,16 @@ def main_menu():
         choice = int(input("\t\t\t\tEnter your choice:"))
         
 
-        
-
-
-
-    
-    
-
-      
+    if choice == 1:
+            sign_up()
+    elif choice == 2:
+            staff_entry()
+    elif choice == 3:
+            check_information()
+    elif choice == 4:
+            increment_quantity()
+    elif choice == 5:
+            decrement_quantity()
+    elif choice == 6:
+            print("Exiting...")
+            break
