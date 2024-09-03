@@ -127,4 +127,14 @@ def main_menu():
             decrement_quantity()
     elif choice == 6:
             print("Exiting...")
-            break
+            running = False  # Set the flag to False to exit the loop
+    
+    else:
+            print("Invalid choice, please try again.")
+            print("-" * 95)
+
+# Start the program
+main_menu()
+
+# Close the database connection when done
+conn.close()
