@@ -80,7 +80,15 @@ def staff_entry():
     except mysql.connector.Error as err:
         print(f"Error: {err}")
 
-        
+    finally:
+        cursor.close()
+
+# Function to display user and staff information
+def check_information():
+    cursor = conn.cursor()
+    query = "SELECT project.Email, project.Passw, staff.BloodGroup, staff.Quantity FROM project INNER JOIN staff ON project.Email = staff.Email;"
+    
+    
 
     
     
