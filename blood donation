@@ -99,6 +99,13 @@ def check_information():
     finally:
         cursor.close()
 
+# Main function to provide a menu for the users
+def main_menu():
+    print("-" * 95)
+    print("\t\t\t\t\tWELCOME TO ONLINE BLOOD BANK SYSTEM")
+    print("-" * 95)
+    while True:
+        
 
 
 
