@@ -72,6 +72,17 @@ def staff_entry():
     
     query = "INSERT INTO staff (Email, Password, BloodGroup, Quantity) VALUES (%s, %s, %s, %s)"
     values = (Email, Password, BloodGroup, Quantity)
-    
+
+    try:
+        cursor.execute(query, values)
+        conn.commit()
+        print("Staff entry successful!")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+        
 
     
+    
+
+      
