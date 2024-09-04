@@ -22,3 +22,8 @@ print(df.info())
 print("\nChecking for missing values:")
 print(df.isnull().values.any())
 
+# Visualizations
+print("\nDisplaying histogram of features:")
+df.hist(bins=10, figsize=(10, 10))
+plt.show()
+
