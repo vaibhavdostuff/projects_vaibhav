@@ -18,3 +18,7 @@ print(df.describe())
 print("\nDataset info:")
 print(df.info())
 
+# Check for missing values
+print("\nChecking for missing values:")
+print(df.isnull().values.any())
+
