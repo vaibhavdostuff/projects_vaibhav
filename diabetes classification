@@ -31,3 +31,7 @@ print("\nDisplaying correlation heatmap:")
 sns.heatmap(df.corr(), annot=True, cmap="coolwarm")
 plt.show()
 
+print("\nCountplot of outcome:")
+sns.countplot(y=df['Outcome'], palette='Set1')
+plt.show()
+
