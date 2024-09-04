@@ -40,3 +40,10 @@ print("\nDisplaying pairplot of features:")
 sns.pairplot(df, hue="Outcome")
 plt.show()
 
+# Boxplot to visualize outliers
+print("\nDisplaying boxplots of features for outlier detection:")
+plt.figure(figsize=(15, 6))
+df.boxplot()
+plt.title("Boxplot for Outlier Visualization")
+plt.show()
+
