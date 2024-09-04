@@ -9,3 +9,12 @@ from sklearn.model_selection import cross_validate
 
 # Load the dataset
 df = pd.read_csv('diabetes.csv')
+
+# Basic exploration of the data
+print("First 5 rows of the dataset:")
+print(df.head())
+print("\nDataset description:")
+print(df.describe())
+print("\nDataset info:")
+print(df.info())
+
