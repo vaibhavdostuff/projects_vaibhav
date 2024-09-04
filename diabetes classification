@@ -35,3 +35,8 @@ print("\nCountplot of outcome:")
 sns.countplot(y=df['Outcome'], palette='Set1')
 plt.show()
 
+# Pairplot of features colored by outcome
+print("\nDisplaying pairplot of features:")
+sns.pairplot(df, hue="Outcome")
+plt.show()
+
