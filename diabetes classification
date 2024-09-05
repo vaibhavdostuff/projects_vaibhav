@@ -109,4 +109,7 @@ for model_name, model in models.items():
     
     print(f"Accuracy: {ac:.2f}, ROC AUC: {rc:.2f}")
     
-    
+    # Cross-validation
+    result = cross_validate(model, train_X, train_y, scoring=scoring, cv=10)
+    display_result(result)
+
