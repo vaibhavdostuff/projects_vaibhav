@@ -113,3 +113,12 @@ for model_name, model in models.items():
     result = cross_validate(model, train_X, train_y, scoring=scoring, cv=10)
     display_result(result)
 
+# Plotting accuracy and ROC AUC for all models
+plt.figure(figsize=(9, 4))
+plt.bar(models.keys(), acc, label='Accuracy', color='blue')
+plt.ylabel('Accuracy Score')
+plt.xlabel('Algorithms')
+plt.xticks(rotation=15)
+plt.title('Model Accuracy Comparison')
+plt.show()
+
