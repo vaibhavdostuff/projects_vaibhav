@@ -67,3 +67,7 @@ y = df_out['Outcome']
 train_X, test_X, train_y, test_y = train_test_split(X, y, test_size=0.2, random_state=42)
 print(f"Train shapes: {train_X.shape}, {train_y.shape} | Test shapes: {test_X.shape}, {test_y.shape}")
 
+# Function to display cross-validation results
+def display_result(result):
+    print(f"TP: {np.mean(result['test_tp'])}, TN: {np.mean(result['test_tn'])}, FN: {np.mean(result['test_fn'])}, FP: {np.mean(result['test_fp'])}")
+
