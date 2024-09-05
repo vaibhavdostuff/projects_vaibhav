@@ -94,3 +94,10 @@ scoring = {
     'fn': make_scorer(lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[1, 0])
 }
 
+# Evaluate each model
+for model_name, model in models.items():
+    print(f"\nEvaluating {model_name}...")
+    model.fit(train_X, train_y)
+    y_pred = model.predict(test_X)
+    
+    
