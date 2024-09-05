@@ -59,3 +59,7 @@ print("\nDisplaying pairplot after outlier removal:")
 sns.pairplot(df_out, hue="Outcome")
 plt.show()
 
+# Extracting features and target variable
+X = df_out.drop(columns=['Outcome'])
+y = df_out['Outcome']
+
