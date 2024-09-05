@@ -75,3 +75,13 @@ def display_result(result):
 acc = []
 roc = []
 
+# List of models to evaluate
+models = {
+    'Logistic Regression': LogisticRegression(),
+    'SVM': SVC(kernel='linear', probability=True),
+    'KNN': KNeighborsClassifier(n_neighbors=3),
+    'Random Forest': RandomForestClassifier(),
+    'Naive Bayes': GaussianNB(),
+    'Gradient Boosting': GradientBoostingClassifier(n_estimators=50, learning_rate=0.2)
+}
+
