@@ -71,3 +71,7 @@ print(f"Train shapes: {train_X.shape}, {train_y.shape} | Test shapes: {test_X.sh
 def display_result(result):
     print(f"TP: {np.mean(result['test_tp'])}, TN: {np.mean(result['test_tn'])}, FN: {np.mean(result['test_fn'])}, FP: {np.mean(result['test_fp'])}")
 
+# Dictionary to store results for plotting
+acc = []
+roc = []
+
