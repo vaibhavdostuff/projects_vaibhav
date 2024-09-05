@@ -100,4 +100,13 @@ for model_name, model in models.items():
     model.fit(train_X, train_y)
     y_pred = model.predict(test_X)
     
+    # Calculate accuracy and ROC AUC
+    ac = accuracy_score(test_y, y_pred)
+    rc = roc_auc_score(test_y, model.predict_proba(test_X)[:, 1]) if hasattr(model, "predict_proba") else roc_auc_score(test_y, model.decision_function(test_X))
+    
+    acc.append(ac)
+    roc.append(rc)
+    
+    print(f"Accuracy: {ac:.2f}, ROC AUC: {rc:.2f}")
+    
     
