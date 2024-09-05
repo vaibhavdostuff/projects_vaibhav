@@ -122,3 +122,11 @@ plt.xticks(rotation=15)
 plt.title('Model Accuracy Comparison')
 plt.show()
 
+plt.figure(figsize=(9, 4))
+plt.bar(models.keys(), roc, label='ROC AUC', color='green')
+plt.ylabel('ROC AUC')
+plt.xlabel('Algorithms')
+plt.xticks(rotation=15)
+plt.title('Model ROC AUC Comparison')
+plt.show()
+
