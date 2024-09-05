@@ -85,3 +85,12 @@ models = {
     'Gradient Boosting': GradientBoostingClassifier(n_estimators=50, learning_rate=0.2)
 }
 
+# Cross-validation scoring setup
+scoring = {
+    'accuracy': make_scorer(accuracy_score),
+    'tp': make_scorer(lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[1, 1]),
+    'tn': make_scorer(lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[0, 0]),
+    'fp': make_scorer(lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[0, 1]),
+    'fn': make_scorer(lambda y_true, y_pred: confusion_matrix(y_true, y_pred)[1, 0])
+}
+
