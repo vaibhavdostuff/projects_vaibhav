@@ -14,4 +14,11 @@ def fetch_climate_data():
     url = "http://climatedataapi.worldbank.org/climateweb/rest/v1/country/annualavg/tas/2020/2039/IND"  # Example for India
     response = requests.get(url)
 
+    if response.status_code == 200:
+        data = response.json()
+        df = pd.json_normalize(data, 'data', ['gcm', 'variable', 'model'], errors='ignore')
+        return df
+    else:
+        print("Failed to fetch data. Status Code:", response.status_code)
+        return pd.DataFrame()  # Return an empty DataFrame on failure
     
