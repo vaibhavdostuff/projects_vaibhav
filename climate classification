@@ -22,3 +22,11 @@ def fetch_climate_data():
         print("Failed to fetch data. Status Code:", response.status_code)
         return pd.DataFrame()  # Return an empty DataFrame on failure
     
+# Load data
+data = fetch_climate_data()
+
+# Check if data was fetched successfully
+if data.empty:
+    print("No data to process.")
+else:
+    
