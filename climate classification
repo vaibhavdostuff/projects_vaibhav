@@ -29,4 +29,11 @@ data = fetch_climate_data()
 if data.empty:
     print("No data to process.")
 else:
+    # Step 2: Data Analysis
+    # Exploratory Data Analysis (EDA)
+    print("Data Overview:")
+    print(data.head())
+    print("\nSummary Statistics:")
+    print(data.describe())
+
     
