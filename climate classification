@@ -36,4 +36,12 @@ else:
     print("\nSummary Statistics:")
     print(data.describe())
 
+    # Visualize the distribution of climate data
+    plt.figure(figsize=(10, 6))
+    sns.histplot(data['data'], kde=True)
+    plt.title('Distribution of Climate Data')
+    plt.xlabel('Temperature Anomaly')
+    plt.ylabel('Frequency')
+    plt.show()
+
     
