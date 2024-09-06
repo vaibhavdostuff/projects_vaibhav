@@ -52,4 +52,4 @@ else:
     features = data[['data']]  # Assume 'data' column represents some climate metric (e.g., temperature anomaly)
     target = data['gcm']       # Assume 'gcm' represents climate classifications (modify as per actual scenario)
 
-    
+     
