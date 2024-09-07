@@ -79,4 +79,16 @@ else:
     results = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
     results.to_csv('climate_classification_results.csv', index=False)
 
+    # Additional visualization for Power BI
+    # Visualize the importance of each feature
+    feature_importances = classifier.feature_importances_
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=features.columns, y=feature_importances)
+    plt.title('Feature Importance')
+    plt.xlabel('Feature')
+    plt.ylabel('Importance')
+    plt.show()
+
+    print("Results saved to 'climate_classification_results.csv'")
+
     
