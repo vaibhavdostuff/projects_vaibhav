@@ -74,4 +74,9 @@ else:
     print("Classification Report:")
     print(classification_report(y_test, y_pred))
 
+    # Step 5: Visualization and Final Output
+    # Save the results for Power BI dashboard integration
+    results = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
+    results.to_csv('climate_classification_results.csv', index=False)
+
     
