@@ -92,3 +92,9 @@ else:
     print("Results saved to 'climate_classification_results.csv'")
 
     
+#2
+#this is a data cleaning in climate action project
+import pandas as pd
+import numpy as np
+from scipy.stats import zscore
+
