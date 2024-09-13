@@ -98,3 +98,11 @@ import pandas as pd
 import numpy as np
 from scipy.stats import zscore
 
+# Load the dataset
+try:
+    data = pd.read_csv('climate_data.csv')
+    print("Dataset loaded successfully.")
+except FileNotFoundError:
+    print("Error: The file 'climate_data.csv' was not found.")
+    exit()
+
