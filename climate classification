@@ -114,3 +114,7 @@ print(data.head())
 print("\nMissing values in each column:")
 print(data.isnull().sum())
 
+# Fill missing values
+# Assuming 'Temperature' and 'CO2' are continuous variables, we can fill missing values with the mean
+if 'Temperature' in data.columns:
+    data['Temperature'] = data['Temperature'].fillna(data['Temperature'].mean())
