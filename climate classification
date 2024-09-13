@@ -110,3 +110,7 @@ except FileNotFoundError:
 print("Initial data:")
 print(data.head())
 
+# Check for missing values
+print("\nMissing values in each column:")
+print(data.isnull().sum())
+
