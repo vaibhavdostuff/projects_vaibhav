@@ -106,3 +106,7 @@ except FileNotFoundError:
     print("Error: The file 'climate_data.csv' was not found.")
     exit()
 
+# Display the first few rows of the dataset
+print("Initial data:")
+print(data.head())
+
