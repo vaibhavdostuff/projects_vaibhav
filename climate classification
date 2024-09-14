@@ -136,3 +136,10 @@ if 'Date' in data.columns:
     # Drop rows with invalid dates
     data = data.dropna(subset=['Date'])
 
+else:
+    print("Error: 'Date' column not found in the dataset.")
+
+# Check for duplicates and remove them
+print("\nNumber of duplicate rows:", data.duplicated().sum())
+data = data.drop_duplicates()
+
