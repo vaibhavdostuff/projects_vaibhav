@@ -150,5 +150,11 @@ if 'Temperature' in data.columns and 'CO2' in data.columns:
     data['CO2_zscore'] = zscore(data['CO2'])
 
 
-    
+    # Keep rows where z-score is within a threshold (e.g., -3 to 3)
+    data = data[(data['Temperature_zscore'].abs() <= 3) & (data['CO2_zscore'].abs() <= 3)]
 
+    # Drop the z-score columns as they're no longer needed
+    data = data.drop(columns=['Temperature_zscore', 'CO2_zscore'])
+
+
+ 
