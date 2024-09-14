@@ -130,3 +130,9 @@ else:
 print("\nData types before conversion:")
 print(data.dtypes)
 
+# Convert 'Date' column to datetime type if it's not already
+if 'Date' in data.columns:
+    data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
+    # Drop rows with invalid dates
+    data = data.dropna(subset=['Date'])
+
