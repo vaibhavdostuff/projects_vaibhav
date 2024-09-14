@@ -121,3 +121,8 @@ if 'Temperature' in data.columns:
 else:
     print("Error: 'Temperature' column not found in the dataset.")
 
+if 'CO2' in data.columns:
+    data['CO2'] = data['CO2'].fillna(data['CO2'].mean())
+else:
+    print("Error: 'CO2' column not found in the dataset.")
+
