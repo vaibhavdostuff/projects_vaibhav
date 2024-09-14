@@ -156,5 +156,12 @@ if 'Temperature' in data.columns and 'CO2' in data.columns:
     # Drop the z-score columns as they're no longer needed
     data = data.drop(columns=['Temperature_zscore', 'CO2_zscore'])
 
+else:
+    print("Error: Required columns for outlier detection are missing.")
+
+# Final cleaned data
+print("\nCleaned data:")
+print(data.head())
+
 
  
