@@ -143,3 +143,12 @@ else:
 print("\nNumber of duplicate rows:", data.duplicated().sum())
 data = data.drop_duplicates()
 
+# Detect and remove outliers
+# Check if 'Temperature' and 'CO2' columns are present
+if 'Temperature' in data.columns and 'CO2' in data.columns:
+    data['Temperature_zscore'] = zscore(data['Temperature'])
+    data['CO2_zscore'] = zscore(data['CO2'])
+
+
+    
+
