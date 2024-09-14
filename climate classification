@@ -126,3 +126,7 @@ if 'CO2' in data.columns:
 else:
     print("Error: 'CO2' column not found in the dataset.")
 
+# Check for incorrect data types
+print("\nData types before conversion:")
+print(data.dtypes)
+
