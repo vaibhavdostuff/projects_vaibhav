@@ -163,5 +163,12 @@ else:
 print("\nCleaned data:")
 print(data.head())
 
+# Save the cleaned dataset
+try:
+    data.to_csv('cleaned_climate_data.csv', index=False)
+    print("Cleaned data saved successfully to 'cleaned_climate_data.csv'.")
+except Exception as e:
+    print(f"Error: Failed to save cleaned data due to {e}.")
+
 
  
