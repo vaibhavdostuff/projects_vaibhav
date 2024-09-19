@@ -50,4 +50,9 @@ def search():
         return jsonify({'error': 'Query parameter is required.'}), 400
 
     try:
-      
+      results = search_imdb(query)
+        if results:
+            save_to_csv(results)  # Save results to CSV
+            return jsonify({'results': results})
+        else:
+         
