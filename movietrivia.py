@@ -29,4 +29,9 @@ def search_imdb(query):
 
 # Helper function to save results to CSV
 def save_to_csv(data):
-   
+   file_exists = os.path.isfile('search_results.csv')
+    with open('search_results.csv', mode='a', newline='', encoding='utf-8') as file:
+        fieldnames = ['Title', 'IMDb ID', 'Trivia URL']
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        if not file_exists:
+           
