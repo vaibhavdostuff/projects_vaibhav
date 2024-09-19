@@ -17,3 +17,12 @@ def search_imdb(query):
     for result in soup.find_all('td', class_='result_text'):
         link = result.find('a')
         if link:
+            title = link.text.strip()
+            imdb_id = link['href'].split('/')[2]  # Extract IMDb ID from the URL
+            results.append({
+                'title': title,
+                'imdbID': imdb_id,
+                'trivia_url': f"https://www.imdb.com/title/{imdb_id}/trivia/"
+            })
+
+    
