@@ -55,4 +55,8 @@ def search():
             save_to_csv(results)  # Save results to CSV
             return jsonify({'results': results})
         else:
-         
+         return jsonify({'error': 'No results found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Serve HTML page
