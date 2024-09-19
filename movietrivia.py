@@ -39,4 +39,10 @@ def save_to_csv(data):
             writer.writerow({
                 'Title': item['title'],
                 'IMDb ID': item['imdbID'],
-                
+                'Trivia URL': item['trivia_url']
+            })
+
+# Search route
+@app.route('/search', methods=['GET'])
+def search():
+   
