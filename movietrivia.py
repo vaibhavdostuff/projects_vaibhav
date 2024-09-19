@@ -60,3 +60,9 @@ def search():
         return jsonify({'error': str(e)}), 500
 
 # Serve HTML page
+@app.route('/')
+def serve_index():
+    return send_from_directory('static', 'index.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
