@@ -45,4 +45,9 @@ def save_to_csv(data):
 # Search route
 @app.route('/search', methods=['GET'])
 def search():
-   
+   query = request.args.get('query')
+    if not query:
+        return jsonify({'error': 'Query parameter is required.'}), 400
+
+    try:
+      
