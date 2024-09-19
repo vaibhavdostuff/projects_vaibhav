@@ -25,4 +25,8 @@ def search_imdb(query):
                 'trivia_url': f"https://www.imdb.com/title/{imdb_id}/trivia/"
             })
 
-    
+    return results
+
+# Helper function to save results to CSV
+def save_to_csv(data):
+   
