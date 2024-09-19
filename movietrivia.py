@@ -12,4 +12,8 @@ def search_imdb(query):
     response = requests.get(search_url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    
+     results = []
+    # IMDb search results are usually in 'td' tags with 'result_text' class
+    for result in soup.find_all('td', class_='result_text'):
+        link = result.find('a')
+        if link:
