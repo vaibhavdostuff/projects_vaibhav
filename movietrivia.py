@@ -34,4 +34,9 @@ def save_to_csv(data):
         fieldnames = ['Title', 'IMDb ID', 'Trivia URL']
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         if not file_exists:
-           
+           writer.writeheader()  # Write header only once
+        for item in data:
+            writer.writerow({
+                'Title': item['title'],
+                'IMDb ID': item['imdbID'],
+                
