@@ -48,14 +48,15 @@ def search():
    query = request.args.get('query')
    if not query:
         return jsonify({'error': 'Query parameter is required.'}), 400
-    try:
+   try:
       results = search_imdb(query)
       if results:
             save_to_csv(results)  # Save results to CSV
             return jsonify({'results': results})
       else:
          return jsonify({'error': 'No results found'}), 404
-      except Exception as e:
+      
+   except Exception as e:
       return jsonify({'error': str(e)}), 500
 
 # Serve HTML page
