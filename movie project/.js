@@ -13,3 +13,14 @@ document.getElementById('searchButton').addEventListener('click', function(event
                     const triviaUrl = 'https://www.imdb.com/title/${imdbId}/trivia/';
                     window.location.href = triviaUrl;
                 } else {
+                    alert('Movie not found. Please try another title.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                alert('An error occurred. Please try again later.');
+            });
+    } else {
+        alert('Please enter a movie title.');
+    }
+});
