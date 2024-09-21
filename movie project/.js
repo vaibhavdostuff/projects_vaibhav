@@ -7,4 +7,9 @@ document.getElementById('searchButton').addEventListener('click', function(event
     if (movieTitle) {
         fetch('http://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=${apiKey}')
             .then(response => response.json())
-            .then(data => {
+            .then(data => { 
+                if (data.Response === "True") {
+                    const imdbId = data.imdbID;
+                    const triviaUrl = 'https://www.imdb.com/title/${imdbId}/trivia/';
+                    window.location.href = triviaUrl;
+                } else {
