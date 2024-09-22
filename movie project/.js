@@ -116,3 +116,13 @@ const saveMovieToCSV = (data) => {
   });
 };
 
+// Inside your movie data fetching logic, after the movie is retrieved:
+if (data. Response === "True")
+    {
+      storeMovieData(data); // Store in IndexedDB
+      saveMovieToCSV(data); // Send to Flask server to save to CSV
+      const imdbId = data.imdbID;
+      const triviaUrl = `https://www.imdb.com/title/${imdbId}/trivia/`;
+      window.location.href = triviaUrl;
+  
+    }
