@@ -107,4 +107,12 @@ const saveMovieToCSV = (data) => {
         Director: data.Director
       })
     })
-    
+    .then(response => response.json())
+  .then(result => {
+    console.log(result.message);
+  })
+  .catch(error => {
+    console.error('Error saving movie to CSV:', error);
+  });
+};
+
