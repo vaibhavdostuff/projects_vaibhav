@@ -64,4 +64,8 @@ const getMovieDataFromDB = (movieTitle) => {
         });
     }
   };
-  
+  request.onerror = (event) => {
+    console.error('Error fetching data from database:', event.target.error);
+  };
+};
+
