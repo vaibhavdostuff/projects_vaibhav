@@ -74,4 +74,12 @@ const storeMovieData = (data) => {
     const transaction = db.transaction('movies', 'readwrite');
     const movieStore = transaction.objectStore('movies');
 
-    
+    // Ensure the data has a 'title' property with fallback values for undefined fields
+    const movieData = {
+        title: data.Title || "Unknown Title",  // Fallback to "Unknown Title" if not available
+        imdbID: data.imdbID || "N/A",          // Fallback to "N/A" if imdbID is missing
+        year: data.Year || "Unknown Year",     // Fallback to "Unknown Year" if year is missing
+        genre: data.Genre || "Unknown Genre",  // Fallback to "Unknown Genre" if genre is missing
+        director: data.Director || "Unknown Director"  // Fallback to "Unknown Director" if director is missing
+      };
+      
