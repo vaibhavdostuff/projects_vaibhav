@@ -100,3 +100,11 @@ const saveMovieToCSV = (data) => {
       headers: {
         'Content-Type': 'application/json'
       },
+      body: JSON.stringify({
+        Title: data.Title,
+        Year: data.Year,
+        Genre: data.Genre,
+        Director: data.Director
+      })
+    })
+    
