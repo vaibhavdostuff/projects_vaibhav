@@ -69,3 +69,9 @@ const getMovieDataFromDB = (movieTitle) => {
   };
 };
 
+// Function to store movie data in IndexedDB
+const storeMovieData = (data) => {
+    const transaction = db.transaction('movies', 'readwrite');
+    const movieStore = transaction.objectStore('movies');
+
+    
