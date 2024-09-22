@@ -92,3 +92,11 @@ const storeMovieData = (data) => {
     };
     
   };
+
+  // Function to send movie data to Python (Flask)  
+const saveMovieToCSV = (data) => {
+    fetch('http://127.0.0.1:5000/save_movie', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
