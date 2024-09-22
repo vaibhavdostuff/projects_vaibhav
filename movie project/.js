@@ -10,3 +10,10 @@ request.onupgradeneeded = (event) => {
     objectStore.createIndex('title', 'title', { unique: true });
   };
   
+  request.onsuccess = (event) => {
+    db = event.target.result;
+    console.log('Database connection established');
+  
+    // Add event listener after the database connection is established
+    document.getElementById('searchButton').addEventListener('click', function(event) {
+      event.preventDefault();
