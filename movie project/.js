@@ -26,3 +26,9 @@ request.onupgradeneeded = (event) => {
     }
   });
 };
+
+request.onerror = (event) => {
+    console.error('Error opening database:', event.target.errorCode);
+  };
+
+  
