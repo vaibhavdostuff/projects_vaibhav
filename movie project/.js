@@ -38,4 +38,10 @@ const getMovieDataFromDB = (movieTitle) => {
     const index = movieStore.index('title');
     const request = index.get(movieTitle);
 
-    
+    request.onsuccess = (event) => {
+        const movieData = event.target.result;
+        if (movieData) {
+          const imdbId = movieData.imdbID;
+          const triviaUrl = `https://www.imdb.com/title/${imdbId}/trivia/`;
+          window.location.href = triviaUrl;
+        } else {
