@@ -45,3 +45,14 @@ const getMovieDataFromDB = (movieTitle) => {
           const triviaUrl = `https://www.imdb.com/title/${imdbId}/trivia/`;
           window.location.href = triviaUrl;
         } else {
+            // Movie not found in the database, make an API call to OMDB API
+            fetch(`http://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=${apiKey}`)
+              .then(response => response.json())
+              .then(data => {
+                if (data.Response === "True") {
+                  storeMovieData(data); // Store the movie data in the database
+                  const imdbId = data.imdbID;
+                  const triviaUrl = `https://www.imdb.com/title/${imdbId}/trivia/`;
+                  window.location.href = triviaUrl;
+                } else {
+                    
