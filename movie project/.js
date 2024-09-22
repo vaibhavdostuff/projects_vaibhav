@@ -31,4 +31,11 @@ request.onerror = (event) => {
     console.error('Error opening database:', event.target.errorCode);
   };
 
-  
+// Function to get movie data from IndexedDB
+const getMovieDataFromDB = (movieTitle) => {
+    const transaction = db.transaction('movies', 'readonly');
+    const movieStore = transaction.objectStore('movies');
+    const index = movieStore.index('title');
+    const request = index.get(movieTitle);
+
+    
