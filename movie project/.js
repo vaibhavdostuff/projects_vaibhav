@@ -82,4 +82,13 @@ const storeMovieData = (data) => {
         genre: data.Genre || "Unknown Genre",  // Fallback to "Unknown Genre" if genre is missing
         director: data.Director || "Unknown Director"  // Fallback to "Unknown Director" if director is missing
       };
-      
+      // Log the movie data being added for easier debugging
+    console.log('Storing movie data:', movieData);
+  
+    const addRequest = movieStore.add(movieData);
+  
+    addRequest.onsuccess = () => {
+      console.log('Movie data stored successfully');
+    };
+    
+  };
