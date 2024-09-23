@@ -55,3 +55,12 @@ def save_movie_to_csv(movie_data):
         # Write the movie data to the CSV file
         writer.writerow(movie_data)
 
+# Flask route to handle movie search and scraping
+@app.route('/search_movie', methods=['POST'])
+def search_movie():
+    movie_title = request.json.get('title')
+    
+    if not movie_title:
+        return jsonify({"error": "Please provide a movie title"}), 400
+
+  
