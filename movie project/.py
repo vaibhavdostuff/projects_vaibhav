@@ -43,4 +43,7 @@ def save_movie_to_csv(movie_data):
     # Ensure the directory exists
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     
+    file_exists = os.path.isfile(file_path)
     
+    with open(file_path, mode='a', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=['Title', 'Year', 'Genre', 'Director'])
