@@ -69,3 +69,14 @@ def search_movie():
     if movie_data:
 
         print(movie_data)  # Before saving to CSV
+
+        # Save to CSV
+        save_movie_to_csv(movie_data)
+        return jsonify(movie_data)
+    else:
+        return jsonify({"error": "Movie not found on IMDb"}), 404
+
+if __name__ == "__main__":
+    app.run(debug=True)
+ 
+ 
