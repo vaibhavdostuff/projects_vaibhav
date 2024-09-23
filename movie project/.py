@@ -38,3 +38,9 @@ def scrape_movie_data(movie_title):
     else:
         return None
 
+# Function to save movie data to a CSV file
+def save_movie_to_csv(movie_data):
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    
+    
