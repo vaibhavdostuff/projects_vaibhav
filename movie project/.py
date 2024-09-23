@@ -24,3 +24,9 @@ def scrape_movie_data(movie_title):
         movie_soup = BeautifulSoup(movie_page.text, 'html.parser')
 
         # Extract relevant details (Title, Year, Genre, Director)
+        title = movie_soup.find('h1').text.strip()
+        year = movie_soup.find('span', id='titleYear').text.strip('()') if movie_soup.find('span', id='titleYear') else "N/A"
+        genres = [g.text for g in movie_soup.findAll('span', class_='genre')] or ["N/A"]
+        director = movie_soup.find('a', href=lambda x: x and x.startswith('/name/')).text if movie_soup.find('a', href=lambda x: x and x.startswith('/name/')) else "N/A"
+
+       
