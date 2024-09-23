@@ -63,4 +63,9 @@ def search_movie():
     if not movie_title:
         return jsonify({"error": "Please provide a movie title"}), 400
 
-  
+    # Scrape movie data
+    movie_data = scrape_movie_data(movie_title)
+    
+    if movie_data:
+
+        print(movie_data)  # Before saving to CSV
