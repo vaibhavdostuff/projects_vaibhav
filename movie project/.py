@@ -47,3 +47,11 @@ def save_movie_to_csv(movie_data):
     
     with open(file_path, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.DictWriter(file, fieldnames=['Title', 'Year', 'Genre', 'Director'])
+
+        # Write the header only if the file doesn't already exist
+        if not file_exists:
+            writer.writeheader()
+        
+        # Write the movie data to the CSV file
+        writer.writerow(movie_data)
+
