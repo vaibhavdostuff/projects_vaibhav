@@ -18,3 +18,9 @@ def scrape_movie_data(movie_title):
     # Scrape the first search result from IMDb
     result = soup.find('td', class_='result_text')
     if result:
+        # Extract movie title link and navigate to the movie page
+        movie_link = "https://www.imdb.com" + result.a['href']
+        movie_page = requests.get(movie_link)
+        movie_soup = BeautifulSoup(movie_page.text, 'html.parser')
+
+        # Extract relevant details (Title, Year, Genre, Director)
