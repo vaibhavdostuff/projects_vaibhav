@@ -29,4 +29,12 @@ def scrape_movie_data(movie_title):
         genres = [g.text for g in movie_soup.findAll('span', class_='genre')] or ["N/A"]
         director = movie_soup.find('a', href=lambda x: x and x.startswith('/name/')).text if movie_soup.find('a', href=lambda x: x and x.startswith('/name/')) else "N/A"
 
-       
+        return {
+            'Title': title,
+            'Year': year,
+            'Genre': ', '.join(genres),
+            'Director': director
+        }
+    else:
+        return None
+
