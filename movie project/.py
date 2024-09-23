@@ -12,4 +12,9 @@ file_path = 'C:\Users\Vaibhav Negi\OneDrive\Desktop\web scrapingmovie'  # Update
 # Function to scrape movie data from IMDb
 def scrape_movie_data(movie_title):
     search_url = f"https://www.imdb.com/find?q={movie_title.replace(' ', '+')}&s=tt&ttype=ft"
+    response = requests.get(search_url)
+    soup = BeautifulSoup(response.text, 'html.parser')
     
+    # Scrape the first search result from IMDb
+    result = soup.find('td', class_='result_text')
+    if result:
