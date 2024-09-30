@@ -17,3 +17,13 @@ document.getElementById('paraphrase-form').addEventListener('submit', async (eve
         const data = await response.json();
 
         if (response.ok) {
+            
+            resultDiv.innerHTML = `<p>Paraphrased Sentence: ${data.paraphrased_sentence}</p>`;
+        } else {
+            resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+        }
+    } catch (error) {
+        resultDiv.innerHTML = `<p>Error: Could not process the request.</p>`;
+    }
+});
+
