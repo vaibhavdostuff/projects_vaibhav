@@ -23,4 +23,11 @@
         <p class="error">{{ error }}</p>
         {% endif %}
 
+        <!-- Display paraphrased sentences -->
+        {% if variations %}
+        <h2>Paraphrased Sentences:</h2>
+        <ul>
+            {% for variation in variations %}
+            <li>{{ variation }}</li>
+            {% endfor %}
         
