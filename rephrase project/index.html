@@ -8,3 +8,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <div class="container">
+            <h1>Paraphrase Generator</h1>
+            
+            <!-- Form for input -->
+            <form method="POST">
+                <label for="sentence">Enter a Sentence:</label>
+                <input type="text" id="sentence" name="sentence" value="{{ sentence or '' }}" required>
+                <button type="submit">Paraphrase</button>
+            </form>
