@@ -16,3 +16,9 @@ def paraphrase_sentence(sentence):
 
     for word in words:
         if word in synonyms:
+            paraphrased.append(synonyms[word][0])  # Just use the first synonym for simplicity
+        else:
+            paraphrased.append(word)
+
+    return ' '.join(paraphrased)
+
