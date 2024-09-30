@@ -9,3 +9,10 @@ synonyms = {
     "good": ["great", "excellent", "superb"],
     "game": ["match", "competition", "event"]
 }
+
+def paraphrase_sentence(sentence):
+    words = sentence.split()
+    paraphrased = []
+
+    for word in words:
+        if word in synonyms:
