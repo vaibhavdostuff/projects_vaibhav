@@ -30,3 +30,15 @@ def paraphrase():
 
     if request.method == 'POST':
         sentence = request.form.get('sentence')
+
+        if not sentence:
+            error = 'Please enter a sentence.'
+        else:
+            # Generate paraphrased versions using basic synonym replacement
+            variations = [paraphrase_sentence(sentence) for _ in range(3)]
+
+    return render_template('index.html', sentence=sentence, variations=variations, error=error)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
