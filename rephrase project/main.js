@@ -10,3 +10,10 @@ document.getElementById('paraphrase-form').addEventListener('submit', async (eve
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ sentence }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
