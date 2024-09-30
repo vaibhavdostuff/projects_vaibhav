@@ -30,4 +30,11 @@
             {% for variation in variations %}
             <li>{{ variation }}</li>
             {% endfor %}
-        
+        </ul>
+        {% endif %}
+    </div>
+
+    <!-- Correctly linking the JavaScript file from the static folder -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
