@@ -17,3 +17,10 @@
                 <input type="text" id="sentence" name="sentence" value="{{ sentence or '' }}" required>
                 <button type="submit">Paraphrase</button>
             </form>
+
+            <!-- Error handling -->
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        
