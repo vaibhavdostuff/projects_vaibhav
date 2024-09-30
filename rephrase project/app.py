@@ -22,3 +22,11 @@ def paraphrase_sentence(sentence):
 
     return ' '.join(paraphrased)
 
+@app.route('/', methods=['GET', 'POST'])
+def paraphrase():
+    sentence = ''
+    variations = []
+    error = None
+
+    if request.method == 'POST':
+        sentence = request.form.get('sentence')
