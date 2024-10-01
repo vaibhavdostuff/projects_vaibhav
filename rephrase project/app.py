@@ -50,7 +50,7 @@ def paraphrase_sentence(sentence):
 
     for word in words:
         if word in synonyms:
-            paraphrased.append(synonyms[word][0])  # Just use the first synonym for simplicity
+            paraphrased.append(synonyms[word][1])   # Just use the first synonym for simplicity
         else:
             paraphrased.append(word)
 
@@ -69,7 +69,7 @@ def paraphrase():
             error = 'Please enter a sentence.'
         else:
             # Generate paraphrased versions using basic synonym replacement
-            variations = [paraphrase_sentence(sentence) for _ in range(3)]
+            variations = [paraphrase_sentence(sentence) for _ in range(2)]
 
     return render_template('index.html', sentence=sentence, variations=variations, error=error)
 
