@@ -6,12 +6,14 @@ document.getElementById('paraphrase-form').addEventListener('submit', async (eve
 
     // Send sentence to the Flask backend
     try {
+
         const response = await fetch('/paraphrase', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ sentence }),
+
         });
 
         const data = await response.json();
@@ -26,4 +28,3 @@ document.getElementById('paraphrase-form').addEventListener('submit', async (eve
         resultDiv.innerHTML = `<p>Error: Could not process the request.</p>`;
     }
 });
-
