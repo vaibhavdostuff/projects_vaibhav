@@ -19,3 +19,9 @@ def restructure_sentence(text):
             subject.append(token.text)
         elif token.dep_ in ["ROOT", "aux", "auxpass", "cop"]:  # Main verbs or auxiliary verbs
             verb.append(token.text)
+        elif token.dep_ in ["dobj", "attr", "prep", "pobj", "advmod"]:  # Object or object modifier
+            object_.append(token.text)
+        else:
+            other.append(token.text)
+
+   
