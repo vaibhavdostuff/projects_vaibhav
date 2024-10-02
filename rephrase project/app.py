@@ -24,4 +24,9 @@ def restructure_sentence(text):
         else:
             other.append(token.text)
 
-   
+   # Handle cases where components may be empty
+    subject = ' '.join(subject) if subject else "We"  # Default subject if none found
+    verb = ' '.join(verb) if verb else "are"  # Default verb
+    object_ = ' '.join(object_) if object_ else "playing"  # Default object
+
+    
