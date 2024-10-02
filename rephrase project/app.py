@@ -29,4 +29,13 @@ def restructure_sentence(text):
     verb = ' '.join(verb) if verb else "are"  # Default verb
     object_ = ' '.join(object_) if object_ else "playing"  # Default object
 
-    
+    # Generate new components using random phrasing
+    extra_phrases = [
+        "I have plans to", 
+        "It looks like", 
+        "There's a good chance", 
+        "We are scheduled to",
+        "It's expected that",
+        "People are gathering for",
+        "Everyone is excited about"
+    ]
