@@ -13,4 +13,9 @@ def restructure_sentence(text):
     object_ = []
     other = []
 
-    
+    # Extract sentence components
+    for token in doc:
+        if token.dep_ in ["nsubj", "nsubjpass"]:  # Subject
+            subject.append(token.text)
+        elif token.dep_ in ["ROOT", "aux", "auxpass", "cop"]:  # Main verbs or auxiliary verbs
+            verb.append(token.text)
