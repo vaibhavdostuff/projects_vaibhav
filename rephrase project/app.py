@@ -7,3 +7,10 @@ nlp = spacy.load("en_core_web_sm")
 def restructure_sentence(text):
     """Restructure the sentence to sound natural, allowing extra words and grammatical corrections."""
     doc = nlp(text)
+
+    subject = []
+    verb = []
+    object_ = []
+    other = []
+
+    
