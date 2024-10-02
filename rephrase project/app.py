@@ -56,4 +56,8 @@ def restructure_sentence(text):
         "enjoy"
     ]
 
-    
+    # Choose a random action verb
+    selected_verb = random.choice(action_verbs)
+
+    # Randomly choose a pattern for the restructured sentence
+    patterns = [
