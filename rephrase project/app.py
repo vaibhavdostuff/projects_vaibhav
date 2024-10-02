@@ -68,4 +68,8 @@ def restructure_sentence(text):
         f"Everyone is excited about {object_} {random.choice(additional_time_phrases)}."
     ]
 
-    
+    # Randomly choose a pattern for the restructured sentence
+    restructured_sentence = random.choice(patterns)
+
+    return restructured_sentence
+
