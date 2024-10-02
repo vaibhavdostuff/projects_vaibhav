@@ -47,3 +47,13 @@ def restructure_sentence(text):
         "in the evening", 
         "by the end of the day"
     ]
+
+    action_verbs = [
+        "watch", 
+        "see", 
+        "play", 
+        "attend", 
+        "enjoy"
+    ]
+
+    
