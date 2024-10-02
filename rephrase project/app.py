@@ -73,3 +73,11 @@ def restructure_sentence(text):
 
     return restructured_sentence
 
+# Example
+input_sentence = "there is a match tomorrow."
+restructured_sentence = restructure_sentence(input_sentence)
+restructured_sentence2 = restructure_sentence(input_sentence)
+
+print("Original Sentence:", input_sentence)
+print("Restructured Sentence:", restructured_sentence)
+print("Restructured Sentence 2:", restructured_sentence2)
