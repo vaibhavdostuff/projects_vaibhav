@@ -39,3 +39,11 @@ def restructure_sentence(text):
         "People are gathering for",
         "Everyone is excited about"
     ]
+
+    additional_time_phrases = [
+        "tomorrow", 
+        "later in the day", 
+        "in the afternoon", 
+        "in the evening", 
+        "by the end of the day"
+    ]
