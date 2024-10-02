@@ -61,3 +61,11 @@ def restructure_sentence(text):
 
     # Randomly choose a pattern for the restructured sentence
     patterns = [
+        f"{random.choice(extra_phrases)} {selected_verb} {object_} {random.choice(additional_time_phrases)}.",
+        f"Tomorrow, {subject} will {selected_verb} {object_}.",
+        f"{subject} is going to {selected_verb} {object_} {random.choice(additional_time_phrases)}.",
+        f"{subject} is planning to {selected_verb} {object_} {random.choice(additional_time_phrases)}.",
+        f"Everyone is excited about {object_} {random.choice(additional_time_phrases)}."
+    ]
+
+    
