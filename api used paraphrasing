@@ -1,0 +1,8 @@
+import requests
+
+def paraphrase_with_huggingface(text, api_key):
+    """Paraphrase the given text using Hugging Face Inference API."""
+    
+    # Using the t5-base model
+
+    
