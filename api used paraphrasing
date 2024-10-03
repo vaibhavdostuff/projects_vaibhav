@@ -27,3 +27,8 @@ def paraphrase_with_huggingface(text, api_key):
         # Check if 'translation_text' is in the response and return that
         if 'translation_text' in paraphrased_text[0]:
             return [item['translation_text'] for item in paraphrased_text]
+        
+
+# Example usage
+api_key = "your Hugging Face API key"  # Replace with your Hugging Face API key
+input_sentence = "I will see you there."
