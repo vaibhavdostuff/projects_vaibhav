@@ -22,4 +22,8 @@ def paraphrase_with_huggingface(text, api_key):
 
     # Handling the API response
 
-    
+    if response.status_code == 200:
+        paraphrased_text = response.json()
+        # Check if 'translation_text' is in the response and return that
+        if 'translation_text' in paraphrased_text[0]:
+            return [item['translation_text'] for item in paraphrased_text]
