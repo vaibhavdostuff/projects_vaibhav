@@ -5,4 +5,8 @@ def paraphrase_with_huggingface(text, api_key):
     
     # Using the t5-base model
 
+    url = "https://api-inference.huggingface.co/models/t5-base"
+    headers = {"Authorization": f"Bearer {api_key}"}
+    
+    # Payload for generating paraphrased sentences
     
