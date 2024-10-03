@@ -24,4 +24,11 @@
             const inputText = document.getElementById('input-text').value;
 
             const response = await fetch('/paraphrase', {
-                method: 'POST',
+                method: 'POST',method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ text: inputText })
+            });
+
+             
