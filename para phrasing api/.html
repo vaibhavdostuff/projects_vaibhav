@@ -19,3 +19,9 @@
     </div>
 
     <script>
+        document.getElementById('paraphrase-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const inputText = document.getElementById('input-text').value;
+
+            const response = await fetch('/paraphrase', {
+                method: 'POST',
