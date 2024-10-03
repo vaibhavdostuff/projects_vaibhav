@@ -31,4 +31,9 @@
                 body: new URLSearchParams({ text: inputText })
             });
 
-             
+            const result = await response.json();
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';  // Clear previous output
+
+            if (result.error) {
+                outputDiv.innerHTML = `<p>Error: ${result.error}</p>`;
