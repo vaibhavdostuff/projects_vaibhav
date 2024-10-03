@@ -37,3 +37,12 @@
 
             if (result.error) {
                 outputDiv.innerHTML = `<p>Error: ${result.error}</p>`;
+            } else {
+                result.paraphrased.forEach((sentence, index) => {
+                    outputDiv.innerHTML += `<p>${index + 1}: ${sentence}</p>`;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
