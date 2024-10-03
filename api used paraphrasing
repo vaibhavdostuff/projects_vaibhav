@@ -37,9 +37,12 @@ try:
     paraphrased_sentences = paraphrase_with_huggingface(input_sentence, api_key)
     print("Original Sentence:", input_sentence)
     print("Paraphrased Sentences:")
-
-# Displaying the paraphrased sentences
+    
+    
+    # Displaying the paraphrased sentences
+    
     for i, sentence in enumerate(paraphrased_sentences, 1):
         print(f"{i}: {sentence.strip()}")
 except Exception as e:
     print(e)
+
