@@ -54,3 +54,12 @@ button:hover {
 .result {
     margin-top: 20px;
     padding: 10px;
+    background-color: #e7f3e7;
+    border-left: 5px solid #4CAF50;
+}
+
+p {
+    font-size: 1.1em;
+    color: #333;
+}
+
