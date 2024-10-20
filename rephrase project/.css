@@ -30,3 +30,17 @@ textarea {
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
     resize: none;
 }
+
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
