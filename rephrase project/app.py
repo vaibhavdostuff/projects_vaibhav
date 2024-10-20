@@ -15,3 +15,17 @@ def set_seed(seed):
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
+
+def paraphrase(text):
+    input_ids = tokenizer.encode(text, return_tensors="pt")
+    with torch.no_grad():
+        outputs = model.generate(
+            input_ids,
+            max_length=60,
+            num_return_sequences=3,
+            do_sample=True,
+            top_k=50,
+            top_p=0.95,
+            temperature=1.5
+        )
+    return [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
