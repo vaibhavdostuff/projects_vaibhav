@@ -29,3 +29,11 @@ def paraphrase(text):
             temperature=1.5
         )
     return [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    paraphrased_texts = []
+    if request.method == 'POST':
+        text = request.form['text']
+        set_seed(42)
+        paraphrased_texts = paraphrase(text)
