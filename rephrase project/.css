@@ -52,3 +52,12 @@ button:hover {
 .result {
     margin-top: 20px;
 }
+
+.result h2 {
+    color: #333;
+}
+
+.result ul {
+    list-style-type: none;
+    padding: 0;
+}
