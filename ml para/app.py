@@ -30,3 +30,8 @@ def paraphrase(text):
         )
     return [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
 
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    paraphrased_texts = []
+    if request.method == 'POST':
+        text = request.form['text']
