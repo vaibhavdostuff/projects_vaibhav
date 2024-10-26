@@ -35,3 +35,10 @@ def index():
     paraphrased_texts = []
     if request.method == 'POST':
         text = request.form['text']
+        set_seed(42)
+        paraphrased_texts = paraphrase(text)
+    return render_template('index.html', paraphrased_texts=paraphrased_texts)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
