@@ -24,3 +24,9 @@ def paraphrase(text):
             max_length=60,
             num_return_sequences=3,
             do_sample=True,
+            top_k=50,
+            top_p=0.95,
+            temperature=1.5
+        )
+    return [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
+
