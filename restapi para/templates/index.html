@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paraphrasing Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Paraphrasing Tool</h1>
+        <form id="paraphraseForm">
+            <textarea name="text" id="textInput" placeholder="Enter text to paraphrase..." required></textarea>
+            <button type="submit">Paraphrase</button>
+        </form>
+        <div class="result">
+            <h2>Paraphrased Texts:</h2>
+            <ul id="resultList"></ul>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('paraphraseForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const text = document.getElementById('textInput').value;
+            const response = await fetch('/api/paraphrase', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            const result = await response.json();
+            const resultList = document.getElementById('resultList');
+            resultList.innerHTML = '';
+            if (result.paraphrased_texts) {
+                result.paraphrased_texts.forEach(text => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = text;
+                    resultList.appendChild(listItem);
+                });
+            } else {
+                alert(result.error);
+            }
+        });
+    </script>
+</body>
+</html>
