@@ -47,7 +47,7 @@ def api_paraphrase():
     text = data.get('text')
     if not text:
         return jsonify({'error': 'No text provided.'}), 400
-    set_seed(30)
+    set_seed(42)
     paraphrased_texts = paraphrase(text)
     return jsonify({'paraphrased_texts': paraphrased_texts})
 
