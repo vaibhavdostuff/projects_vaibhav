@@ -14,7 +14,7 @@ def paraphrase_with_huggingface(text, api_key):
         "parameters": {
             "num_return_sequences": 3,  # Requesting 3 paraphrases
             "max_length": 50,
-            "temperature": 0.7
+            "temperature": 1.5
             }
     }
 
