@@ -10,11 +10,13 @@ model_name = 't5-base'
 tokenizer = T5Tokenizer.from_pretrained(model_name)
 model = T5ForConditionalGeneration.from_pretrained(model_name)
 
+
 def set_seed(seed):
     random.seed(seed)
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
+
 
 def paraphrase(text):
     input_ids = tokenizer.encode(text, return_tensors="pt")
@@ -29,6 +31,7 @@ def paraphrase(text):
             temperature=1.5
         )
     return [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
