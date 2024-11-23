@@ -10,6 +10,7 @@ body {
     color: #fff;
 }
 
+
 .container {
     max-width: 600px;
     padding: 40px;
@@ -32,9 +33,11 @@ button {
     transition: background-color 0.3s ease;
 }
 
+
 button:hover {
     background-color: #218838;
 }
+
 
 #feedback {
     margin-top: 20px;

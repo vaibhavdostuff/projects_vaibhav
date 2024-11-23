@@ -27,11 +27,15 @@ request.onupgradeneeded = (event) => {
   });
 };
 
+
 request.onerror = (event) => {
     console.error('Error opening database:', event.target.errorCode);
   };
 
+
+
 // Function to get movie data from IndexedDB
+
 const getMovieDataFromDB = (movieTitle) => {
     const transaction = db.transaction('movies', 'readonly');
     const movieStore = transaction.objectStore('movies');
@@ -45,7 +49,10 @@ const getMovieDataFromDB = (movieTitle) => {
           const triviaUrl = `https://www.imdb.com/title/${imdbId}/trivia/`;
           window.location.href = triviaUrl;
         } else {
+
+
             // Movie not found in the database, make an API call to OMDB API
+
             fetch(`http://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=${apiKey}`)
               .then(response => response.json())
               .then(data => {
@@ -69,12 +76,16 @@ const getMovieDataFromDB = (movieTitle) => {
   };
 };
 
+
 // Function to store movie data in IndexedDB
+
 const storeMovieData = (data) => {
     const transaction = db.transaction('movies', 'readwrite');
     const movieStore = transaction.objectStore('movies');
 
+
     // Ensure the data has a 'title' property with fallback values for undefined fields
+
     const movieData = {
         title: data.Title || "Unknown Title",  // Fallback to "Unknown Title" if not available
         imdbID: data.imdbID || "N/A",          // Fallback to "N/A" if imdbID is missing
@@ -82,7 +93,10 @@ const storeMovieData = (data) => {
         genre: data.Genre || "Unknown Genre",  // Fallback to "Unknown Genre" if genre is missing
         director: data.Director || "Unknown Director"  // Fallback to "Unknown Director" if director is missing
       };
+
+
       // Log the movie data being added for easier debugging
+
     console.log('Storing movie data:', movieData);
   
     const addRequest = movieStore.add(movieData);
@@ -93,7 +107,9 @@ const storeMovieData = (data) => {
     
   };
 
+
   // Function to send movie data to Python (Flask)  
+
 const saveMovieToCSV = (data) => {
     fetch('http://127.0.0.1:5000/save_movie', {
       method: 'POST',
@@ -116,7 +132,9 @@ const saveMovieToCSV = (data) => {
   });
 };
 
+
 // Inside your movie data fetching logic, after the movie is retrieved:
+
 if (data. Response === "True")
     {
       storeMovieData(data); // Store in IndexedDB
@@ -126,3 +144,5 @@ if (data. Response === "True")
       window.location.href = triviaUrl;
   
     }
+
+    
