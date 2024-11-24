@@ -1,3 +1,4 @@
+
 import requests
 
 def paraphrase_with_huggingface(text, api_key):
@@ -30,10 +31,12 @@ def paraphrase_with_huggingface(text, api_key):
         
 
 # Example usage
+
 api_key = "your Hugging Face API key"  # Replace with your Hugging Face API key
 input_sentence = "I will see you there."
 
 try:
+
     paraphrased_sentences = paraphrase_with_huggingface(input_sentence, api_key)
     print("Original Sentence:", input_sentence)
     print("Paraphrased Sentences:")

@@ -1,9 +1,11 @@
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
 }
+
 
 .container {
     width: 50%;
@@ -15,20 +17,24 @@ body {
     margin-top: 50px;
 }
 
+
 h1 {
     text-align: center;
     color: #333;
 }
+
 
 form {
     display: flex;
     flex-direction: column;
 }
 
+
 label {
     margin-bottom: 10px;
     font-weight: bold;
 }
+
 
 textarea {
     resize: none;
@@ -37,6 +43,7 @@ textarea {
     border-radius: 4px;
     margin-bottom: 20px;
 }
+
 
 button {
     padding: 10px;
@@ -47,9 +54,11 @@ button {
     cursor: pointer;
 }
 
+
 button:hover {
     background-color: #45a049;
 }
+
 
 .result {
     margin-top: 20px;
@@ -58,8 +67,10 @@ button:hover {
     border-left: 5px solid #4CAF50;
 }
 
+
 p {
     font-size: 1.1em;
     color: #333;
 }
+
 

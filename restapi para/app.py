@@ -35,12 +35,14 @@ def paraphrase(text):
 
 
 # HTML frontend route
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
 
 
 # API endpoint for paraphrasing
+
 @app.route('/api/paraphrase', methods=['POST'])
 def api_paraphrase():
     data = request.get_json()
