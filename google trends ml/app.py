@@ -119,4 +119,36 @@ def predict_trend(self, tokens):
                     if len(columns_to_compare) < 2:
                         return "Could not identify at least two columns to compare."
                     
-                    
+                    # Create a comparison visualization
+        plt.figure(figsize=(12, 6))
+        for col in columns_to_compare:
+            plt.plot(self.data.index, self.data[col], label=col)
+
+        plt.title('Data Comparison')
+        plt.xlabel('Index')
+        plt.ylabel('Value')
+        plt.legend()
+        
+        # Save the plot
+        plot_filename = f'data_comparison_{uuid.uuid4()}.png'
+        plt.savefig(os.path.join(app.config['UPLOAD_FOLDER'], plot_filename))
+        plt.close()
+
+        return {
+            'message': f"Comparison of {', '.join(columns_to_compare)} has been generated.",
+            'plot': plot_filename
+        }
+def general_query(self, tokens):
+    results = {}
+    for col in self.data.columns:
+        if any(token in col.lower() for token in tokens):
+            if self.data[col].dtype in ['int64', 'float64']:
+                results[col] = {
+                    'mean': self.data[col].mean(),
+                    'median': self.data[col].median(),
+                    'std': self.data[col].std()
+                    }
+            elif self.data[col].dtype == 'object':
+                results[col] = self.data[col].value_counts().to_dict()
+                return results
+            analyzer = DataAnalyzer()
