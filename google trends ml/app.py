@@ -74,3 +74,45 @@ def questions():
 def query_data():
     global uploaded_data
     if uploaded_data is None:
+        return jsonify({'error': 'No data uploaded. Please upload a file first.'}), 400
+
+    query = request.json.get('question', '').strip()
+    column = request.json.get('column', '').strip()
+
+    if not query:
+        return jsonify({'error': 'Query is empty or invalid.'}), 400
+    if not column:
+        return jsonify({'error': 'Column not specified for the query.'}), 400
+    if column not in uploaded_data.columns:
+        return jsonify({'error': f'Column "{column}" not found in the uploaded data.'}), 400
+
+    if 'predict' in query.lower():
+        # Handle prediction
+        if uploaded_data[column].dtype not in ['int64', 'float64']:
+            return jsonify({'error': f'Column "{column}" is not numeric and cannot be used for prediction.'}), 400
+
+        result = forecast_trend(uploaded_data[column], column)
+        return jsonify(result), 200
+    else:
+        # Handle other queries
+        return jsonify({'message': f'Your query "{query}" was received but could not be processed.'}), 200
+
+
+# Forecast function
+def forecast_trend(series, column_name):
+    try:
+        # Prepare data for prediction
+        X = np.arange(len(series)).reshape(-1, 1)
+        y = series.values
+
+        # Train-test split
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+        # Train a linear regression model
+        model = LinearRegression()
+        model.fit(X_train, y_train)
+
+        # Predict future values
+        future_X = np.arange(len(series), len(series) + 10).reshape(-1, 1)
+        future_y = model.predict(future_X)
+        
