@@ -37,27 +37,30 @@ def upload_file():
     file = request.files['file']
     if file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
-
-try:
-        # Save the uploaded file
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
-        file.save(file_path)
-
-        # Load the data
-        ext = os.path.splitext(file.filename)[1].lower()
-        if ext == '.csv':
-            uploaded_data = pd.read_csv(file_path)
-        elif ext in ['.xls', '.xlsx']:
-            uploaded_data = pd.read_excel(file_path)
-        else:
-            return jsonify({'error': 'Unsupported file format'}), 400
+        
+        try:
+            # Save the uploaded file
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
+            file.save(file_path)
+            
+            # Load the data
+            ext = os.path.splitext(file.filename)[1].lower()
+            if ext == '.csv':
+                uploaded_data = pd.read_csv(file_path)
+                
+            elif ext in ['.xls', '.xlsx']:
+                uploaded_data = pd.read_excel(file_path)
+    
+    else:
+        return jsonify({'error': 'Unsupported file format'}), 400
 
         # Preprocess the data
         uploaded_data.fillna(uploaded_data.mean(), inplace=True)
         uploaded_data.columns = [str(col) for col in uploaded_data.columns]  # Ensure column names are strings
         session['file_uploaded'] = True
         return jsonify({'message': 'File uploaded and processed successfully'}), 200
-    except Exception as e:
+        
+        except Exception as e:
         return jsonify({'error': f'Failed to process file: {str(e)}'}), 500
 
 
@@ -115,4 +118,27 @@ def forecast_trend(series, column_name):
         # Predict future values
         future_X = np.arange(len(series), len(series) + 10).reshape(-1, 1)
         future_y = model.predict(future_X)
-        
+
+
+# Plot the trend
+        plt.figure(figsize=(12, 6))
+        plt.scatter(X, y, color='blue', label='Actual Data')
+        plt.plot(future_X, future_y, color='red', label='Predicted Trend')
+        plt.title(f'Trend Prediction for {column_name}')
+        plt.xlabel('Index')
+        plt.ylabel(column_name)
+        plt.legend()
+
+        # Save the plot
+        plot_filename = f'trend_prediction_{uuid.uuid4()}.png'
+        plot_path = os.path.join(app.config['PLOT_FOLDER'], plot_filename)
+        plt.savefig(plot_path)
+        plt.close()
+
+        return {
+            'message': f'Trend prediction for {column_name} has been generated.',
+            'plot': plot_filename
+        }
+    except Exception as e:
+        return {'error': f'Failed to generate prediction: {str(e)}'}
+
