@@ -26,7 +26,6 @@ os.makedirs(app.config['PLOT_FOLDER'], exist_ok=True)
 
 uploaded_data = None  # Store uploaded data globally
 
-
 # File upload endpoint
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -37,32 +36,28 @@ def upload_file():
     file = request.files['file']
     if file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
-        
-        try:
-            # Save the uploaded file
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
-            file.save(file_path)
-            
-            # Load the data
-            ext = os.path.splitext(file.filename)[1].lower()
-            if ext == '.csv':
-                uploaded_data = pd.read_csv(file_path)
-                
-            elif ext in ['.xls', '.xlsx']:
-                uploaded_data = pd.read_excel(file_path)
     
-    else:
-        return jsonify({'error': 'Unsupported file format'}), 400
+    try:
+        # Save the uploaded file
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
+        file.save(file_path)
+
+        # Load the data
+        ext = os.path.splitext(file.filename)[1].lower()
+        if ext == '.csv':
+            uploaded_data = pd.read_csv(file_path)
+        elif ext in ['.xls', '.xlsx']:
+            uploaded_data = pd.read_excel(file_path)
+        else:
+            return jsonify({'error': 'Unsupported file format'}), 400
 
         # Preprocess the data
         uploaded_data.fillna(uploaded_data.mean(), inplace=True)
         uploaded_data.columns = [str(col) for col in uploaded_data.columns]  # Ensure column names are strings
         session['file_uploaded'] = True
         return jsonify({'message': 'File uploaded and processed successfully'}), 200
-        
-        except Exception as e:
+    except Exception as e:
         return jsonify({'error': f'Failed to process file: {str(e)}'}), 500
-
 
 # Questions page
 @app.route('/questions')
@@ -141,4 +136,26 @@ def forecast_trend(series, column_name):
         }
     except Exception as e:
         return {'error': f'Failed to generate prediction: {str(e)}'}
+
+
+# Serve plot images
+@app.route('/plot/<filename>')
+def serve_plot(filename):
+    return send_file(os.path.join(app.config['PLOT_FOLDER'], filename), mimetype='image/png')
+
+
+# Render main page
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+# Results page
+@app.route('/results')
+def results():
+    return render_template('results.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
