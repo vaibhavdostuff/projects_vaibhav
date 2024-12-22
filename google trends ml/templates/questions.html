@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analysis Web App - Questions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Data Analysis Web App</h1>
+        <h2>Ask Questions About Your Data</h2>
+        <form id="questionForm">
+            <textarea id="queryInput" rows="4" placeholder="Enter your question here... (e.g., 'What is the trend of sales?' or 'Compare revenue and expenses')" required></textarea>
+            <button type="submit">Submit Question</button>
+        </form>
+        <div id="message"></div>
+    </div>
+    <script src="{{ url_for('static', filename='questions.js') }}"></script>
+</body>
+</html>
