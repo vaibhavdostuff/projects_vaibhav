@@ -37,3 +37,38 @@ class DataAnalyzer:
             raise ValueError("Unsupported file format")
         
         self.data_source = os.path.basename(file_path) 
+
+        def preprocess_data(self):
+        # Handle missing values
+        self.data = self.data.fillna(self.data.mean())
+        
+        # Convert date columns to datetime
+        date_columns = self.data.select_dtypes(include=['object']).columns
+        for col in date_columns:
+            try:
+                self.data[col] = pd.to_datetime(self.data[col])
+            except:
+                pass
+
+    def query_data(self, query):
+        tokens = word_tokenize(query.lower())
+        stop_words = set(stopwords.words('english'))
+        tokens = [token for token in tokens if token not in stop_words]
+
+        if 'trend' in tokens or 'predict' in tokens:
+            return self.predict_trend(tokens)
+        elif 'compare' in tokens:
+            return self.compare_data(tokens)
+        else:
+            return self.general_query(tokens)
+
+    def predict_trend(self, tokens):
+        # Identify the column to predict
+        target_column = None
+        for col in self.data.columns:
+            if any(token in col.lower() for token in tokens):
+                target_column = col
+                break
+
+        if target_column is None:
+            return "Could not identify the trend to predict."
