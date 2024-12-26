@@ -72,3 +72,32 @@ class DataAnalyzer:
 
         if target_column is None:
             return "Could not identify the trend to predict."
+
+            # Prepare data for prediction
+        X = self.data.index.values.reshape(-1, 1)
+        y = self.data[target_column].values
+
+        # Split data into training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+        # Train a linear regression model
+        model = LinearRegression()
+        model.fit(X_train, y_train)
+
+        # Predict future values
+        future_X = np.array(range(len(X), len(X) + 10)).reshape(-1, 1)
+        future_y = model.predict(future_X)
+
+        # Visualize the trend
+        plt.figure(figsize=(12, 6))
+        plt.scatter(X, y, color='blue', label='Actual data')
+        plt.plot(future_X, future_y, color='red', label='Predicted trend')
+        plt.title(f'Trend Prediction for {target_column}')
+        plt.xlabel('Time')
+        plt.ylabel(target_column)
+        plt.legend()
+        
+        # Save the plot
+        plot_filename = f'trend_prediction_{uuid.uuid4()}.png'
+        plt.savefig(os.path.join(app.config['UPLOAD_FOLDER'], plot_filename))
+        plt.close()
