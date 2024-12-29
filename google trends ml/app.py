@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, jsonify, send_file, session, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
@@ -40,7 +41,7 @@ class DataAnalyzer:
 
         def preprocess_data(self):
         # Handle missing values
-        self.data = self.data.fillna(self.data.mean())
+         self.data = self.data.fillna(self.data.mean())
         
         # Convert date columns to datetime
         date_columns = self.data.select_dtypes(include=['object']).columns
@@ -101,3 +102,29 @@ class DataAnalyzer:
         plot_filename = f'trend_prediction_{uuid.uuid4()}.png'
         plt.savefig(os.path.join(app.config['UPLOAD_FOLDER'], plot_filename))
         plt.close()
+
+        return {
+            'message': f"Trend prediction for {target_column} has been generated. The graph shows the actual data and predicted future values.",
+            'plot': plot_filename
+        }
+
+    def compare_data(self, tokens):
+        # Identify columns to compare
+        columns_to_compare = []
+        for col in self.data.columns:
+            if any(token in col.lower() for token in tokens):
+                columns_to_compare.append(col)
+
+        if len(columns_to_compare) < 2:
+            return "Could not identify at least two columns to compare."
+
+        # Create a comparison visualization
+        plt.figure(figsize=(12, 6))
+        for col in columns_to_compare:
+            plt.plot(self.data.index, self.data[col], label=col)
+
+        plt.title('Data Comparison')
+        plt.xlabel('Index')
+        plt.ylabel('Value')
+        plt.legend()
+
