@@ -128,3 +128,32 @@ class DataAnalyzer:
         plt.ylabel('Value')
         plt.legend()
 
+# Save the plot
+        plot_filename = f'data_comparison_{uuid.uuid4()}.png'
+        plt.savefig(os.path.join(app.config['UPLOAD_FOLDER'], plot_filename))
+        plt.close()
+
+        return {
+            'message': f"Comparison of {', '.join(columns_to_compare)} has been generated. The graph shows the trends of the selected columns over time.",
+            'plot': plot_filename
+        }
+
+    def general_query(self, tokens):
+        results = {}
+        for col in self.data.columns:
+            if any(token in col.lower() for token in tokens):
+                if self.data[col].dtype in ['int64', 'float64']:
+                    results[col] = {
+                        'mean': self.data[col].mean(),
+                        'median': self.data[col].median(),
+                        'std': self.data[col].std()
+                    }
+                elif self.data[col].dtype == 'object':
+                    results[col] = self.data[col].value_counts().to_dict()
+        return results
+
+analyzer = DataAnalyzer()
+
+@app.route('/')
+def index():
+    return render_template('index.html')
