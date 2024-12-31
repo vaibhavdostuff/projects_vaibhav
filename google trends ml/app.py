@@ -157,3 +157,39 @@ analyzer = DataAnalyzer()
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file:
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        try:
+            analyzer.load_data(file_path)
+            analyzer.preprocess_data()
+            session['file_uploaded'] = True
+            return jsonify({'message': 'File uploaded and processed successfully'}), 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+
+@app.route('/questions')
+def questions():
+    if not session.get('file_uploaded'):
+        return redirect(url_for('index'))
+    return render_template('questions.html')
+
+@app.route('/query', methods=['POST'])
+def query_data():
+    query = request.json.get('query')
+    if not query:
+        return jsonify({'error': 'No query provided'}), 400
+    try:
+        result = analyzer.query_data(query)
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
