@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, jsonify, send_file, session, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
@@ -193,3 +192,15 @@ def query_data():
         return jsonify(result), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 400
+
+@app.route('/results')
+def results():
+    return render_template('results.html')
+
+@app.route('/plot/<filename>')
+def serve_plot(filename):
+    return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), mimetype='image/png')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
