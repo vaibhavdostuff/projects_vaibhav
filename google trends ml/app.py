@@ -4,14 +4,28 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-import nltk
-import json
 import uuid
+
+# Download necessary NLTK data
+nltk.download('punkt')
+nltk.download('stopwords')
+
+app = Flask(__name__)
+app.secret_key = 'your_secret_key_here'  # Replace with a secure key
+app.config['UPLOAD_FOLDER'] = 'uploads/'
+app.config['PLOT_FOLDER'] = 'plots/'
+app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024  # Max file size: 32MB
+
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(app.config['PLOT_FOLDER'], exist_ok=True)
+
+uploaded_data = None  # Store uploaded data globally
+
 
 # Download necessary NLTK data
 nltk.download('punkt')
