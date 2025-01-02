@@ -26,15 +26,30 @@ os.makedirs(app.config['PLOT_FOLDER'], exist_ok=True)
 
 uploaded_data = None  # Store uploaded data globally
 
+# File upload endpoint
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    global uploaded_data
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'}), 400
 
-# Download necessary NLTK data
-nltk.download('punkt')
-nltk.download('stopwords')
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    
+    try:
+        # Save the uploaded file
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
+        file.save(file_path)
 
-app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Change this to a random secret key
-app.config['UPLOAD_FOLDER'] = 'uploads/'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max-limit
+        # Load the data
+        ext = os.path.splitext(file.filename)[1].lower()
+        if ext == '.csv':
+            uploaded_data = pd.read_csv(file_path)
+        elif ext in ['.xls', '.xlsx']:
+            uploaded_data = pd.read_excel(file_path)
+        else:
+            return jsonify({'error': 'Unsupported file format'}), 400
 
 class DataAnalyzer:
     def __init__(self):
