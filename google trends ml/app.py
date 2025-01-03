@@ -51,25 +51,51 @@ def upload_file():
         else:
             return jsonify({'error': 'Unsupported file format'}), 400
 
-class DataAnalyzer:
-    def __init__(self):
-        self.data = None
-        self.data_source = None
+# Preprocess the data
+        uploaded_data.fillna(uploaded_data.mean(), inplace=True)
+        uploaded_data.columns = [str(col) for col in uploaded_data.columns]  # Ensure column names are strings
+        session['file_uploaded'] = True
+        return jsonify({'message': 'File uploaded and processed successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': f'Failed to process file: {str(e)}'}), 500
 
-    def load_data(self, file_path):
-        file_extension = os.path.splitext(file_path)[1].lower()
-        if file_extension == '.csv':
-            self.data = pd.read_csv(file_path)
-        elif file_extension in ['.xls', '.xlsx']:
-            self.data = pd.read_excel(file_path)
-        else:
-            raise ValueError("Unsupported file format")
-        
-        self.data_source = os.path.basename(file_path) 
 
-        def preprocess_data(self):
-        # Handle missing values
-         self.data = self.data.fillna(self.data.mean())
+# Questions page
+@app.route('/questions')
+def questions():
+    if not session.get('file_uploaded'):
+        return redirect(url_for('index'))
+    return render_template('questions.html', columns=uploaded_data.columns.tolist())
+
+
+# Query endpoint
+@app.route('/query', methods=['POST'])
+def query_data():
+    global uploaded_data
+    if uploaded_data is None:
+        return jsonify({'error': 'No data uploaded. Please upload a file first.'}), 400
+
+    query = request.json.get('question', '').strip()
+    column = request.json.get('column', '').strip()
+
+    if not query:
+        return jsonify({'error': 'Query is empty or invalid.'}), 400
+    if not column:
+        return jsonify({'error': 'Column not specified for the query.'}), 400
+    if column not in uploaded_data.columns:
+        return jsonify({'error': f'Column "{column}" not found in the uploaded data.'}), 400
+
+    if 'predict' in query.lower():
+        # Handle prediction
+        if uploaded_data[column].dtype not in ['int64', 'float64']:
+            return jsonify({'error': f'Column "{column}" is not numeric and cannot be used for prediction.'}), 400
+
+        result = forecast_trend(uploaded_data[column], column)
+        return jsonify(result), 200
+    else:
+        # Handle other queries
+        return jsonify({'message': f'Your query "{query}" was received but could not be processed.'}), 200
+
         
         # Convert date columns to datetime
         date_columns = self.data.select_dtypes(include=['object']).columns
