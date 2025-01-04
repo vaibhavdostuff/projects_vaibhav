@@ -96,37 +96,32 @@ def query_data():
         # Handle other queries
         return jsonify({'message': f'Your query "{query}" was received but could not be processed.'}), 200
 
-        
-        # Convert date columns to datetime
-        date_columns = self.data.select_dtypes(include=['object']).columns
-        for col in date_columns:
-            try:
-                self.data[col] = pd.to_datetime(self.data[col])
-            except:
-                pass
+        # Forecast function
+def forecast_trend(series, column_name):
+    try:
+        # Prepare data for prediction
+        X = np.arange(len(series)).reshape(-1, 1)
+        y = series.values
 
-    def query_data(self, query):
-        tokens = word_tokenize(query.lower())
-        stop_words = set(stopwords.words('english'))
-        tokens = [token for token in tokens if token not in stop_words]
+        # Train-test split
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        if 'trend' in tokens or 'predict' in tokens:
-            return self.predict_trend(tokens)
-        elif 'compare' in tokens:
-            return self.compare_data(tokens)
-        else:
-            return self.general_query(tokens)
+        # Train a linear regression model
+        model = LinearRegression()
+        model.fit(X_train, y_train)
 
-    def predict_trend(self, tokens):
-        # Identify the column to predict
-        target_column = None
-        for col in self.data.columns:
-            if any(token in col.lower() for token in tokens):
-                target_column = col
-                break
+        # Predict future values
+        future_X = np.arange(len(series), len(series) + 10).reshape(-1, 1)
+        future_y = model.predict(future_X)
 
-        if target_column is None:
-            return "Could not identify the trend to predict."
+        # Plot the trend
+        plt.figure(figsize=(12, 6))
+        plt.scatter(X, y, color='blue', label='Actual Data')
+        plt.plot(future_X, future_y, color='red', label='Predicted Trend')
+        plt.title(f'Trend Prediction for {column_name}')
+        plt.xlabel('Index')
+        plt.ylabel(column_name)
+        plt.legend()
 
             # Prepare data for prediction
         X = self.data.index.values.reshape(-1, 1)
