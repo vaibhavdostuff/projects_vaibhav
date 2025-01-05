@@ -123,30 +123,25 @@ def forecast_trend(series, column_name):
         plt.ylabel(column_name)
         plt.legend()
 
-            # Prepare data for prediction
-        X = self.data.index.values.reshape(-1, 1)
-        y = self.data[target_column].values
+        # Save the plot
+        plot_filename = f'trend_prediction_{uuid.uuid4()}.png'
+        plot_path = os.path.join(app.config['PLOT_FOLDER'], plot_filename)
+        plt.savefig(plot_path)
+        plt.close()
 
-        # Split data into training and testing sets
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        return {
+            'message': f'Trend prediction for {column_name} has been generated.',
+            'plot': plot_filename
+        }
+    except Exception as e:
+        return {'error': f'Failed to generate prediction: {str(e)}'}
 
-        # Train a linear regression model
-        model = LinearRegression()
-        model.fit(X_train, y_train)
 
-        # Predict future values
-        future_X = np.array(range(len(X), len(X) + 10)).reshape(-1, 1)
-        future_y = model.predict(future_X)
+# Serve plot images
+@app.route('/plot/<filename>')
+def serve_plot(filename):
+    return send_file(os.path.join(app.config['PLOT_FOLDER'], filename), mimetype='image/png')
 
-        # Visualize the trend
-        plt.figure(figsize=(12, 6))
-        plt.scatter(X, y, color='blue', label='Actual data')
-        plt.plot(future_X, future_y, color='red', label='Predicted trend')
-        plt.title(f'Trend Prediction for {target_column}')
-        plt.xlabel('Time')
-        plt.ylabel(target_column)
-        plt.legend()
-        
         # Save the plot
         plot_filename = f'trend_prediction_{uuid.uuid4()}.png'
         plt.savefig(os.path.join(app.config['UPLOAD_FOLDER'], plot_filename))
