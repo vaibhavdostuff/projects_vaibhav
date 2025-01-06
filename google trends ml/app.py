@@ -26,6 +26,7 @@ os.makedirs(app.config['PLOT_FOLDER'], exist_ok=True)
 
 uploaded_data = None  # Store uploaded data globally
 
+
 # File upload endpoint
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -51,7 +52,7 @@ def upload_file():
         else:
             return jsonify({'error': 'Unsupported file format'}), 400
 
-# Preprocess the data
+        # Preprocess the data
         uploaded_data.fillna(uploaded_data.mean(), inplace=True)
         uploaded_data.columns = [str(col) for col in uploaded_data.columns]  # Ensure column names are strings
         session['file_uploaded'] = True
@@ -96,7 +97,8 @@ def query_data():
         # Handle other queries
         return jsonify({'message': f'Your query "{query}" was received but could not be processed.'}), 200
 
-        # Forecast function
+
+# Forecast function
 def forecast_trend(series, column_name):
     try:
         # Prepare data for prediction
@@ -142,110 +144,18 @@ def forecast_trend(series, column_name):
 def serve_plot(filename):
     return send_file(os.path.join(app.config['PLOT_FOLDER'], filename), mimetype='image/png')
 
-        # Save the plot
-        plot_filename = f'trend_prediction_{uuid.uuid4()}.png'
-        plt.savefig(os.path.join(app.config['UPLOAD_FOLDER'], plot_filename))
-        plt.close()
 
-        return {
-            'message': f"Trend prediction for {target_column} has been generated. The graph shows the actual data and predicted future values.",
-            'plot': plot_filename
-        }
-
-    def compare_data(self, tokens):
-        # Identify columns to compare
-        columns_to_compare = []
-        for col in self.data.columns:
-            if any(token in col.lower() for token in tokens):
-                columns_to_compare.append(col)
-
-        if len(columns_to_compare) < 2:
-            return "Could not identify at least two columns to compare."
-
-        # Create a comparison visualization
-        plt.figure(figsize=(12, 6))
-        for col in columns_to_compare:
-            plt.plot(self.data.index, self.data[col], label=col)
-
-        plt.title('Data Comparison')
-        plt.xlabel('Index')
-        plt.ylabel('Value')
-        plt.legend()
-
-# Save the plot
-        plot_filename = f'data_comparison_{uuid.uuid4()}.png'
-        plt.savefig(os.path.join(app.config['UPLOAD_FOLDER'], plot_filename))
-        plt.close()
-
-        return {
-            'message': f"Comparison of {', '.join(columns_to_compare)} has been generated. The graph shows the trends of the selected columns over time.",
-            'plot': plot_filename
-        }
-
-    def general_query(self, tokens):
-        results = {}
-        for col in self.data.columns:
-            if any(token in col.lower() for token in tokens):
-                if self.data[col].dtype in ['int64', 'float64']:
-                    results[col] = {
-                        'mean': self.data[col].mean(),
-                        'median': self.data[col].median(),
-                        'std': self.data[col].std()
-                    }
-                elif self.data[col].dtype == 'object':
-                    results[col] = self.data[col].value_counts().to_dict()
-        return results
-
-analyzer = DataAnalyzer()
-
+# Render main page
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-    if file:
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-        try:
-            analyzer.load_data(file_path)
-            analyzer.preprocess_data()
-            session['file_uploaded'] = True
-            return jsonify({'message': 'File uploaded and processed successfully'}), 200
-        except Exception as e:
-            return jsonify({'error': str(e)}), 400
 
-@app.route('/questions')
-def questions():
-    if not session.get('file_uploaded'):
-        return redirect(url_for('index'))
-    return render_template('questions.html')
-
-@app.route('/query', methods=['POST'])
-def query_data():
-    query = request.json.get('query')
-    if not query:
-        return jsonify({'error': 'No query provided'}), 400
-    try:
-        result = analyzer.query_data(query)
-        return jsonify(result), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
-
+# Results page
 @app.route('/results')
 def results():
     return render_template('results.html')
 
-@app.route('/plot/<filename>')
-def serve_plot(filename):
-    return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), mimetype='image/png')
 
 if __name__ == '__main__':
     app.run(debug=True)
-
