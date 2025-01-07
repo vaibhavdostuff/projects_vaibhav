@@ -3,6 +3,20 @@ import random
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 
+from flask import Flask, render_template, request, jsonify, send_file, session, redirect, url_for
+from werkzeug.utils import secure_filename
+import os
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+import uuid
+
+
 app = Flask(__name__)
 
 # Load model and tokenizer
@@ -84,3 +98,20 @@ def upload_file():
             uploaded_data = pd.read_excel(file_path)
         else:
             return jsonify({'error': 'Unsupported file format'}), 400
+
+# Preprocess the data
+        uploaded_data.fillna(uploaded_data.mean(), inplace=True)
+        uploaded_data.columns = [str(col) for col in uploaded_data.columns]  # Ensure column names are strings
+        session['file_uploaded'] = True
+        return jsonify({'message': 'File uploaded and processed successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': f'Failed to process file: {str(e)}'}), 500
+
+
+# Questions page
+@app.route('/questions')
+def questions():
+    if not session.get('file_uploaded'):
+        return redirect(url_for('index'))
+    return render_template('questions.html', columns=uploaded_data.columns.tolist())
+
