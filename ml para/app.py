@@ -1,8 +1,3 @@
-from flask import Flask, render_template, request
-import random
-import torch
-from transformers import T5ForConditionalGeneration, T5Tokenizer
-
 from flask import Flask, render_template, request, jsonify, send_file, session, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
@@ -15,9 +10,6 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import uuid
-
-
-app = Flask(__name__)
 
 # Load model and tokenizer
 
@@ -44,19 +36,6 @@ def paraphrase(text):
             temperature=1.5
         )
     return [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    paraphrased_texts = []
-    if request.method == 'POST':
-        text = request.form['text']
-        set_seed(42)
-        paraphrased_texts = paraphrase(text)
-    return render_template('index.html', paraphrased_texts=paraphrased_texts)
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
 
 # Download necessary NLTK data
 nltk.download('punkt')
@@ -114,4 +93,32 @@ def questions():
     if not session.get('file_uploaded'):
         return redirect(url_for('index'))
     return render_template('questions.html', columns=uploaded_data.columns.tolist())
+
+# Query endpoint
+@app.route('/query', methods=['POST'])
+def query_data():
+    global uploaded_data
+    if uploaded_data is None:
+        return jsonify({'error': 'No data uploaded. Please upload a file first.'}), 400
+
+    query = request.json.get('question', '').strip()
+    column = request.json.get('column', '').strip()
+
+    if not query:
+        return jsonify({'error': 'Query is empty or invalid.'}), 400
+    if not column:
+        return jsonify({'error': 'Column not specified for the query.'}), 400
+    if column not in uploaded_data.columns:
+        return jsonify({'error': f'Column "{column}" not found in the uploaded data.'}), 400
+
+    if 'predict' in query.lower():
+        # Handle prediction
+        if uploaded_data[column].dtype not in ['int64', 'float64']:
+            return jsonify({'error': f'Column "{column}" is not numeric and cannot be used for prediction.'}), 400
+
+        result = forecast_trend(uploaded_data[column], column)
+        return jsonify(result), 200
+    else:
+        # Handle other queries
+        return jsonify({'message': f'Your query "{query}" was received but could not be processed.'}), 200
 
