@@ -123,3 +123,38 @@ def forecast_trend(series, column_name):
         plt.xlabel('Index')
         plt.ylabel(column_name)
         plt.legend()
+
+# Save the plot
+        plot_filename = f'trend_prediction_{uuid.uuid4()}.png'
+        plot_path = os.path.join(app.config['PLOT_FOLDER'], plot_filename)
+        plt.savefig(plot_path)
+        plt.close()
+
+        return {
+            'message': f'Trend prediction for {column_name} has been generated.',
+            'plot': plot_filename
+        }
+    except Exception as e:
+        return {'error': f'Failed to generate prediction: {str(e)}'}
+
+
+# Serve plot images
+@app.route('/plot/<filename>')
+def serve_plot(filename):
+    return send_file(os.path.join(app.config['PLOT_FOLDER'], filename), mimetype='image/png')
+
+
+# Render main page
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+# Results page
+@app.route('/results')
+def results():
+    return render_template('results.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
