@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangout Finder - Map</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap" async defer></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="/static/js/script.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Hangout Finder</h1>
+        <a href="/logout" class="logout-btn">Log Out</a>
+    </header>
+
+    <main>
+        <div class="filter-section">
+            <label for="place-type">Filter by:</label>
+            <select id="place-type">
+                <option value="restaurant">Restaurants</option>
+                <option value="cafe">Cafes</option>
+                <option value="park">Parks</option>
+                <option value="night_club">Night Clubs</option>
+                <option value="museum">Museums</option>
+            </select>
+            <button onclick="filterPlaces()">Apply</button>
+        </div>
