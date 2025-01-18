@@ -11,3 +11,25 @@ form input, form select, form button {
     margin: 10px 0;
     padding: 10px;
 }
+
+#map-container {
+    display: flex;
+}
+#places-list {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+.place-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.place-item h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+.place-item p {
+    margin: 0;
+    color: #555;
+}
