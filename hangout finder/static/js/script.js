@@ -32,3 +32,31 @@ function initMap() {
         );
     });
 }
+
+function displayPlaces(places, map) {
+    const placesList = document.getElementById("places-list");
+    placesList.innerHTML = ""; // Clear previous results
+
+    places.forEach((place) => {
+        // Add marker for each place
+        const marker = new google.maps.Marker({
+            position: place.geometry.location,
+            map: map,
+            title: place.name
+        });
+
+        // Append place to sidebar
+        const placeElement = document.createElement("div");
+        placeElement.classList.add("place-item");
+        placeElement.innerHTML = `
+            <h3>${place.name}</h3>
+            <p>${place.vicinity}</p>
+        `;
+        placesList.appendChild(placeElement);
+
+        // On click, center map on marker
+        placeElement.addEventListener("click", () => {
+            map.setCenter(marker.getPosition());
+        });
+    });
+}
