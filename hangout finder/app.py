@@ -49,6 +49,13 @@ def dashboard():
         return redirect(url_for('login'))
     return render_template('dashboard.html')
 
+@app.route('/map')
+
+@login_required
+def map_view():
+    return render_template('map.html')
+
+
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
