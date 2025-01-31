@@ -31,4 +31,14 @@ async def chat_room_ws(websocket: WebSocket, room_id: int):
     """
     WebSocket endpoint for real-time chat communication.
     """
-    
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            # Broadcast the message to all clients
+            await manager.broadcast(f"Room {room_id}: {data}")
+    except Exception:
+        await manager.disconnect(websocket)
+        raise HTTPException(status_code=400, detail="Disconnected")
+
+        
