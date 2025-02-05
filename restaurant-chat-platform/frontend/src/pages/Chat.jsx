@@ -23,3 +23,25 @@ function Chat() {
       setMessage("");
     }
   };
+
+
+  return (
+    <div>
+      <h1>Chat Room {roomId}</h1>
+      <div>
+        {messages.map((msg, i) => (
+          <p key={i}>{msg}</p>
+        ))}
+      </div>
+      <input
+        type="text"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
+      <button onClick={sendMessage}>Send</button>
+    </div>
+  );
+}
+
+export default Chat;
+
