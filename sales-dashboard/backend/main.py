@@ -41,3 +41,22 @@ def add_sale(sale: Sale):
                    (sale.product_name, sale.sales_amount, sale.date))
     conn.commit()
     return {"message": "Sale record added"}
+
+# Route to get all sales data
+@app.get("/sales/")
+def get_sales():
+    cursor.execute("SELECT * FROM sales")
+    sales = cursor.fetchall()
+    return {"sales": sales}
+
+# OpenAI API Key (for LLM insights)
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# Route for AI Sales Insights
+@app.post("/sales-insights/")
+def sales_insights(query: dict):
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": query["question"]}]
+    )
+    return {"insight": response["choices"][0]["message"]["content"]}
