@@ -21,3 +21,25 @@ const Dashboard = () => {
       .then((data) => setInsights(data.crewai_insight))
       .catch((err) => console.error("Error fetching insights:", err));
   };
+
+  return (
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-2xl font-bold mb-4">Sales Dashboard</h1>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={salesData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Line type="monotone" dataKey="sales" stroke="#8884d8" />
+        </LineChart>
+      </ResponsiveContainer>
+      <button onClick={fetchInsights} className="mt-4 p-2 bg-blue-500 text-white rounded">
+        Get AI Insights
+      </button>
+      {insights && <p className="mt-4 p-2 bg-white shadow rounded">{insights}</p>}
+    </div>
+  );
+};
+
+export default Dashboard;
