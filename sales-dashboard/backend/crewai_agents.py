@@ -18,3 +18,13 @@ class SalesAnalyzer(Agent):
             messages=[{"role": "user", "content": prompt}]
         )
         return response["choices"][0]["message"]["content"]
+
+sales_fetcher = SalesFetcher()
+sales_analyzer = SalesAnalyzer()
+
+crew = Crew(agents=[sales_fetcher, sales_analyzer])
+
+def get_sales_insights():
+    sales_data = sales_fetcher.fetch_sales_data()
+    return sales_analyzer.analyze_sales(sales_data)
+
