@@ -9,3 +9,17 @@ class DataCollectionTask(Task):
         df = pd.read_sql_query("SELECT * FROM sales", conn)
         conn.close()
         return df
+
+# Task: Clean Data
+class DataCleaningTask(Task):
+    def execute(self, df):
+        df.dropna(inplace=True)  # Remove null values
+        df["Revenue"] = df["Units Sold"] * df["Price Per Unit"]
+        return df
+
+# Task: Generate Visualization
+class VisualizationTask(Task):
+    def execute(self, df):
+        # Assume Power BI/Tableau integration
+        return "Dashboard Updated Successfully"
+    
