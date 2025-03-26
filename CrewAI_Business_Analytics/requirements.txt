@@ -1,0 +1,7 @@
+flask
+crewai
+langchain
+openai
+pandas
+sqlite3
+python-dotenv

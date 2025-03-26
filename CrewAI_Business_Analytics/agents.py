@@ -1,10 +1,13 @@
-from crewai import Crew, Agent
-from tasks import DataCollectionTask, DataCleaningTask, VisualizationTask
+from crewai import Agent
 
-# Define AI Agents
-data_collector = Agent(name="Data Collector", task=DataCollectionTask)
-data_cleaner = Agent(name="Data Cleaner", task=DataCleaningTask)
-visualizer = Agent(name="Visualization Agent", task=VisualizationTask)
+# Agent to collect data from databases
+data_collector = Agent(name="Data Collector",
+                       description="Pulls sales data from databases and APIs.")
 
-# Define Crew
-crew = Crew(agents=[data_collector, data_cleaner, visualizer])
+# Agent to clean and process the data
+data_cleaner = Agent(name="Data Cleaner",
+                     description="Cleans and prepares dataset for analysis.")
+
+# Agent to generate visual dashboards
+visualization_agent = Agent(name="Visualization Agent",
+                            description="Creates Power BI/Tableau dashboards.")
