@@ -1,25 +1,14 @@
 from crewai import Task
-import pandas as pd
-import sqlite3
+from agents import data_collector, data_cleaner, visualization_agent
 
-# Task: Collect Data
-class DataCollectionTask(Task):
-    def execute(self):
-        conn = sqlite3.connect("data/sales_data.db")
-        df = pd.read_sql_query("SELECT * FROM sales", conn)
-        conn.close()
-        return df
+# Task for data collection
+collect_data_task = Task(name="Fetch Sales Data",
+                         agent=data_collector)
 
-# Task: Clean Data
-class DataCleaningTask(Task):
-    def execute(self, df):
-        df.dropna(inplace=True)  # Remove null values
-        df["Revenue"] = df["Units Sold"] * df["Price Per Unit"]
-        return df
+# Task for data cleaning
+clean_data_task = Task(name="Clean and Process Data",
+                       agent=data_cleaner)
 
-# Task: Generate Visualization
-class VisualizationTask(Task):
-    def execute(self, df):
-        # Assume Power BI/Tableau integration
-        return "Dashboard Updated Successfully"
-    
+# Task for visualization
+generate_dashboard_task = Task(name="Create Power BI Dashboard",
+                               agent=visualization_agent)
