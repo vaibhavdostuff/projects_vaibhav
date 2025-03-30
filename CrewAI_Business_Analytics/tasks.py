@@ -1,14 +1,13 @@
 from crewai import Task
-from agents import data_collector, data_cleaner, visualization_agent
 
-# Task for data collection
-collect_data_task = Task(name="Fetch Sales Data",
-                         agent=data_collector)
+collect_data_task = Task(
+    description="Gather data from various sources, including databases and APIs.",
+)
 
-# Task for data cleaning
-clean_data_task = Task(name="Clean and Process Data",
-                       agent=data_cleaner)
+clean_data_task = Task(
+    description="Process and clean raw data to ensure quality.",
+)
 
-# Task for visualization
-generate_dashboard_task = Task(name="Create Power BI Dashboard",
-                               agent=visualization_agent)
+generate_dashboard_task = Task(
+    description="Create a Power BI dashboard to visualize the cleaned data.",
+)
