@@ -1,15 +1,18 @@
 from crewai import Crew
 from agents import get_agents
-from tasks import collect_data_task, clean_data_task, generate_dashboard_task
+from tasks import get_tasks
 
-# Get the agents dynamically
+# Load agents
 data_collector, data_cleaner, visualization_agent = get_agents()
 
-# Create a crew with agents
+# Load tasks
+collect_data_task, clean_data_task, generate_dashboard_task = get_tasks(
+    data_collector, data_cleaner, visualization_agent
+)
+
+# Create and run the crew
 crew = Crew(agents=[data_collector, data_cleaner, visualization_agent])
-
-# Assign tasks
 crew.assign_tasks([collect_data_task, clean_data_task, generate_dashboard_task])
-
-# Run the crew
 crew.run()
+
+print("✅ Process Completed! Dashboard saved at output/dashboard.png")
