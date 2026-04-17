@@ -4,65 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Paraphrasing Tool</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 
 <body>
-    <div class="container">
-        <h1>AI Paraphrasing Tool</h1>
 
+    <div class="container">
+
+        <h1>✨ AI Paraphrasing Tool</h1>
+        <p class="subtitle">Generate smarter, clearer, and more natural sentences</p>
+
+        <!-- FORM -->
         <form id="paraphraseForm">
-            <textarea id="textInput" placeholder="Enter your sentence..." required></textarea>
-            <button type="submit">Generate Paraphrases</button>
+            <textarea id="textInput" placeholder="Type your sentence here..." required></textarea>
+            <button type="submit">Generate</button>
         </form>
 
+        <!-- LOADER -->
         <div id="loader">
             <div class="spinner"></div>
+            <p>Generating smart paraphrases...</p>
         </div>
 
+        <!-- RESULTS -->
         <div class="result">
-            <h2>Paraphrased Versions</h2>
+            <h2>Results</h2>
             <ul id="resultList"></ul>
         </div>
+
     </div>
 
-    <script>
-        const form = document.getElementById('paraphraseForm');
-        const loader = document.getElementById('loader');
-        const resultList = document.getElementById('resultList');
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
-        loader.style.display = 'none';
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            resultList.innerHTML = '';
-            loader.style.display = 'block';
-
-            const text = document.getElementById('textInput').value;
-
-            const response = await fetch('/api/paraphrase', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ text })
-            });
-
-            const data = await response.json();
-
-            loader.style.display = 'none';
-
-            if (data.paraphrased_texts) {
-                const labels = ["Professional", "Expressive", "Casual"];
-
-                data.paraphrased_texts.forEach((item, index) => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<strong>${labels[index]}:</strong> ${item}`;
-                    resultList.appendChild(li);
-                });
-            } else {
-                alert(data.error);
-            }
-        });
-    </script>
 </body>
 </html>
