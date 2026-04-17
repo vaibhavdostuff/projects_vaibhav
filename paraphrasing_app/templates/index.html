@@ -52,9 +52,11 @@
             loader.style.display = 'none';
 
             if (data.paraphrased_texts) {
-                data.paraphrased_texts.forEach(item => {
+                const labels = ["Professional", "Expressive", "Casual"];
+
+                data.paraphrased_texts.forEach((item, index) => {
                     const li = document.createElement('li');
-                    li.textContent = item;
+                    li.innerHTML = `<strong>${labels[index]}:</strong> ${item}`;
                     resultList.appendChild(li);
                 });
             } else {
