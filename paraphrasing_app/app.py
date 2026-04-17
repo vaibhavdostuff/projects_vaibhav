@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import csv
+import os
 
 app = Flask(__name__)
 
@@ -78,7 +79,7 @@ def is_good_sentence(text, original):
 
 
 # -------------------------------
-# SCORING FUNCTION (RANKING)
+# SCORING FUNCTION
 # -------------------------------
 def score_sentence(text):
     score = 0
@@ -96,41 +97,26 @@ def score_sentence(text):
 
 
 # -------------------------------
-# SAVE DATA (FOR FUTURE TRAINING)
+# SAVE DATA (CSV)
 # -------------------------------
 def save_data(input_text, outputs):
+    file_exists = os.path.isfile("data.csv")
+
     with open("data.csv", "a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
+
+        if not file_exists:
+            writer.writerow(["Input", "Output"])
+
         for o in outputs:
             writer.writerow([input_text, o])
 
 
 # -------------------------------
-# PARAPHRASING FUNCTION
+# GENERATE TEXT (STYLE BASED)
 # -------------------------------
-def paraphrase(text, num_return_sequences=10):
-
-    clean = clean_text(text)
-
-    prompt = f"""
-    Rewrite the following sentence in 5 different ways.
-
-    Requirements:
-    - Keep the exact meaning
-    - Use natural, fluent English
-    - Use different vocabulary and sentence structure
-    - Avoid repetition
-    - Make sentences sound human-like
-
-    Sentence: {clean}
-    """
-
-    encoding = tokenizer(
-        prompt,
-        return_tensors="pt",
-        truncation=True,
-        padding=True
-    )
+def generate_text(prompt):
+    encoding = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True)
 
     input_ids = encoding["input_ids"].to(device)
     attention_mask = encoding["attention_mask"].to(device)
@@ -142,37 +128,89 @@ def paraphrase(text, num_return_sequences=10):
         max_length=80,
 
         do_sample=True,
-        top_k=40,
-        top_p=0.85,
-        temperature=0.7,
+        top_k=50,
+        top_p=0.9,
+        temperature=0.8,
 
-        repetition_penalty=2.2,
+        repetition_penalty=2.0,
         no_repeat_ngram_size=3,
 
-        num_return_sequences=num_return_sequences
+        num_return_sequences=5   # generate more → filter later
     )
 
-    paraphrases = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    texts = tokenizer.batch_decode(outputs, skip_special_tokens=True)
 
-    final_results = []
+    cleaned = []
+    for t in texts:
+        t = grammar_fix(t)
+        if t not in cleaned:
+            cleaned.append(t)
 
-    for p in paraphrases:
-        p = grammar_fix(p)
+    return cleaned
 
-        if is_good_sentence(p, clean):
-            if not any(is_too_similar(p, existing) for existing in final_results):
-                final_results.append(p)
 
-    # Ranking
-    scored = [(p, score_sentence(p)) for p in final_results]
-    scored.sort(key=lambda x: x[1], reverse=True)
+# -------------------------------
+# MAIN PARAPHRASE FUNCTION
+# -------------------------------
+def paraphrase(text):
 
-    best = [s[0] for s in scored[:5]]
+    clean = clean_text(text)
+
+    # -------------------------------
+    # PROMPTS (3 STYLES)
+    # -------------------------------
+    prompt1 = f"""
+    Paraphrase this sentence professionally.
+    Keep it grammatically correct and clear.
+
+    Sentence: {clean}
+    """
+
+    prompt2 = f"""
+    Rewrite this sentence in a more expressive and engaging way.
+    Use richer vocabulary.
+
+    Sentence: {clean}
+    """
+
+    prompt3 = f"""
+    Rewrite this sentence in a casual and friendly tone.
+    Make it informal and conversational.
+
+    Sentence: {clean}
+    """
+
+    # Generate multiple candidates per style
+    p1_list = generate_text(prompt1)
+    p2_list = generate_text(prompt2)
+    p3_list = generate_text(prompt3)
+
+    # -------------------------------
+    # FILTER + SELECT BEST
+    # -------------------------------
+    def select_best(candidates):
+        valid = []
+
+        for c in candidates:
+            if is_good_sentence(c, clean):
+                if not any(is_too_similar(c, v) for v in valid):
+                    valid.append(c)
+
+        scored = [(c, score_sentence(c)) for c in valid]
+        scored.sort(key=lambda x: x[1], reverse=True)
+
+        return scored[0][0] if scored else "Could not generate"
+
+    final_results = [
+        select_best(p1_list),  # Professional
+        select_best(p2_list),  # Expressive
+        select_best(p3_list)   # Casual
+    ]
 
     # Save for improvement
-    save_data(text, best)
+    save_data(text, final_results)
 
-    return best
+    return final_results
 
 
 # -------------------------------
