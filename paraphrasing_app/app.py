@@ -91,28 +91,38 @@ def score_sentence(text):
 
 
 # -------------------------------
-# SAVE DATA (CSV)
+# FIXED SAVE DATA (ALWAYS PROJECT FOLDER)
 # -------------------------------
 def save_data(input_text, outputs):
-    file_exists = os.path.isfile("data.csv")
 
-    with open("data.csv", "a", newline="", encoding="utf-8") as f:
+    # Get absolute path of current file (app.py)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Create full path inside project folder
+    file_path = os.path.join(base_dir, "data.csv")
+
+    file_exists = os.path.isfile(file_path)
+
+    with open(file_path, "a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
 
         if not file_exists:
             writer.writerow(["input", "output", "quality"])
 
         for o in outputs:
-            writer.writerow([input_text, o, "unrated"])  # default
-
+            writer.writerow([input_text, o, "unrated"])
 
 # -------------------------------
 # UPDATE QUALITY (RATING API)
 # -------------------------------
 def update_quality(input_text, output_text, quality):
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(base_dir, "data.csv")
+
     rows = []
 
-    with open("data.csv", "r", encoding="utf-8") as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         reader = csv.reader(f)
         rows = list(reader)
 
@@ -120,7 +130,7 @@ def update_quality(input_text, output_text, quality):
         if rows[i][0] == input_text and rows[i][1] == output_text:
             rows[i][2] = quality
 
-    with open("data.csv", "w", newline="", encoding="utf-8") as f:
+    with open(file_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerows(rows)
 
@@ -254,4 +264,3 @@ def rate():
 # -------------------------------
 if __name__ == "__main__": 
     app.run(debug=True)
-    
