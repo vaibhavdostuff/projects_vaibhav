@@ -7,12 +7,12 @@ import os
 app = Flask(__name__)
 
 # -------------------------------
-# MODEL (FLAN-T5)
+# MODEL ((USE CUSTOM IF EXISTS)
 # -------------------------------
-model_name = "google/flan-t5-large"
+MODEL_PATH = "./my_paraphrase_model" if os.path.exists("./my_paraphrase_model") else "google/flan-t5-large"
 
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_PATH)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = model.to(device)
@@ -82,17 +82,11 @@ def is_good_sentence(text, original):
 # SCORING FUNCTION
 # -------------------------------
 def score_sentence(text):
-    score = 0
-
-    score += len(text.split())  # longer = better
-
+    score = len(text.split())
     if "." in text:
         score += 2
-
-    words = text.lower().split()
-    if len(words) != len(set(words)):
+    if len(set(text.split())) != len(text.split()):
         score -= 3
-
     return score
 
 
@@ -106,14 +100,33 @@ def save_data(input_text, outputs):
         writer = csv.writer(f)
 
         if not file_exists:
-            writer.writerow(["Input", "Output"])
+            writer.writerow(["input", "output", "quality"])
 
         for o in outputs:
-            writer.writerow([input_text, o])
+            writer.writerow([input_text, o, "unrated"])  # default
 
 
 # -------------------------------
-# GENERATE TEXT (STYLE BASED)
+# UPDATE QUALITY (RATING API)
+# -------------------------------
+def update_quality(input_text, output_text, quality):
+    rows = []
+
+    with open("data.csv", "r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        rows = list(reader)
+
+    for i in range(1, len(rows)):
+        if rows[i][0] == input_text and rows[i][1] == output_text:
+            rows[i][2] = quality
+
+    with open("data.csv", "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerows(rows)
+
+
+# -------------------------------
+# GENERATE TEXT
 # -------------------------------
 def generate_text(prompt):
     encoding = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True)
@@ -124,18 +137,14 @@ def generate_text(prompt):
     outputs = model.generate(
         input_ids=input_ids,
         attention_mask=attention_mask,
-
         max_length=80,
-
         do_sample=True,
         top_k=50,
         top_p=0.9,
         temperature=0.8,
-
         repetition_penalty=2.0,
         no_repeat_ngram_size=3,
-
-        num_return_sequences=5   # generate more → filter later
+        num_return_sequences=5
     )
 
     texts = tokenizer.batch_decode(outputs, skip_special_tokens=True)
@@ -147,7 +156,6 @@ def generate_text(prompt):
             cleaned.append(t)
 
     return cleaned
-
 
 # -------------------------------
 # MAIN PARAPHRASE FUNCTION
@@ -220,22 +228,30 @@ def paraphrase(text):
 def index():
     return render_template('index.html')
 
-
 @app.route('/api/paraphrase', methods=['POST'])
 def api_paraphrase():
     data = request.get_json()
     text = data.get('text')
 
-    if not text:
-        return jsonify({'error': 'No text provided'}), 400
-
     results = paraphrase(text)
-
     return jsonify({'paraphrased_texts': results})
+
+# ⭐ NEW: RATING API
+@app.route('/api/rate', methods=['POST'])
+def rate():
+    data = request.get_json()
+    input_text = data.get("input")
+    output_text = data.get("output")
+    quality = data.get("quality")  # good / bad
+
+    update_quality(input_text, output_text, quality)
+
+    return jsonify({"message": "Rating saved"})
 
 
 # -------------------------------
 # RUN
 # -------------------------------
-if __name__ == "__main__":
+if __name__ == "__main__": 
     app.run(debug=True)
+    
