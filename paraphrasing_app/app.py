@@ -61,8 +61,9 @@ def is_too_similar(a, b):
     a_words = set(a.lower().split())
     b_words = set(b.lower().split())
 
-    similarity = len(a_words & b_words) / max(len(a_words), 1)
-    return similarity > 0.7
+    similarity = len(a_words & b_words) / max(len(b_words), 1)
+
+    return similarity > 0.6   # stricter than before
 
 
 # -------------------------------
@@ -73,6 +74,9 @@ def is_good_sentence(text, original):
         return False
 
     if text.lower() == original.lower():
+        return False
+
+    if is_too_similar(text, original):
         return False
 
     return True
@@ -150,8 +154,8 @@ def generate_text(prompt):
         max_length=80,
         do_sample=True,
         top_k=50,
-        top_p=0.9,
-        temperature=0.8,
+        top_p=0.92,
+        temperature=0.95,
         repetition_penalty=2.0,
         no_repeat_ngram_size=3,
         num_return_sequences=5
@@ -178,22 +182,36 @@ def paraphrase(text):
     # PROMPTS (3 STYLES)
     # -------------------------------
     prompt1 = f"""
-    Paraphrase this sentence professionally.
-    Keep it grammatically correct and clear.
+    Rewrite the following sentence in a formal and professional tone.
+
+    Requirements:
+    - Use correct grammar
+    - Improve sentence structure
+    - Make it sound polished and clear
+    - Do not copy the original sentence structure
 
     Sentence: {clean}
     """
 
     prompt2 = f"""
-    Rewrite this sentence in a more expressive and engaging way.
-    Use richer vocabulary.
+    Rewrite the following sentence in a more expressive and engaging way.
+
+    Requirements:
+    - Use richer vocabulary
+    - Add emotional or descriptive wording
+    - Change the sentence structure significantly
 
     Sentence: {clean}
     """
 
     prompt3 = f"""
-    Rewrite this sentence in a casual and friendly tone.
-    Make it informal and conversational.
+    Rewrite the following sentence in a casual, friendly, and conversational tone.
+
+    Requirements:
+    - Use simple language
+    - Make it sound natural and human-like
+    - Slight slang is allowed
+    - Change wording and structure
 
     Sentence: {clean}
     """

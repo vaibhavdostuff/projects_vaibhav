@@ -1,19 +1,4 @@
 Input,Output
-My friends and I are planning to go out,My friends and i are planning to go out.
-My friends and I are planning to go out,My friends and I are planning to go out.
-My friends and I are planning to go out,My friends and I are going out.
-My friends and I are planning to go out for a movie would u like to come,My friends and i are planning to go for a movie would you like to come ?
-My friends and I are planning to go out for a movie would u like to come,My friends and I are planning to go out for a movie. Would you like to come?
-My friends and I are planning to go out for a movie would u like to come,"My friends and I are going to the movies, would you like to come ?"
-My friends and I are planning to go out for a ovie would u like to come,My friends and I are planning to go out for an ovie would you like to come ?
-My friends and I are planning to go out for a ovie would u like to come,My friends and I are planning to go out for a movie. Would you like to come?
-My friends and I are planning to go out for a ovie would u like to come,My friends and i are planning to go out for a ovie would you like to come ?
-I manually curate and refine this dataset to ensure quality,I manually curate this dataset to ensure quality.
-I manually curate and refine this dataset to ensure quality,I curate and refine this dataset to ensure quality.
-I manually curate and refine this dataset to ensure quality,I manually curate and refine this dataset to ensure quality.
-I manually curate and refine this dataset to ensure quality,I curate and refine this dataset to ensure quality.
-I manually curate and refine this dataset to ensure quality,I curate and refine this dataset to ensure quality.
-I manually curate and refine this dataset to ensure quality,I manually curate and refine this dataset to ensure quality.
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar as i was traveling and got quite exhausted.,bad
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar because I was traveling and getting exhausted.,good
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar as I was traveling and got quite exhausted.,bad
@@ -26,3 +11,18 @@ we could make a plan tomorrow i am free whole day,I'm free the whole day tomorro
 "we could make a plan tomorrow, i am free whole day","We could make a plan tomorrow, i am free whole day.",bad
 "we could make a plan tomorrow, i am free whole day","We could make a plan tomorrow, I am free whole day.",bad
 "we could make a plan tomorrow, i am free whole day",Could you make a plan tomorrow? I am free whole day,bad
+me and my friends were planning to go out tonight you wanna join us?,"My friends and I are planning to go out tonight, do you want to join us?",good
+me and my friends were planning to go out tonight you wanna join us?,I and my friends were planning to go out tonight. Would you like to join us?,good
+me and my friends were planning to go out tonight you wanna join us?,My friends and I would like to go out tonight will you join us?,good
+I regret to inform you that I will not be able to attend the meeting due to prior commitments.,Regret to inform you that i will not be able to attend the meeting due to previous commitments.,good
+I regret to inform you that I will not be able to attend the meeting due to prior commitments.,I will not be able to attend the meeting because of prior commitments.,good
+I regret to inform you that I will not be able to attend the meeting due to prior commitments.,I am sorry to inform you that i will not be able to attend the meeting.,good
+I was really excited about the trip but it got cancelled at the last moment.,I was excited about the trip but it was cancelled at the last moment.,unrated
+I was really excited about the trip but it got cancelled at the last moment.,I was really excited about the trip but it was cancelled at the last moment.,unrated
+I was really excited about the trip but it got cancelled at the last moment.,I was really excited about the trip but it got cancelled at the last minute.,unrated
+Please submit the assignment before the deadline to avoid any penalties.,Please submit the assignment before the deadline to avoid penalties.,good
+Please submit the assignment before the deadline to avoid any penalties.,The deadline for submission of assignments is tomorrow at the latest.,unrated
+Please submit the assignment before the deadline to avoid any penalties.,I'm sorry but we're looking for you to submit your homework before the due date.,good
+"Although the weather was bad, we decided to continue our journey because we had already made all the arrangements.",Could not generate,bad
+"Although the weather was bad, we decided to continue our journey because we had already made all the arrangements.",Although the weather was bad we decided to continue our journey because we had already made all the arrangements.,bad
+"Although the weather was bad, we decided to continue our journey because we had already made all the arrangements.",Could not generate,bad
