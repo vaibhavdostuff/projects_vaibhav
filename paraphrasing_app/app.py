@@ -7,7 +7,7 @@ import os
 app = Flask(__name__)
 
 # -------------------------------
-# MODEL ((USE CUSTOM IF EXISTS)
+# MODEL (CUSTOM OR DEFAULT)
 # -------------------------------
 MODEL_PATH = "./my_paraphrase_model" if os.path.exists("./my_paraphrase_model") else "google/flan-t5-large"
 
@@ -17,7 +17,6 @@ model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_PATH)
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = model.to(device)
 model.eval()
-
 
 # -------------------------------
 # INPUT CLEANING
@@ -40,7 +39,6 @@ def clean_text(text):
 
     return text.strip()
 
-
 # -------------------------------
 # GRAMMAR FIX
 # -------------------------------
@@ -53,7 +51,6 @@ def grammar_fix(text):
 
     return text[0].upper() + text[1:] if len(text) > 1 else text
 
-
 # -------------------------------
 # SIMILARITY CHECK
 # -------------------------------
@@ -62,47 +59,56 @@ def is_too_similar(a, b):
     b_words = set(b.lower().split())
 
     similarity = len(a_words & b_words) / max(len(b_words), 1)
-
-    return similarity > 0.6   # stricter than before
-
+    return similarity > 0.6
 
 # -------------------------------
-# QUALITY CHECK
+# QUALITY CHECK (STRICT)
 # -------------------------------
 def is_good_sentence(text, original):
+
+    # ❌ Too short
     if len(text.split()) < 6:
         return False
 
+    # ❌ Same as input
     if text.lower() == original.lower():
         return False
 
+    # ❌ Too similar
     if is_too_similar(text, original):
         return False
 
-    return True
+    # ❌ Bad grammar pattern
+    if "i and my friends" in text.lower():
+        return False
 
+    # ❌ Incomplete meaning (VERY IMPORTANT)
+    if len(text.split()) < len(original.split()) * 0.7:
+        return False
+
+    return True
 
 # -------------------------------
 # SCORING FUNCTION
 # -------------------------------
 def score_sentence(text):
     score = len(text.split())
+
     if "." in text:
         score += 2
-    if len(set(text.split())) != len(text.split()):
+
+    words = text.lower().split()
+    if len(words) != len(set(words)):
         score -= 3
+
     return score
 
-
 # -------------------------------
-# FIXED SAVE DATA (ALWAYS PROJECT FOLDER)
+# SAVE DATA (CSV)
 # -------------------------------
 def save_data(input_text, outputs):
 
-    # Get absolute path of current file (app.py)
     base_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Create full path inside project folder
     file_path = os.path.join(base_dir, "data.csv")
 
     file_exists = os.path.isfile(file_path)
@@ -117,7 +123,7 @@ def save_data(input_text, outputs):
             writer.writerow([input_text, o, "unrated"])
 
 # -------------------------------
-# UPDATE QUALITY (RATING API)
+# UPDATE RATING
 # -------------------------------
 def update_quality(input_text, output_text, quality):
 
@@ -138,11 +144,11 @@ def update_quality(input_text, output_text, quality):
         writer = csv.writer(f)
         writer.writerows(rows)
 
-
 # -------------------------------
 # GENERATE TEXT
 # -------------------------------
 def generate_text(prompt):
+
     encoding = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True)
 
     input_ids = encoding["input_ids"].to(device)
@@ -151,14 +157,18 @@ def generate_text(prompt):
     outputs = model.generate(
         input_ids=input_ids,
         attention_mask=attention_mask,
-        max_length=80,
+
+        max_length=150,
+
         do_sample=True,
         top_k=50,
         top_p=0.92,
-        temperature=0.95,
-        repetition_penalty=2.0,
+        temperature=0.9,
+
+        repetition_penalty=2.2,
         no_repeat_ngram_size=3,
-        num_return_sequences=5
+
+        num_return_sequences=6
     )
 
     texts = tokenizer.batch_decode(outputs, skip_special_tokens=True)
@@ -178,17 +188,16 @@ def paraphrase(text):
 
     clean = clean_text(text)
 
-    # -------------------------------
-    # PROMPTS (3 STYLES)
-    # -------------------------------
+    # 🔥 IMPROVED PROMPTS (VERY IMPORTANT)
     prompt1 = f"""
     Rewrite the following sentence in a formal and professional tone.
 
     Requirements:
-    - Use correct grammar
-    - Improve sentence structure
-    - Make it sound polished and clear
-    - Do not copy the original sentence structure
+    - Do not remove any important information
+    - Preserve all parts of the sentence
+    - Keep full meaning intact
+    - Improve grammar and clarity
+    - Change sentence structure
 
     Sentence: {clean}
     """
@@ -197,32 +206,35 @@ def paraphrase(text):
     Rewrite the following sentence in a more expressive and engaging way.
 
     Requirements:
+    - Do not remove any important information
+    - Preserve all parts of the sentence
+    - Keep full meaning intact
     - Use richer vocabulary
-    - Add emotional or descriptive wording
-    - Change the sentence structure significantly
+    - Make it more descriptive
 
     Sentence: {clean}
     """
 
     prompt3 = f"""
-    Rewrite the following sentence in a casual, friendly, and conversational tone.
+    Rewrite the following sentence in a casual and conversational tone.
 
     Requirements:
-    - Use simple language
-    - Make it sound natural and human-like
-    - Slight slang is allowed
-    - Change wording and structure
+    - Do not remove any important information
+    - Preserve all parts of the sentence
+    - Keep full meaning intact
+    - Make it friendly and natural
+    - Slight slang allowed
 
     Sentence: {clean}
     """
 
-    # Generate multiple candidates per style
+    # Generate candidates
     p1_list = generate_text(prompt1)
     p2_list = generate_text(prompt2)
     p3_list = generate_text(prompt3)
 
     # -------------------------------
-    # FILTER + SELECT BEST
+    # SELECT BEST
     # -------------------------------
     def select_best(candidates):
         valid = []
@@ -238,16 +250,15 @@ def paraphrase(text):
         return scored[0][0] if scored else "Could not generate"
 
     final_results = [
-        select_best(p1_list),  # Professional
-        select_best(p2_list),  # Expressive
-        select_best(p3_list)   # Casual
+        select_best(p1_list),
+        select_best(p2_list),
+        select_best(p3_list)
     ]
 
-    # Save for improvement
+    # Save data
     save_data(text, final_results)
 
     return final_results
-
 
 # -------------------------------
 # ROUTES
@@ -264,21 +275,21 @@ def api_paraphrase():
     results = paraphrase(text)
     return jsonify({'paraphrased_texts': results})
 
-# ⭐ NEW: RATING API
+# ⭐ RATING API
 @app.route('/api/rate', methods=['POST'])
 def rate():
     data = request.get_json()
-    input_text = data.get("input")
-    output_text = data.get("output")
-    quality = data.get("quality")  # good / bad
 
-    update_quality(input_text, output_text, quality)
+    update_quality(
+        data.get("input"),
+        data.get("output"),
+        data.get("quality")
+    )
 
     return jsonify({"message": "Rating saved"})
-
 
 # -------------------------------
 # RUN
 # -------------------------------
-if __name__ == "__main__": 
+if __name__ == "__main__":
     app.run(debug=True)

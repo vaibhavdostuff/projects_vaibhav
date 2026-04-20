@@ -26,3 +26,18 @@ Please submit the assignment before the deadline to avoid any penalties.,I'm sor
 "Although the weather was bad, we decided to continue our journey because we had already made all the arrangements.",Could not generate,bad
 "Although the weather was bad, we decided to continue our journey because we had already made all the arrangements.",Although the weather was bad we decided to continue our journey because we had already made all the arrangements.,bad
 "Although the weather was bad, we decided to continue our journey because we had already made all the arrangements.",Could not generate,bad
+me and my friends were planning to go out tonight you wanna join us?,Yes i am planning to go out with my friends tonight,bad
+me and my friends were planning to go out tonight you wanna join us?,Me and my friends were going out tonight. Would you like to join us?,good
+me and my friends were planning to go out tonight you wanna join us?,Will you be able to go out tonight with me and my people?,good
+I regret to inform you that I will not be able to attend the meeting due to prior commitments.,I can't attend the meeting due to prior commitments.,good
+I regret to inform you that I will not be able to attend the meeting due to prior commitments.,I'm sorry I won't be able to attend the meeting due to prior commitments.,good
+I regret to inform you that I will not be able to attend the meeting due to prior commitments.,I regret that I cannot make it to the meeting due to prior commitments.,good
+I was really excited about the trip but it got cancelled at the last moment.,I was excited about the trip but it was cancelled.,bad
+I was really excited about the trip but it got cancelled at the last moment.,"I was really happy about the trip, but unfortunately it was cancelled.",good
+I was really excited about the trip but it got cancelled at the last moment.,I was looking forward to my trip but it got cancelled.,good
+Please submit the assignment before the deadline to avoid any penalties.,Please submit the assignment before the deadline.,bad
+Please submit the assignment before the deadline to avoid any penalties.,You need to submit the assignment before the deadline or you will face consequences.,good
+Please submit the assignment before the deadline to avoid any penalties.,"If you are having trouble, please submit your homework before the deadline.",bad
+"Although the weather was bad, we decided to continue our journey because we had already made all the arrangements.",Could not generate,bad
+"Although the weather was bad, we decided to continue our journey because we had already made all the arrangements.","Although the weather was bad, we decided to continue our journey.",bad
+"Although the weather was bad, we decided to continue our journey because we had already made all the arrangements.","Although the weather was bad, we decided to continue our journey.",bad
