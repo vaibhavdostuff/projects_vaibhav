@@ -236,23 +236,35 @@ def paraphrase(text):
     # -------------------------------
     # SELECT BEST
     # -------------------------------
-    def select_best(candidates):
+    def select_best(candidates, original):
+
         valid = []
 
         for c in candidates:
-            if is_good_sentence(c, clean):
+            if is_good_sentence(c, original):
                 if not any(is_too_similar(c, v) for v in valid):
                     valid.append(c)
+
+        # ✅ If strict filter fails → relax rules
+        if not valid:
+            for c in candidates:
+                if len(c.split()) >= 5 and c.lower() != original.lower():
+                    valid.append(c)
+
+        # Still nothing → last fallback
+        if not valid:
+            return "Could not generate"
 
         scored = [(c, score_sentence(c)) for c in valid]
         scored.sort(key=lambda x: x[1], reverse=True)
 
-        return scored[0][0] if scored else "Could not generate"
+        return scored[0][0]
 
     final_results = [
-        select_best(p1_list),
-        select_best(p2_list),
-        select_best(p3_list)
+    select_best(p1_list, clean),
+    select_best(p2_list, clean),
+    select_best(p3_list, clean)
+    
     ]
 
     # Save data
