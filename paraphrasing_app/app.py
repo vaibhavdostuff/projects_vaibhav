@@ -66,23 +66,19 @@ def is_too_similar(a, b):
 # -------------------------------
 def is_good_sentence(text, original):
 
-    # ❌ Too short
     if len(text.split()) < 6:
         return False
 
-    # ❌ Same as input
     if text.lower() == original.lower():
         return False
 
-    # ❌ Too similar
     if is_too_similar(text, original):
         return False
 
-    # ❌ Bad grammar pattern
     if "i and my friends" in text.lower():
         return False
 
-    # ❌ Incomplete meaning (VERY IMPORTANT)
+    # Prevent incomplete meaning
     if len(text.split()) < len(original.split()) * 0.7:
         return False
 
@@ -104,7 +100,7 @@ def score_sentence(text):
     return score
 
 # -------------------------------
-# SAVE DATA (CSV)
+# SAVE DATA (CLEAN + NO DUPLICATES)
 # -------------------------------
 def save_data(input_text, outputs):
 
@@ -113,14 +109,30 @@ def save_data(input_text, outputs):
 
     file_exists = os.path.isfile(file_path)
 
+    # Load existing outputs to prevent duplicates across runs
+    existing = set()
+    if file_exists:
+        with open(file_path, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            for row in reader:
+                if len(row) >= 2:
+                    existing.add((row[0], row[1]))
+
     with open(file_path, "a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
 
         if not file_exists:
-            writer.writerow(["input", "output", "quality"])
+            writer.writerow(["Input", "Output", "Quality"])
 
         for o in outputs:
-            writer.writerow([input_text, o, "unrated"])
+            if (
+                o != "Could not generate" and
+                len(o.split()) > 5 and
+                o.strip() != "" and
+                (input_text, o) not in existing
+            ):
+                writer.writerow([input_text, o, "unrated"])
 
 # -------------------------------
 # UPDATE RATING
@@ -157,17 +169,13 @@ def generate_text(prompt):
     outputs = model.generate(
         input_ids=input_ids,
         attention_mask=attention_mask,
-
         max_length=150,
-
         do_sample=True,
         top_k=50,
         top_p=0.92,
         temperature=0.9,
-
         repetition_penalty=2.2,
         no_repeat_ngram_size=3,
-
         num_return_sequences=6
     )
 
@@ -188,27 +196,25 @@ def paraphrase(text):
 
     clean = clean_text(text)
 
-    # 🔥 IMPROVED PROMPTS (VERY IMPORTANT)
+    # 🔥 STRONG PROMPTS
     prompt1 = f"""
-    Rewrite the following sentence in a formal and professional tone.
+    Rewrite the sentence in a formal and professional tone.
 
     Requirements:
     - Do not remove any important information
-    - Preserve all parts of the sentence
-    - Keep full meaning intact
+    - Preserve full meaning
     - Improve grammar and clarity
-    - Change sentence structure
+    - Change structure significantly
 
     Sentence: {clean}
     """
 
     prompt2 = f"""
-    Rewrite the following sentence in a more expressive and engaging way.
+    Rewrite the sentence in an expressive and engaging way.
 
     Requirements:
     - Do not remove any important information
-    - Preserve all parts of the sentence
-    - Keep full meaning intact
+    - Preserve full meaning
     - Use richer vocabulary
     - Make it more descriptive
 
@@ -216,19 +222,17 @@ def paraphrase(text):
     """
 
     prompt3 = f"""
-    Rewrite the following sentence in a casual and conversational tone.
+    Rewrite the sentence in a casual and conversational tone.
 
     Requirements:
     - Do not remove any important information
-    - Preserve all parts of the sentence
-    - Keep full meaning intact
-    - Make it friendly and natural
+    - Preserve full meaning
+    - Make it natural and friendly
     - Slight slang allowed
 
     Sentence: {clean}
     """
 
-    # Generate candidates
     p1_list = generate_text(prompt1)
     p2_list = generate_text(prompt2)
     p3_list = generate_text(prompt3)
@@ -245,13 +249,12 @@ def paraphrase(text):
                 if not any(is_too_similar(c, v) for v in valid):
                     valid.append(c)
 
-        # ✅ If strict filter fails → relax rules
+        # fallback (relaxed)
         if not valid:
             for c in candidates:
                 if len(c.split()) >= 5 and c.lower() != original.lower():
                     valid.append(c)
 
-        # Still nothing → last fallback
         if not valid:
             return "Could not generate"
 
@@ -261,13 +264,12 @@ def paraphrase(text):
         return scored[0][0]
 
     final_results = [
-    select_best(p1_list, clean),
-    select_best(p2_list, clean),
-    select_best(p3_list, clean)
-    
+        select_best(p1_list, clean),
+        select_best(p2_list, clean),
+        select_best(p3_list, clean)
     ]
 
-    # Save data
+    # Save clean data
     save_data(text, final_results)
 
     return final_results
@@ -287,7 +289,6 @@ def api_paraphrase():
     results = paraphrase(text)
     return jsonify({'paraphrased_texts': results})
 
-# ⭐ RATING API
 @app.route('/api/rate', methods=['POST'])
 def rate():
     data = request.get_json()
