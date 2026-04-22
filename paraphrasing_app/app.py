@@ -12,8 +12,10 @@ app = Flask(__name__)
 MODEL_PATH = "./my_paraphrase_model" if os.path.exists("./my_paraphrase_model") else "google/flan-t5-large"
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
-model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_PATH)
-
+model = AutoModelForSeq2SeqLM.from_pretrained(
+    MODEL_PATH,
+    low_cpu_mem_usage=True
+)
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = model.to(device)
 model.eval()
@@ -22,6 +24,7 @@ model.eval()
 # INPUT CLEANING
 # -------------------------------
 def clean_text(text):
+    
     text = text.strip()
 
     replacements = {
@@ -38,6 +41,42 @@ def clean_text(text):
         text = text.replace(k, v)
 
     return text.strip()
+
+# -------------------------------
+# AI NORMALIZATION (SMART FIX)
+# -------------------------------
+def normalize_input(text):
+
+    prompt = f"""
+    Fix the following sentence:
+    - Correct grammar
+    - Complete incomplete phrases
+    - Fix spelling mistakes
+    - Make it a proper meaningful sentence
+
+    Sentence: {text}
+    """
+
+    encoding = tokenizer(
+        prompt,
+        return_tensors="pt",
+        truncation=True,
+        padding=True
+    )
+
+    input_ids = encoding["input_ids"].to(device)
+    attention_mask = encoding["attention_mask"].to(device)
+
+    output = model.generate(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        max_length=100,
+        do_sample=False
+    )
+
+    fixed = tokenizer.decode(output[0], skip_special_tokens=True)
+    return fixed
+
 
 # -------------------------------
 # GRAMMAR FIX
@@ -195,6 +234,7 @@ def generate_text(prompt):
 def paraphrase(text):
 
     clean = clean_text(text)
+    clean = normalize_input(clean)   # ⭐ NEW LINE
 
     # 🔥 STRONG PROMPTS
     prompt1 = f"""
