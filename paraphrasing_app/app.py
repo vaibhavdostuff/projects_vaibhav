@@ -48,11 +48,13 @@ def clean_text(text):
 def normalize_input(text):
 
     prompt = f"""
-    Fix the following sentence:
-    - Correct grammar
-    - Complete incomplete phrases
-    - Fix spelling mistakes
-    - Make it a proper meaningful sentence
+    Rewrite the following sentence correctly.
+
+    Rules:
+    - Keep the SAME meaning
+    - Do NOT add new information
+    - Do NOT explain anything
+    - Only return the corrected sentence
 
     Sentence: {text}
     """
@@ -70,13 +72,17 @@ def normalize_input(text):
     output = model.generate(
         input_ids=input_ids,
         attention_mask=attention_mask,
-        max_length=100,
+        max_length=80,
         do_sample=False
     )
 
     fixed = tokenizer.decode(output[0], skip_special_tokens=True)
-    return fixed
 
+    # 🔥 SAFETY CHECK
+    if "correct grammar" in fixed.lower():
+        return text
+
+    return fixed
 
 # -------------------------------
 # GRAMMAR FIX

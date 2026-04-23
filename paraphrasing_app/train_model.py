@@ -4,33 +4,69 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Trainer, Training
 model_name = "google/flan-t5-base"
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
+
 model = AutoModelForSeq2SeqLM.from_pretrained(
     model_name,
     low_cpu_mem_usage=True
 )
+
 # Load CSV
 dataset = load_dataset("csv", data_files="data.csv")
 
-# ✅ FILTER ONLY GOOD DATA
+# ✅ Keep only good data
 dataset = dataset["train"].filter(lambda x: x["quality"] == "good")
 
+# -------------------------------
+# PREPROCESS (IMPROVED)
+# -------------------------------
 def preprocess(example):
-    inputs = ["paraphrase: " + x for x in example["input"]]
-    targets = example["output"]
 
-    model_inputs = tokenizer(inputs, max_length=128, truncation=True)
-    labels = tokenizer(targets, max_length=128, truncation=True)
+    inputs = []
+    targets = []
+
+    for inp, out in zip(example["input"], example["output"]):
+
+        prompt = f"""
+        Rewrite the following sentence clearly and correctly.
+        Do not change the meaning.
+
+        Sentence: {inp}
+        """
+
+        inputs.append(prompt)
+        targets.append(out)
+
+    model_inputs = tokenizer(
+        inputs,
+        max_length=128,
+        truncation=True,
+        padding="max_length"
+    )
+
+    labels = tokenizer(
+        targets,
+        max_length=128,
+        truncation=True,
+        padding="max_length"
+    )
 
     model_inputs["labels"] = labels["input_ids"]
+
     return model_inputs
 
 dataset = dataset.map(preprocess, batched=True)
 
+# -------------------------------
+# TRAINING CONFIG
+# -------------------------------
 training_args = TrainingArguments(
     output_dir="./my_paraphrase_model",
     per_device_train_batch_size=2,
-    num_train_epochs=3,
-    logging_dir="./logs"
+    num_train_epochs=10,            # 🔥 increased
+    learning_rate=5e-5,            # 🔥 important
+    logging_dir="./logs",
+    logging_steps=10,
+    save_strategy="epoch"
 )
 
 trainer = Trainer(

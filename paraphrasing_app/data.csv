@@ -56,9 +56,12 @@ The quick brown fox jumps over the lazy dog near the river bank,The quick brown 
 "If you plan things carefully, even complex tasks can become manageable.","If you plan things carefully, even complicated tasks can become manageable.",unrated
 "If you plan things carefully, even complex tasks can become manageable.","When you plan things carefully, even complicated tasks can become manageable.",unrated
 "If you plan things carefully, even complex tasks can become manageable.","If you plan your tasks well, even complicated ones can become manageable.",good
-"If you plan things carefully, even complex tasks can become manageable",Correct grammar is a good rule to keep in mind.,unrated
-"If you plan things carefully, even complex tasks can become manageable",Correct grammar : I've just read through some of the articles.,unrated
-"If you plan things carefully, even complex tasks can become manageable",Correct grammar - The man is correcting his grammar.,unrated
-"She didn’t expect the results to turn out this way, but she adapted quickly","The correct grammar would be:. a href=""http://www.nysu.edu/pubs/publications/online_library/"">Really ? This is what I said.",unrated
-"She didn’t expect the results to turn out this way, but she adapted quickly",Correct grammar is necessary in order to get along with people.,unrated
-"She didn’t expect the results to turn out this way, but she adapted quickly",I know you're just correcting grammar.,unrated
+she didnt expect the result but adapted quickly,She didn't expect the result but adapted quickly.,unrated
+she didnt expect the result but adapted quickly,"The result was unexpected to her, but she quickly adjusted to it.",good
+she didnt expect the result but adapted quickly,She didn’t expect the outcome but she bounced back quickly.,good
+"She didn’t expect the results to turn out this way, but she adapted quickly",She didn’t expect the results to turn out this way but she adapted quickly.,bad
+"She didn’t expect the results to turn out this way, but she adapted quickly",She didn’t expect the results to turn out as she hoped.,bad
+"She didn’t expect the results to turn out this way, but she adapted quickly",She didn't expect the results to turn out the way they did.,bad
+"She didn’t expect the results to turn out this way, but she adapted quickly","She did n't expect the results to turn out this way, but she was very adaptable.",good
+"She didn’t expect the results to turn out this way, but she adapted quickly",She didn’t expect the results to turn out as she expected but she quickly adapted to the situation.,good
+"She didn’t expect the results to turn out this way, but she adapted quickly",She didn't expect that the result would turn out this way but she bounced back quickly.,good
