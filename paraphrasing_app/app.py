@@ -24,23 +24,30 @@ model.eval()
 # INPUT CLEANING
 # -------------------------------
 def clean_text(text):
-    
     text = text.strip()
 
+    # Minimal normalization (DO NOT kill personality)
     replacements = {
-        " u ": " you ",
-        " ur ": " your ",
-        " r ": " are ",
-        " wanna ": " want to ",
-        " gonna ": " going to "
+        "tmrw": "tomorrow",
+        "tmr": "tomorrow",
+        "frnds": "friends",
+        "pls": "please",
+        "plz": "please"
     }
 
-    text = " " + text.lower() + " "
+    words = text.split()
+    new_words = []
 
-    for k, v in replacements.items():
-        text = text.replace(k, v)
+    for w in words:
+        lw = w.lower()
+        if lw in replacements:
+            new_words.append(replacements[lw])
+        else:
+            new_words.append(w)
 
-    return text.strip()
+    text = " ".join(new_words)
+
+    return text
 
 # -------------------------------
 # AI NORMALIZATION (SMART FIX)
@@ -239,49 +246,73 @@ def generate_text(prompt):
 # -------------------------------
 def paraphrase(text):
 
+    # -------------------------------
+    # INPUT HANDLING
+    # -------------------------------
     clean = clean_text(text)
-    clean = normalize_input(clean)   # ⭐ NEW LINE
 
-    # 🔥 STRONG PROMPTS
+    # ❌ DO NOT globally normalize (this was breaking outputs)
+    # clean = normalize_input(clean)   ← REMOVE THIS
+
+    # ✅ Style-based inputs
+    formal_input = clean.replace(" u ", " you ").replace(" wanna ", " want to ")
+    expressive_input = clean
+    casual_input = text  # raw input = best for natural tone
+
+    # -------------------------------
+    # PROMPTS (IMPROVED)
+    # -------------------------------
+
     prompt1 = f"""
     Rewrite the sentence in a formal and professional tone.
 
     Requirements:
+    - Fix grammar mistakes
     - Do not remove any important information
     - Preserve full meaning
-    - Improve grammar and clarity
-    - Change structure significantly
+    - Improve clarity and structure
+    - Make it sound professional
 
-    Sentence: {clean}
+    Sentence: {formal_input}
     """
 
     prompt2 = f"""
     Rewrite the sentence in an expressive and engaging way.
 
     Requirements:
-    - Do not remove any important information
     - Preserve full meaning
     - Use richer vocabulary
-    - Make it more descriptive
+    - Add natural variation in structure
+    - Make it more interesting and descriptive
 
-    Sentence: {clean}
+    Sentence: {expressive_input}
     """
 
     prompt3 = f"""
     Rewrite the sentence in a casual and conversational tone.
 
     Requirements:
-    - Do not remove any important information
-    - Preserve full meaning
-    - Make it natural and friendly
-    - Slight slang allowed
+    - Keep it natural and human-like
+    - Slight slang is allowed
+    - Preserve meaning
+    - Do not make it overly formal
 
-    Sentence: {clean}
+    Sentence: {casual_input}
     """
 
+    # -------------------------------
+    # GENERATION
+    # -------------------------------
     p1_list = generate_text(prompt1)
     p2_list = generate_text(prompt2)
     p3_list = generate_text(prompt3)
+
+    # -------------------------------
+    # LIGHT GRAMMAR FIX (SAFE)
+    # -------------------------------
+    p1_list = [grammar_fix(t) for t in p1_list]
+    p2_list = [grammar_fix(t) for t in p2_list]
+    p3_list = [grammar_fix(t) for t in p3_list]
 
     # -------------------------------
     # SELECT BEST
@@ -295,7 +326,7 @@ def paraphrase(text):
                 if not any(is_too_similar(c, v) for v in valid):
                     valid.append(c)
 
-        # fallback (relaxed)
+        # 🔄 fallback (important for tough sentences)
         if not valid:
             for c in candidates:
                 if len(c.split()) >= 5 and c.lower() != original.lower():
@@ -310,12 +341,14 @@ def paraphrase(text):
         return scored[0][0]
 
     final_results = [
-        select_best(p1_list, clean),
-        select_best(p2_list, clean),
-        select_best(p3_list, clean)
+        select_best(p1_list, clean),   # Professional
+        select_best(p2_list, clean),   # Expressive
+        select_best(p3_list, clean)    # Casual
     ]
 
-    # Save clean data
+    # -------------------------------
+    # SAVE DATA (IMPORTANT)
+    # -------------------------------
     save_data(text, final_results)
 
     return final_results
