@@ -350,7 +350,7 @@ def paraphrase(text):
     # SAVE DATA (IMPORTANT)
     # -------------------------------
     save_data(text, final_results)
-
+    
     return final_results
 
 # -------------------------------
