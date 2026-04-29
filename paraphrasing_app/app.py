@@ -7,7 +7,7 @@ import os
 app = Flask(__name__)
 
 # -------------------------------
-# MODEL LOAD
+# MODEL
 # -------------------------------
 MODEL_PATH = "./my_paraphrase_model" if os.path.exists("./my_paraphrase_model") else "google/flan-t5-large"
 
@@ -36,38 +36,12 @@ def clean_text(text):
     }
 
     words = text.split()
-    return " ".join([replacements.get(w.lower(), w) for w in words])
+    new_words = [replacements.get(w.lower(), w) for w in words]
+
+    return " ".join(new_words)
 
 # -------------------------------
-# OPTIONAL AI NORMALIZATION (SAFE)
-# -------------------------------
-def normalize_input(text):
-
-    prompt = f"""
-Fix grammar of this sentence without changing meaning:
-
-{text}
-"""
-
-    encoding = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True)
-
-    output = model.generate(
-        input_ids=encoding["input_ids"].to(device),
-        attention_mask=encoding["attention_mask"].to(device),
-        max_length=80,
-        do_sample=False
-    )
-
-    fixed = tokenizer.decode(output[0], skip_special_tokens=True)
-
-    # Safety fallback
-    if len(fixed.split()) < 3:
-        return text
-
-    return fixed
-
-# -------------------------------
-# GRAMMAR FIX (LIGHT POST FIX)
+# GRAMMAR FIX
 # -------------------------------
 def grammar_fix(text):
     text = text.replace("i and my friends", "my friends and I")
@@ -78,12 +52,13 @@ def grammar_fix(text):
     return text[0].upper() + text[1:] if len(text) > 1 else text
 
 # -------------------------------
-# SIMILARITY CHECK
+# SIMILARITY
 # -------------------------------
 def is_too_similar(a, b):
     a_words = set(a.lower().split())
     b_words = set(b.lower().split())
-    return len(a_words & b_words) / max(len(b_words), 1) > 0.6
+    similarity = len(a_words & b_words) / max(len(b_words), 1)
+    return similarity > 0.6
 
 # -------------------------------
 # QUALITY CHECK
@@ -93,7 +68,7 @@ def is_good_sentence(text, original):
     if len(text.split()) < 6:
         return False
 
-    if text.lower() == original.lower():
+    if text.lower().strip() == original.lower().strip():
         return False
 
     if is_too_similar(text, original):
@@ -105,7 +80,7 @@ def is_good_sentence(text, original):
     return True
 
 # -------------------------------
-# SCORING FUNCTION
+# SCORING
 # -------------------------------
 def score_sentence(text):
     score = len(text.split())
@@ -120,23 +95,26 @@ def score_sentence(text):
     return score
 
 # -------------------------------
-# GENERATION
+# GENERATE TEXT
 # -------------------------------
 def generate_text(prompt):
 
     encoding = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True)
 
+    input_ids = encoding["input_ids"].to(device)
+    attention_mask = encoding["attention_mask"].to(device)
+
     outputs = model.generate(
-        input_ids=encoding["input_ids"].to(device),
-        attention_mask=encoding["attention_mask"].to(device),
-        max_length=120,
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        max_length=150,
         do_sample=True,
         top_k=50,
-        top_p=0.9,
-        temperature=0.8,
-        repetition_penalty=2.0,
+        top_p=0.92,
+        temperature=0.9,
+        repetition_penalty=2.2,
         no_repeat_ngram_size=3,
-        num_return_sequences=5
+        num_return_sequences=6
     )
 
     texts = tokenizer.batch_decode(outputs, skip_special_tokens=True)
@@ -157,21 +135,28 @@ def select_best(candidates, original):
     valid = []
 
     for c in candidates:
+        if c.strip().lower() == original.strip().lower():
+            continue
+
         if is_good_sentence(c, original):
             if not any(is_too_similar(c, v) for v in valid):
                 valid.append(c)
 
-    # fallback
     if not valid:
-        valid = [c for c in candidates if len(c.split()) >= 5 and c.lower() != original.lower()]
+        for c in candidates:
+            if len(c.split()) >= 5 and c.lower() != original.lower():
+                valid.append(c)
 
     if not valid:
         return "Could not generate"
 
-    return sorted(valid, key=score_sentence, reverse=True)[0]
+    scored = [(c, score_sentence(c)) for c in valid]
+    scored.sort(key=lambda x: x[1], reverse=True)
+
+    return scored[0][0]
 
 # -------------------------------
-# SAVE DATA (STYLE-AWARE)
+# SAVE DATA (UPDATED)
 # -------------------------------
 def save_data(input_text, outputs, styles):
 
@@ -188,22 +173,29 @@ def save_data(input_text, outputs, styles):
                     existing.add((row[0], row[1]))
 
     with open(file_path, "a", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
 
         if not file_exists:
             writer.writerow(["Input", "Output", "Style", "Quality"])
 
         for o, s in zip(outputs, styles):
-            if o != "Could not generate" and (input_text, o) not in existing:
+            if (
+                o != "Could not generate"
+                and len(o.split()) > 5
+                and o.strip() != ""
+                and o.lower() != input_text.lower()
+                and (input_text, o) not in existing
+            ):
                 writer.writerow([input_text, o, s, "unrated"])
 
 # -------------------------------
-# UPDATE QUALITY
+# UPDATE RATING
 # -------------------------------
 def update_quality(input_text, output_text, quality):
 
     file_path = os.path.join(os.path.dirname(__file__), "data.csv")
 
+    rows = []
     with open(file_path, "r", encoding="utf-8") as f:
         rows = list(csv.reader(f))
 
@@ -212,38 +204,43 @@ def update_quality(input_text, output_text, quality):
             rows[i][3] = quality
 
     with open(file_path, "w", newline="", encoding="utf-8") as f:
-        csv.writer(f).writerows(rows)
+        writer = csv.writer(f)
+        writer.writerows(rows)
 
 # -------------------------------
-# MAIN PARAPHRASE FUNCTION
+# MAIN FUNCTION
 # -------------------------------
 def paraphrase(text):
 
     clean = clean_text(text)
 
-    # 🔥 OPTIONAL: only normalize VERY bad input
-    if len(text.split()) < 6:
-        clean = normalize_input(clean)
+    formal_input = clean.replace(" u ", " you ").replace(" wanna ", " want to ")
+    expressive_input = clean
+    casual_input = text
 
-    # STYLE PROMPTS (aligned with training)
-    prompt_formal = f"Paraphrase in formal tone: {clean}"
-    prompt_expressive = f"Paraphrase in expressive tone: {clean}"
-    prompt_casual = f"Paraphrase in casual tone: {text}"
+    prompt1 = f"""Rewrite the sentence in a formal and professional tone.
+Sentence: {formal_input}"""
 
-    p1 = generate_text(prompt_formal)
-    p2 = generate_text(prompt_expressive)
-    p3 = generate_text(prompt_casual)
+    prompt2 = f"""Rewrite the sentence in an expressive and engaging way.
+Sentence: {expressive_input}"""
+
+    prompt3 = f"""Rewrite the sentence in a casual and conversational tone.
+Sentence: {casual_input}"""
+
+    p1 = generate_text(prompt1)
+    p2 = generate_text(prompt2)
+    p3 = generate_text(prompt3)
 
     out1 = select_best(p1, clean)
     out2 = select_best(p2, clean)
     out3 = select_best(p3, clean)
 
-    outputs = [out1, out2, out3]
+    results = [out1, out2, out3]
     styles = ["formal", "expressive", "casual"]
 
-    save_data(text, outputs, styles)
+    save_data(text, results, styles)
 
-    return outputs
+    return results
 
 # -------------------------------
 # ROUTES
@@ -260,8 +257,8 @@ def api_paraphrase():
     results = paraphrase(text)
 
     return jsonify({
-        "paraphrased_texts": results,
-        "styles": ["formal", "expressive", "casual"]
+        'paraphrased_texts': results,
+        'styles': ["formal", "expressive", "casual"]
     })
 
 @app.route('/api/rate', methods=['POST'])
