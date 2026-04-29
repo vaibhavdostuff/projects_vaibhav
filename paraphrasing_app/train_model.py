@@ -1,13 +1,5 @@
 from datasets import load_dataset
-from transformers import (
-    AutoTokenizer,
-    AutoModelForSeq2SeqLM,
-    Trainer,
-    TrainingArguments,
-    DataCollatorForSeq2Seq,
-    EarlyStoppingCallback
-)
-import torch
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Trainer, TrainingArguments
 
 # -------------------------------
 # MODEL
@@ -18,76 +10,58 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 model = AutoModelForSeq2SeqLM.from_pretrained(
     model_name,
-    low_cpu_mem_usage=True
+    low_cpu_mem_usage=True  # ✅ memory fix
 )
-
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model = model.to(device)
 
 # -------------------------------
 # LOAD DATA
 # -------------------------------
 dataset = load_dataset("csv", data_files="data.csv")
 
-# -------------------------------
-# FILTER GOOD DATA ONLY
-# -------------------------------
-dataset = dataset["train"].filter(lambda x: x["Quality"] == "good")
+# ✅ ONLY TRAIN ON GOOD DATA
+dataset = dataset["train"].filter(lambda x: x["quality"] == "good")
 
 # -------------------------------
-# TRAIN / VALID SPLIT (IMPORTANT)
-# -------------------------------
-dataset = dataset.train_test_split(test_size=0.1)
-
-train_dataset = dataset["train"]
-val_dataset = dataset["test"]
-
-# -------------------------------
-# PREPROCESS (STYLE-AWARE 🔥)
+# PREPROCESS (IMPORTANT FIX)
 # -------------------------------
 def preprocess(example):
 
     inputs = []
     targets = []
 
-    for inp, out, style in zip(
-        example["Input"],
-        example["Output"],
-        example["Style"]
-    ):
+    for inp, out in zip(example["input"], example["output"]):
 
-        # 🔥 STYLE-CONDITIONED PROMPT (VERY IMPORTANT)
         prompt = f"""
-Paraphrase the sentence in a {style} tone.
+        Paraphrase the following sentence while keeping the meaning the same.
+        Improve grammar and clarity if needed.
 
-Rules:
-- Keep the same meaning
-- Do not add new information
-- Improve clarity and grammar
-- Match the tone exactly
-
-Sentence: {inp}
-"""
+        Sentence: {inp}
+        """
 
         inputs.append(prompt)
         targets.append(out)
 
+    # Tokenize inputs
     model_inputs = tokenizer(
         inputs,
         max_length=128,
         truncation=True,
-        padding=True
+        padding="max_length"
     )
 
+    # Tokenize outputs
     labels = tokenizer(
         targets,
         max_length=128,
         truncation=True,
-        padding=True
+        padding="max_length"
     )
 
-    # Replace padding token with -100
+    # -------------------------------
+    # ✅ CRITICAL FIX
+    # -------------------------------
     label_ids = labels["input_ids"]
+
     label_ids = [
         [(token if token != tokenizer.pad_token_id else -100) for token in label]
         for label in label_ids
@@ -97,42 +71,27 @@ Sentence: {inp}
 
     return model_inputs
 
-
-train_dataset = train_dataset.map(preprocess, batched=True)
-val_dataset = val_dataset.map(preprocess, batched=True)
+dataset = dataset.map(preprocess, batched=True)
 
 # -------------------------------
-# DATA COLLATOR (DYNAMIC PADDING ✅)
-# -------------------------------
-data_collator = DataCollatorForSeq2Seq(
-    tokenizer=tokenizer,
-    model=model
-)
-
-# -------------------------------
-# TRAINING CONFIG (UPGRADED)
+# TRAINING CONFIG
 # -------------------------------
 training_args = TrainingArguments(
     output_dir="./my_paraphrase_model",
 
-    per_device_train_batch_size=4,
-    per_device_eval_batch_size=4,
+    per_device_train_batch_size=2,
+    num_train_epochs=10,
 
-    num_train_epochs=8,
-    learning_rate=3e-5,
-
-    evaluation_strategy="epoch",
-    save_strategy="epoch",
+    learning_rate=5e-5,
 
     logging_dir="./logs",
-    logging_steps=20,
+    logging_steps=10,
 
+    save_strategy="epoch",
+
+    # stability improvements
     save_total_limit=2,
-
-    load_best_model_at_end=True,
-    metric_for_best_model="loss",
-
-    fp16=True if torch.cuda.is_available() else False
+    fp16=True if model.device.type == "cuda" else False
 )
 
 # -------------------------------
@@ -141,11 +100,7 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=train_dataset,
-    eval_dataset=val_dataset,
-    tokenizer=tokenizer,
-    data_collator=data_collator,
-    callbacks=[EarlyStoppingCallback(early_stopping_patience=2)]
+    train_dataset=dataset
 )
 
 # -------------------------------
@@ -158,5 +113,3 @@ trainer.train()
 # -------------------------------
 model.save_pretrained("./my_paraphrase_model")
 tokenizer.save_pretrained("./my_paraphrase_model")
-
-print("✅ Training Complete & Model Saved")
