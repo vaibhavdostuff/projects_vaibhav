@@ -1,4 +1,5 @@
-"Input","Output","Quality"
+Input,Output,Quality
+Input,Output,Quality
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar as i was traveling and got quite exhausted.,bad
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar because I was traveling and getting exhausted.,good
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar as I was traveling and got quite exhausted.,bad
@@ -83,36 +84,36 @@ sorry for replying late i was busy with some work,"Sorry for the late reply, I w
 if you keep trying you will eventually succeed,Consistent effort and persistence will eventually lead to success.,good
 if you keep trying you will eventually succeed,"If you keep pushing forward and don’t give up, success will come your way eventually.",good
 if you keep trying you will eventually succeed,"Just keep trying, you’ll succeed eventually.",good
-i missed the deadline because i got stuck with too many tasks,"I missed the deadline due to being overwhelmed with multiple tasks.",good
-i missed the deadline because i got stuck with too many tasks,"I ended up missing the deadline because I was juggling too many responsibilities at once.",good
+i missed the deadline because i got stuck with too many tasks,I missed the deadline due to being overwhelmed with multiple tasks.,good
+i missed the deadline because i got stuck with too many tasks,I ended up missing the deadline because I was juggling too many responsibilities at once.,good
 i missed the deadline because i got stuck with too many tasks,"I missed the deadline, had too much on my plate.",good
-the meeting was boring and went on for too long,"The meeting was unengaging and extended beyond an appropriate duration.",good
-the meeting was boring and went on for too long,"The meeting felt dull and seemed to drag on endlessly.",good
-the meeting was boring and went on for too long,"That meeting was boring and way too long.",good
-i forgot to bring my documents so i couldnt complete the process,"I was unable to complete the process as I forgot to bring the required documents.",good
-i forgot to bring my documents so i couldnt complete the process,"I couldn’t finish the process because I realized too late that I had forgotten my documents.",good
-i forgot to bring my documents so i couldnt complete the process,"I forgot my documents so couldn’t finish the process.",good
+the meeting was boring and went on for too long,The meeting was unengaging and extended beyond an appropriate duration.,good
+the meeting was boring and went on for too long,The meeting felt dull and seemed to drag on endlessly.,good
+the meeting was boring and went on for too long,That meeting was boring and way too long.,good
+i forgot to bring my documents so i couldnt complete the process,I was unable to complete the process as I forgot to bring the required documents.,good
+i forgot to bring my documents so i couldnt complete the process,I couldn’t finish the process because I realized too late that I had forgotten my documents.,good
+i forgot to bring my documents so i couldnt complete the process,I forgot my documents so couldn’t finish the process.,good
 he didnt reply to my message so i assumed he was busy,"As he did not respond to my message, I assumed he was occupied.",good
 he didnt reply to my message so i assumed he was busy,"Since he didn’t reply, I figured he must have been busy with something important.",good
-he didnt reply to my message so i assumed he was busy,"He didn’t reply so I thought he was busy.",good
+he didnt reply to my message so i assumed he was busy,He didn’t reply so I thought he was busy.,good
 the app crashed suddenly and i lost all my progress,"The application crashed unexpectedly, resulting in the loss of all my progress.",good
 the app crashed suddenly and i lost all my progress,"The app suddenly crashed, and I ended up losing everything I had been working on.",good
-the app crashed suddenly and i lost all my progress,"The app crashed and I lost all my progress.",good
-i didnt understand the instructions properly so i made mistakes,"I made errors due to not fully understanding the instructions.",good
+the app crashed suddenly and i lost all my progress,The app crashed and I lost all my progress.,good
+i didnt understand the instructions properly so i made mistakes,I made errors due to not fully understanding the instructions.,good
 i didnt understand the instructions properly so i made mistakes,"Because I didn’t fully grasp the instructions, I ended up making several mistakes.",good
-i didnt understand the instructions properly so i made mistakes,"Didn’t understand the instructions properly so messed up.",good
+i didnt understand the instructions properly so i made mistakes,Didn’t understand the instructions properly so messed up.,good
 we waited for hours but the service was still not available,"We waited for several hours, yet the service remained unavailable.",good
 we waited for hours but the service was still not available,"Even after waiting for hours, the service never became available.",good
-we waited for hours but the service was still not available,"Waited for hours but still no service.",good
+we waited for hours but the service was still not available,Waited for hours but still no service.,good
 i was tired but i still completed the work somehow,"Despite being tired, I managed to complete the work.",good
 i was tired but i still completed the work somehow,"Even though I was exhausted, I somehow pushed through and finished the work.",good
-i was tired but i still completed the work somehow,"I was tired but still got the work done somehow.",good
-the internet connection was slow so the download took a long time,"The download took an extended period due to a slow internet connection.",good
+i was tired but i still completed the work somehow,I was tired but still got the work done somehow.,good
+the internet connection was slow so the download took a long time,The download took an extended period due to a slow internet connection.,good
 the internet connection was slow so the download took a long time,"Because the internet was so slow, the download ended up taking forever.",good
-the internet connection was slow so the download took a long time,"Internet was slow so download took long.",good
+the internet connection was slow so the download took a long time,Internet was slow so download took long.,good
 i wasnt sure about the decision but i went ahead anyway,"Although I was uncertain about the decision, I proceeded nonetheless.",good
 i wasnt sure about the decision but i went ahead anyway,"I wasn’t completely confident about the decision, but I chose to move forward anyway.",good
-i wasnt sure about the decision but i went ahead anyway,"Wasn’t sure about it but still went ahead.",good
+i wasnt sure about the decision but i went ahead anyway,Wasn’t sure about it but still went ahead.,good
 he stood alone in the rain thinking about everything he had lost,"He stood alone in the rain, reflecting on everything he had lost.",good
 he stood alone in the rain thinking about everything he had lost,"Standing there in the pouring rain, he was overwhelmed by thoughts of everything he had lost.",good
 he stood alone in the rain thinking about everything he had lost,He was just standing in the rain thinking about everything he lost.,good
@@ -128,7 +129,6 @@ he made a promise he knew he might never be able to keep,He promised something h
 she smiled even though her heart was breaking inside,"She smiled, despite the pain she was feeling inside.",good
 she smiled even though her heart was breaking inside,"She forced a smile, even as her heart quietly shattered within her.",good
 she smiled even though her heart was breaking inside,She smiled even though she was hurting inside.,good
-they walked away from each other knowing it was probably the last time,"They walked away from each other, aware it might be the final time.",good
 they walked away from each other knowing it was probably the last time,"They parted ways, both silently realizing it could be their last goodbye.",good
 they walked away from each other knowing it was probably the last time,They walked away knowing it might be the last time.,good
 the truth finally came out and it changed everything between them,"The truth eventually surfaced, altering everything between them.",good
@@ -173,59 +173,64 @@ they had come too far to give up now,They had come too far to quit now.,good
 she finally found the courage to speak what she had been hiding,She finally gathered the courage to express what she had been concealing.,good
 she finally found the courage to speak what she had been hiding,"At last, she found the strength to voice what she had kept hidden for so long.",good
 she finally found the courage to speak what she had been hiding,She finally got the courage to say what she was hiding.,good
-"he knew something was wrong but he couldnt figure out what it was","He sensed that something was wrong, but he could not identify the issue.",good
-"he knew something was wrong but he couldnt figure out what it was","He had a strong feeling that something wasn’t right, yet he couldn’t quite understand what it was.",good
-"he knew something was wrong but he couldnt figure out what it was","He knew something was off but couldn’t figure out what.",good
-"she kept reading the letter again and again trying to understand its meaning","She repeatedly read the letter in an attempt to understand its meaning.",good
-"she kept reading the letter again and again trying to understand its meaning","She read the letter over and over, desperately trying to make sense of what it meant.",good
-"she kept reading the letter again and again trying to understand its meaning","She kept rereading the letter trying to understand it.",good
-"the room felt smaller as the tension between them kept growing","The room seemed to feel more confined as the tension between them increased.",good
-"the room felt smaller as the tension between them kept growing","As the tension between them intensified, the room seemed to shrink around them.",good
-"the room felt smaller as the tension between them kept growing","The room felt smaller as things got more tense between them.",good
-"he wanted to say something but the words just wouldnt come out","He wished to speak, but he was unable to express himself.",good
-"he wanted to say something but the words just wouldnt come out","He wanted to say something, but the words simply refused to come out.",good
-"he wanted to say something but the words just wouldnt come out","He wanted to say something but couldn’t get the words out.",good
-"she stared at the door hoping someone would walk in and change everything","She gazed at the door, hoping someone would enter and alter everything.",good
-"she stared at the door hoping someone would walk in and change everything","She kept staring at the door, hoping someone would walk in and change everything.",good
-"she stared at the door hoping someone would walk in and change everything","She stared at the door hoping someone would come in and fix things.",good
-"they both knew the conversation they were about to have would not be easy","They were both aware that the upcoming conversation would be difficult.",good
-"they both knew the conversation they were about to have would not be easy","Both of them knew that the conversation ahead would be challenging and uncomfortable.",good
-"they both knew the conversation they were about to have would not be easy","They both knew this talk wasn’t going to be easy.",good
-"he smiled like nothing happened but inside he was completely broken","He maintained a smile as if nothing had occurred, despite feeling deeply broken inside.",good
-"he smiled like nothing happened but inside he was completely broken","He smiled as though everything was fine, even though he was completely shattered inside.",good
-"he smiled like nothing happened but inside he was completely broken","He smiled like nothing happened but was broken inside.",good
-"she had been waiting for this moment her whole life but now she was scared","She had anticipated this moment her entire life, yet she now felt afraid.",good
-"she had been waiting for this moment her whole life but now she was scared","She had waited her whole life for this moment, but now that it was here, she was scared.",good
-"she had been waiting for this moment her whole life but now she was scared","She waited her whole life for this but now she’s scared.",good
-"the silence between them said more than words ever could","The silence between them conveyed more than words ever could.",good
-"the silence between them said more than words ever could","The silence between them spoke louder than anything they could have said.",good
-"the silence between them said more than words ever could","Their silence said more than words.",good
-"he realized too late that he had taken everything for granted","He came to the realization too late that he had taken everything for granted.",good
-"he realized too late that he had taken everything for granted","He realized, far too late, that he had taken everything for granted.",good
-"he realized too late that he had taken everything for granted","He realized too late he took everything for granted.",good
-"she looked around and realized she was completely alone","She looked around and recognized that she was entirely alone.",good
-"she looked around and realized she was completely alone","She glanced around and suddenly realized she was completely alone.",good
-"she looked around and realized she was completely alone","She looked around and saw she was alone.",good
-"he tried to fix things but every step made it worse","He attempted to resolve the situation, but each effort worsened it.",good
-"he tried to fix things but every step made it worse","He tried to fix things, but with every step, it only got worse.",good
-"he tried to fix things but every step made it worse","He tried fixing it but made it worse.",good
-"she couldn’t believe how quickly everything had fallen apart","She was unable to believe how rapidly everything had collapsed.",good
-"she couldn’t believe how quickly everything had fallen apart","She couldn’t believe how quickly everything had fallen apart.",good
-"she couldn’t believe how quickly everything had fallen apart","She couldn’t believe how fast everything fell apart.",good
-"he had a choice to make and either way he would lose something important","He was faced with a decision in which he would lose something valuable regardless of his choice.",good
-"he had a choice to make and either way he would lose something important","He had to make a choice, knowing that either way, he would lose something important.",good
-"he had a choice to make and either way he would lose something important","He had to choose but would lose something either way.",good
-"she pretended to be okay so no one would worry about her","She pretended to be fine in order to prevent others from worrying about her.",good
-"she pretended to be okay so no one would worry about her","She acted like everything was okay so that no one would worry about her.",good
-"she pretended to be okay so no one would worry about her","She acted okay so no one would worry.",good
-"he walked into the room not knowing it would change his life forever","He entered the room unaware that it would permanently alter his life.",good
-"he walked into the room not knowing it would change his life forever","He walked into the room, not knowing it would change his life forever.",good
-"he walked into the room not knowing it would change his life forever","He walked in not knowing it would change everything.",good
-"she kept moving forward even though she had no idea where she was going","She continued to move forward despite having no clear direction.",good
-"she kept moving forward even though she had no idea where she was going","She kept going, even though she had no idea where she was headed.",good
-"she kept moving forward even though she had no idea where she was going","She kept moving without knowing where she was going.",good
-"he felt like giving up but something inside him told him to keep going","He felt inclined to give up, but an inner voice urged him to continue.",good
-"he felt like giving up but something inside him told him to keep going","He felt like giving up, but something deep inside pushed him to keep going.",good
-"he felt like giving up but something inside him told him to keep going","He felt like quitting but something told him to keep going.",good
-"she remembered all the promises that were never kept","She recalled all the promises that had not been fulfilled.",good
-"she remembered all the promises that were never kept","She thought about all the promises that were made but never kept.",good
+he knew something was wrong but he couldnt figure out what it was,"He sensed that something was wrong, but he could not identify the issue.",good
+he knew something was wrong but he couldnt figure out what it was,"He had a strong feeling that something wasn’t right, yet he couldn’t quite understand what it was.",good
+he knew something was wrong but he couldnt figure out what it was,He knew something was off but couldn’t figure out what.,good
+she kept reading the letter again and again trying to understand its meaning,She repeatedly read the letter in an attempt to understand its meaning.,good
+she kept reading the letter again and again trying to understand its meaning,"She read the letter over and over, desperately trying to make sense of what it meant.",good
+she kept reading the letter again and again trying to understand its meaning,She kept rereading the letter trying to understand it.,good
+the room felt smaller as the tension between them kept growing,The room seemed to feel more confined as the tension between them increased.,good
+the room felt smaller as the tension between them kept growing,"As the tension between them intensified, the room seemed to shrink around them.",good
+the room felt smaller as the tension between them kept growing,The room felt smaller as things got more tense between them.,good
+he wanted to say something but the words just wouldnt come out,"He wished to speak, but he was unable to express himself.",good
+he wanted to say something but the words just wouldnt come out,"He wanted to say something, but the words simply refused to come out.",good
+he wanted to say something but the words just wouldnt come out,He wanted to say something but couldn’t get the words out.,good
+she stared at the door hoping someone would walk in and change everything,"She gazed at the door, hoping someone would enter and alter everything.",good
+she stared at the door hoping someone would walk in and change everything,"She kept staring at the door, hoping someone would walk in and change everything.",good
+she stared at the door hoping someone would walk in and change everything,She stared at the door hoping someone would come in and fix things.,good
+they both knew the conversation they were about to have would not be easy,They were both aware that the upcoming conversation would be difficult.,good
+they both knew the conversation they were about to have would not be easy,Both of them knew that the conversation ahead would be challenging and uncomfortable.,good
+they both knew the conversation they were about to have would not be easy,They both knew this talk wasn’t going to be easy.,good
+he smiled like nothing happened but inside he was completely broken,"He maintained a smile as if nothing had occurred, despite feeling deeply broken inside.",good
+he smiled like nothing happened but inside he was completely broken,"He smiled as though everything was fine, even though he was completely shattered inside.",good
+he smiled like nothing happened but inside he was completely broken,He smiled like nothing happened but was broken inside.,good
+she had been waiting for this moment her whole life but now she was scared,"She had anticipated this moment her entire life, yet she now felt afraid.",good
+she had been waiting for this moment her whole life but now she was scared,"She had waited her whole life for this moment, but now that it was here, she was scared.",good
+she had been waiting for this moment her whole life but now she was scared,She waited her whole life for this but now she’s scared.,good
+the silence between them said more than words ever could,The silence between them conveyed more than words ever could.,good
+the silence between them said more than words ever could,The silence between them spoke louder than anything they could have said.,good
+the silence between them said more than words ever could,Their silence said more than words.,good
+he realized too late that he had taken everything for granted,He came to the realization too late that he had taken everything for granted.,good
+he realized too late that he had taken everything for granted,"He realized, far too late, that he had taken everything for granted.",good
+he realized too late that he had taken everything for granted,He realized too late he took everything for granted.,good
+she looked around and realized she was completely alone,She looked around and recognized that she was entirely alone.,good
+she looked around and realized she was completely alone,She glanced around and suddenly realized she was completely alone.,good
+she looked around and realized she was completely alone,She looked around and saw she was alone.,good
+he tried to fix things but every step made it worse,"He attempted to resolve the situation, but each effort worsened it.",good
+he tried to fix things but every step made it worse,"He tried to fix things, but with every step, it only got worse.",good
+he tried to fix things but every step made it worse,He tried fixing it but made it worse.,good
+she couldn’t believe how quickly everything had fallen apart,She was unable to believe how rapidly everything had collapsed.,good
+she couldn’t believe how quickly everything had fallen apart,She couldn’t believe how quickly everything had fallen apart.,good
+she couldn’t believe how quickly everything had fallen apart,She couldn’t believe how fast everything fell apart.,good
+he had a choice to make and either way he would lose something important,He was faced with a decision in which he would lose something valuable regardless of his choice.,good
+he had a choice to make and either way he would lose something important,"He had to make a choice, knowing that either way, he would lose something important.",good
+he had a choice to make and either way he would lose something important,He had to choose but would lose something either way.,good
+she pretended to be okay so no one would worry about her,She pretended to be fine in order to prevent others from worrying about her.,good
+she pretended to be okay so no one would worry about her,She acted like everything was okay so that no one would worry about her.,good
+she pretended to be okay so no one would worry about her,She acted okay so no one would worry.,good
+he walked into the room not knowing it would change his life forever,He entered the room unaware that it would permanently alter his life.,good
+he walked into the room not knowing it would change his life forever,"He walked into the room, not knowing it would change his life forever.",good
+he walked into the room not knowing it would change his life forever,He walked in not knowing it would change everything.,good
+she kept moving forward even though she had no idea where she was going,She continued to move forward despite having no clear direction.,good
+she kept moving forward even though she had no idea where she was going,"She kept going, even though she had no idea where she was headed.",good
+she kept moving forward even though she had no idea where she was going,She kept moving without knowing where she was going.,good
+he felt like giving up but something inside him told him to keep going,"He felt inclined to give up, but an inner voice urged him to continue.",good
+he felt like giving up but something inside him told him to keep going,"He felt like giving up, but something deep inside pushed him to keep going.",good
+he felt like giving up but something inside him told him to keep going,He felt like quitting but something told him to keep going.,good
+she remembered all the promises that were never kept,She recalled all the promises that had not been fulfilled.,good
+she remembered all the promises that were never kept,She thought about all the promises that were made but never kept.,good
+she remembered all the promises that were never kept,She remembered all the promises she had not kept.,unrated
+she remembered all the promises that were never kept,She remembered all the promises that were never kept.,unrated
+"She didn’t expect the results to turn out this way, but she adapted quickly",She didn’t expect the results to turn out like this but she adapted quickly.,unrated
+"She didn’t expect the results to turn out this way, but she adapted quickly","She didn’t expect the results to turn out as they did, but she adapted quickly.",unrated
+"She didn’t expect the results to turn out this way, but she adapted quickly","She didn't expect the results to turn out this way, but she adapted quickly.",unrated

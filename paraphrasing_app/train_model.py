@@ -16,7 +16,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained(
 # -------------------------------
 # LOAD DATA
 # -------------------------------
-dataset = load_dataset("csv", data_files="data.csv")
+dataset = load_dataset("csv", data_files="clean_data.csv")
 
 # ✅ ONLY TRAIN ON GOOD DATA
 dataset = dataset["train"].filter(lambda x: x["quality"] == "good")
