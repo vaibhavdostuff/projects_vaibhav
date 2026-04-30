@@ -1,5 +1,4 @@
-Input,Output,Quality
-Input,Output,Quality
+"Input","Output","Quality"
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar as i was traveling and got quite exhausted.,bad
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar because I was traveling and getting exhausted.,good
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar as I was traveling and got quite exhausted.,bad
@@ -229,8 +228,4 @@ he felt like giving up but something inside him told him to keep going,"He felt 
 he felt like giving up but something inside him told him to keep going,He felt like quitting but something told him to keep going.,good
 she remembered all the promises that were never kept,She recalled all the promises that had not been fulfilled.,good
 she remembered all the promises that were never kept,She thought about all the promises that were made but never kept.,good
-she remembered all the promises that were never kept,She remembered all the promises she had not kept.,unrated
-she remembered all the promises that were never kept,She remembered all the promises that were never kept.,unrated
-"She didn’t expect the results to turn out this way, but she adapted quickly",She didn’t expect the results to turn out like this but she adapted quickly.,unrated
-"She didn’t expect the results to turn out this way, but she adapted quickly","She didn’t expect the results to turn out as they did, but she adapted quickly.",unrated
-"She didn’t expect the results to turn out this way, but she adapted quickly","She didn't expect the results to turn out this way, but she adapted quickly.",unrated
+she remembered all the promises that were never kept,She remembered all the promises she had not kept.,good
