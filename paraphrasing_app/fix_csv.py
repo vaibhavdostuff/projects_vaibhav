@@ -35,38 +35,46 @@ for line in lines:
         out = out.strip()
         quality = quality.strip().lower()
 
-        # Skip empty
+        # -------------------------------
+        # SKIP BAD DATA
+        # -------------------------------
         if not inp or not out:
             continue
 
-        # Skip duplicate rows
         if (inp, out) in seen:
             continue
         seen.add((inp, out))
 
-        # Skip identical input-output (VERY IMPORTANT)
+         # ❌ SAME SENTENCE
         if inp.lower() == out.lower():
             continue
 
-        # Skip weak outputs
+        # ❌ TOO SHORT
         if len(out.split()) < 6:
             continue
 
-        # Optional: keep only good + unrated
+        # Fix quality
         if quality not in ["good", "unrated"]:
             quality = "unrated"
 
-        fixed_rows.append([inp, out, quality])
+        # Fix style
+        if style not in ["formal", "expressive", "casual"]:
+            style = "unknown"
 
-    except:
+        fixed_rows.append([inp, out, style, quality])
+    except Exception as e:
         continue
+
 
 # -------------------------------
 # SAVE CLEAN FILE (INSIDE PROJECT)
 # -------------------------------
 with open(output_path, "w", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
-    writer.writerow(["Input", "Output", "Quality"])
+
+    # ✅ NEW STANDARD HEADER
+    writer.writerow(["Input", "Output", "Style", "Quality"])
+
     writer.writerows(fixed_rows)
 
 # -------------------------------
