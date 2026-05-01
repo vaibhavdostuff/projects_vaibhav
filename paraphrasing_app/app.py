@@ -151,7 +151,7 @@ def score_sentence(text):
 # -------------------------------
 # SAVE DATA (CLEAN + NO DUPLICATES)
 # -------------------------------
-def save_data(input_text, outputs):
+def save_data(input_text, outputs, styles=None):
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(base_dir, "data.csv")
@@ -167,13 +167,17 @@ def save_data(input_text, outputs):
                 if len(row) >= 2:
                     existing.add((row[0], row[1]))
 
+     # 🧠 fallback if styles not passed (IMPORTANT → no break)
+    if styles is None:
+        styles = ["unknown"] * len(outputs)
+
     with open(file_path, "a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
 
         if not file_exists:
-            writer.writerow(["Input", "Output", "Quality"])
+            writer.writerow(["Input", "Output", "Style", "Quality"])
 
-        for o in outputs:
+        for o, s in zip(outputs, styles):
             if (
                 o != "Could not generate" and
                 len(o.split()) > 5 and
@@ -183,7 +187,7 @@ def save_data(input_text, outputs):
                 writer.writerow([input_text, o, "unrated"])
 
 # -------------------------------
-# UPDATE RATING
+# UPDATE RATING (SAFE + COMPATIBLE)
 # -------------------------------
 def update_quality(input_text, output_text, quality):
 
@@ -193,13 +197,33 @@ def update_quality(input_text, output_text, quality):
     rows = []
 
     with open(file_path, "r", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        rows = list(reader)
+        rows = list(csv.reader(f))
+
+    # Detect header format
+    header = rows[0]
+    has_style = len(header) == 4  # ["Input", "Output", "Style", "Quality"]
 
     for i in range(1, len(rows)):
-        if rows[i][0] == input_text and rows[i][1] == output_text:
-            rows[i][2] = quality
+        if len(rows[i]) < 2:
+            continue  # skip broken rows
 
+        if rows[i][0] == input_text and rows[i][1] == output_text:
+
+            if has_style:
+                # ✅ New format: Input, Output, Style, Quality
+                if len(rows[i]) < 4:
+                    rows[i].append(quality)  # fix broken row
+                else:
+                    rows[i][3] = quality
+
+            else:
+                # ✅ Old format: Input, Output, Quality
+                if len(rows[i]) < 3:
+                    rows[i].append(quality)
+                else:
+                    rows[i][2] = quality
+
+    # Save back
     with open(file_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerows(rows)
@@ -320,7 +344,8 @@ def paraphrase(text):
         select_best(p2_list, clean),
         select_best(p3_list, clean)
     ]
-
+    
+    styles = ["formal", "expressive", "casual"]
     save_data(text, final_results)
 
     return final_results
@@ -338,7 +363,10 @@ def api_paraphrase():
     text = data.get('text')
 
     results = paraphrase(text)
-    return jsonify({'paraphrased_texts': results})
+    return jsonify({
+        'paraphrased_texts': results,
+        'styles': ["formal", "expressive", "casual"]
+        })
 
 @app.route('/api/rate', methods=['POST'])
 def rate():

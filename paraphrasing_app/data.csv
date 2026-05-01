@@ -1,4 +1,4 @@
-"Input","Output","Quality"
+"Input","Output","Style","Quality"
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar as i was traveling and got quite exhausted.,bad
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar because I was traveling and getting exhausted.,good
 I wasn’t able to join the webinar as I was traveling and got quite exhausted,I wasn’t able to join the webinar as I was traveling and got quite exhausted.,bad
@@ -232,26 +232,18 @@ she finally found the courage to speak what she had been hiding,She finally got 
 me and my friends were planning to go out tonight you wanna join us?,We are going out tonight. Would you like to join us?,bad
 me and my friends were planning to go out tonight you wanna join us?,My friends and I are going out tonight. Would you like to join us?,good
 me and my friends were planning to go out tonight you wanna join us?,I'm having plans tonight with some of my friends. Would you like to join us?,good
-She took a deep breath before stepping into something unknown.,She took a deep breath before walking into something unknown.,unrated
-She took a deep breath before stepping into something unknown.,She took a deep breath and began to step into something unknown.,unrated
-She took a deep breath before stepping into something unknown.,She took a deep breath before she began her journey.,unrated
-She looked around and recognized that she was entirely alone,She looked around and recognized that she was entirely alone.,unrated
-She looked around and recognized that she was entirely alone,She looked around and recognized that she was completely alone.,unrated
-She looked around and recognized that she was entirely alone,She looked around and realized she was alone.,unrated
-She looked around and recognized that she was entirely alone,"She was alone, and noticed that her lungs weren't pumping.",unrated
-She looked around and recognized that she was entirely alone,She looked around and knew she was alone.,unrated
 True wisdom lies in understanding that growth is a persistent,True wisdom lies in understanding that growth is a persistent thing.,unrated
 True wisdom lies in understanding that growth is a persistent,True wisdom lies in understanding that growth is a persistent process.,unrated
-True wisdom lies in understanding that growth is a persistent,True wisdom lies in understanding that growth is a persistent thing.,unrated
-The only true wisdom is in knowing you know nothing,The only true wisdom is in knowing you know nothing.,unrated
+True wisdom lies in understanding that growth is a persistent,True wisdom lies in understanding that growth is a persistent thing.,bad
+The only true wisdom is in knowing you know nothing,The only true wisdom is in knowing you know nothing.,bad
 The only true wisdom is in knowing you know nothing,The only true wisdom is knowing that you know nothing.,unrated
-The only true wisdom is in knowing you know nothing,The only true wisdom is in knowing you know nothing.,unrated
-The bamboo that bends is stronger than the oak that resists,The bamboo that bends is stronger than the oak that resists.,unrated
-The bamboo that bends is stronger than the oak that resists,The bamboo that bends is stronger than the oak that resists.,unrated
-The bamboo that bends is stronger than the oak that resists,The bamboo that bends is stronger than the oak that resists.,unrated
-"Do not wait to strike until the iron is hot, but make it hot by striking","Do not wait to strike until the iron is hot, but make it hot by striking.",unrated
-"Do not wait to strike until the iron is hot, but make it hot by striking","Do not wait to strike until the iron is hot, but make it hot by striking.",unrated
-"Do not wait to strike until the iron is hot, but make it hot by striking",You shouldn't wait for the iron to be hot. You should make it hot by striking.,unrated
+The only true wisdom is in knowing you know nothing,The only true wisdom is in knowing you know nothing.,bad
+The bamboo that bends is stronger than the oak that resists,The bamboo that bends is stronger than the oak that resists.,bad
+The bamboo that bends is stronger than the oak that resists,The bamboo that bends is stronger than the oak that resists.,bad
+The bamboo that bends is stronger than the oak that resists,The bamboo that bends is stronger than the oak that resists.,bad
+"Do not wait to strike until the iron is hot, but make it hot by striking","Do not wait to strike until the iron is hot, but make it hot by striking.",bad
+"Do not wait to strike until the iron is hot, but make it hot by striking","Do not wait to strike until the iron is hot, but make it hot by striking.",bad
+"Do not wait to strike until the iron is hot, but make it hot by striking",You shouldn't wait for the iron to be hot. You should make it hot by striking.,good
 "Success doesn’t come overnight, it is built through consistent effort and patience","Success is not achieved overnight; it is developed through consistent effort and patience.",good
 "Success doesn’t come overnight, it is built through consistent effort and patience","Success takes time to blossom, growing through patience and unwavering effort.",good
 "Success doesn’t come overnight, it is built through consistent effort and patience","Success doesn’t just happen overnight, it comes from steady effort and patience.",good
