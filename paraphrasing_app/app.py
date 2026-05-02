@@ -151,7 +151,7 @@ def score_sentence(text):
 # -------------------------------
 # SAVE DATA (CLEAN + NO DUPLICATES)
 # -------------------------------
-def save_data(input_text, outputs, styles=None):
+def save_data(input_text, outputs, styles):
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(base_dir, "data.csv")
@@ -167,7 +167,7 @@ def save_data(input_text, outputs, styles=None):
                 if len(row) >= 2:
                     existing.add((row[0], row[1]))
 
-     # 🧠 fallback if styles not passed (IMPORTANT → no break)
+    # 🧠 fallback if styles not passed (IMPORTANT → no break)
     if styles is None:
         styles = ["unknown"] * len(outputs)
 
@@ -184,7 +184,7 @@ def save_data(input_text, outputs, styles=None):
                 o.strip() != "" and
                 (input_text, o) not in existing
             ):
-                writer.writerow([input_text, o, "unrated"])
+                writer.writerow([input_text, o, s, "unrated"])
 
 # -------------------------------
 # UPDATE RATING (SAFE + COMPATIBLE)
@@ -313,9 +313,6 @@ def paraphrase(text):
     p2_list = generate_text(prompt2)
     p3_list = generate_text(prompt3)
 
-    p1_list = [grammar_fix(t) for t in p1_list]
-    p2_list = [grammar_fix(t) for t in p2_list]
-    p3_list = [grammar_fix(t) for t in p3_list]
 
     def select_best(candidates, original):
 
@@ -346,7 +343,7 @@ def paraphrase(text):
     ]
     
     styles = ["formal", "expressive", "casual"]
-    save_data(text, final_results)
+    save_data(text, final_results, styles)
 
     return final_results
 
