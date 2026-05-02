@@ -24,7 +24,8 @@ dataset = dataset["train"]
 dataset = dataset.rename_columns({
     list(dataset.column_names)[0]: "input",
     list(dataset.column_names)[1]: "output",
-    list(dataset.column_names)[2]: "quality"
+    list(dataset.column_names)[2]: "style",
+    list(dataset.column_names)[3]: "quality"
 })
 # ✅ ONLY TRAIN ON GOOD DATA
 dataset = dataset["train"].filter(lambda x: x["quality"] == "good")
