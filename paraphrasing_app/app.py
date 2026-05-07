@@ -244,8 +244,8 @@ def generate_text(prompt):
         max_length=150,
         do_sample=True,
         top_k=50,
-        top_p=0.92,
-        temperature=0.9,
+        top_p=0.95,
+        temperature=1.15,
         repetition_penalty=2.2,
         no_repeat_ngram_size=3,
         num_return_sequences=6
@@ -273,26 +273,26 @@ def paraphrase(text):
     casual_input = text
 
     prompt1 = f"""
-    Rewrite the sentence in a highly professional and polished formal tone.
+    Rewrite the sentence in a highly formal, professional, and polished tone.
 
     Requirements:
-    - Preserve complete meaning
-    - Improve sentence structure
-    - Use professional vocabulary
-    - Make it sound refined and clear
+    - Use sophisticated vocabulary
+    - Improve sentence structure significantly
+    - Make it sound corporate or academic
+    - Preserve the original meaning completely
+    - Avoid casual phrasing
 
     Sentence:
     {formal_input}
     """
 
     prompt2 = f"""
-    Rewrite the sentence in a vivid, expressive, and emotionally engaging way.
-
+    Rewrite the sentence in a vivid, emotionally engaging, and expressive style.
     Requirements:
-    - Preserve complete meaning
-    - Use richer vocabulary
-    - Make the sentence more immersive
-    - Add natural emotional depth
+    - Use powerful and descriptive wording
+    - Make the sentence feel more immersive
+    - Add emotional depth naturally
+    - Preserve the original meaning
 
     Sentence:
     {expressive_input}
@@ -306,6 +306,8 @@ def paraphrase(text):
     - Use simple everyday language
     - Keep the meaning unchanged
     - Avoid sounding too formal
+    - Keep it simple and smooth
+    - Avoid sophisticated vocabulary
 
     Sentence:
     {casual_input}
