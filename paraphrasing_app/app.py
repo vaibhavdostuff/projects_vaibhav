@@ -109,7 +109,7 @@ def is_too_similar(a, b):
     b_words = set(b.lower().split())
 
     similarity = len(a_words & b_words) / max(len(b_words), 1)
-    return similarity > 0.6
+    return similarity > 0.8
 
 # -------------------------------
 # QUALITY CHECK (STRICT)
@@ -273,40 +273,42 @@ def paraphrase(text):
     casual_input = text
 
     prompt1 = f"""
-    Rewrite the sentence in a formal and professional tone.
+    Rewrite the sentence in a highly professional and polished formal tone.
 
     Requirements:
-    - Fix grammar mistakes
-    - Do not remove any important information
-    - Preserve full meaning
-    - Improve clarity and structure
-    - Make it sound professional
+    - Preserve complete meaning
+    - Improve sentence structure
+    - Use professional vocabulary
+    - Make it sound refined and clear
 
-    Sentence: {formal_input}
+    Sentence:
+    {formal_input}
     """
 
     prompt2 = f"""
-    Rewrite the sentence in an expressive and engaging way.
+    Rewrite the sentence in a vivid, expressive, and emotionally engaging way.
 
     Requirements:
-    - Preserve full meaning
+    - Preserve complete meaning
     - Use richer vocabulary
-    - Add natural variation in structure
-    - Make it more interesting and descriptive
+    - Make the sentence more immersive
+    - Add natural emotional depth
 
-    Sentence: {expressive_input}
+    Sentence:
+    {expressive_input}
     """
 
     prompt3 = f"""
-    Rewrite the sentence in a casual and conversational tone.
+    Rewrite the sentence in a casual and natural conversational tone.
 
     Requirements:
-    - Keep it natural and human-like
-    - Slight slang is allowed
-    - Preserve meaning
-    - Do not make it overly formal
+    - Sound human and relaxed
+    - Use simple everyday language
+    - Keep the meaning unchanged
+    - Avoid sounding too formal
 
-    Sentence: {casual_input}
+    Sentence:
+    {casual_input}
     """
 
     p1_list = generate_text(prompt1)
