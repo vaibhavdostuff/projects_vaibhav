@@ -313,9 +313,23 @@ def paraphrase(text):
     {casual_input}
     """
 
-    p1_list = generate_text(prompt1)
-    p2_list = generate_text(prompt2)
-    p3_list = generate_text(prompt3)
+    p1_list = generate_text(
+    prompt1,
+    temperature=0.75,
+    top_p=0.88
+    )
+
+    p2_list = generate_text(
+        prompt2,
+        temperature=1.15,
+        top_p=0.95
+    )
+
+    p3_list = generate_text(
+        prompt3,
+        temperature=0.95,
+        top_p=0.90
+    )
 
 
     def select_best(candidates, original):
