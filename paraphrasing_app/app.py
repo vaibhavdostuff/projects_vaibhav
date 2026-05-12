@@ -231,9 +231,18 @@ def update_quality(input_text, output_text, quality):
 # -------------------------------
 # GENERATE TEXT
 # -------------------------------
-def generate_text(prompt):
+def generate_text(
+    prompt,
+    temperature=0.9,
+    top_p=0.92
+):
 
-    encoding = tokenizer(prompt, return_tensors="pt", truncation=True, padding=True)
+    encoding = tokenizer(
+        prompt,
+        return_tensors="pt",
+        truncation=True,
+        padding=True
+    )
 
     input_ids = encoding["input_ids"].to(device)
     attention_mask = encoding["attention_mask"].to(device)
@@ -241,21 +250,32 @@ def generate_text(prompt):
     outputs = model.generate(
         input_ids=input_ids,
         attention_mask=attention_mask,
+
         max_length=150,
+
         do_sample=True,
+
         top_k=50,
-        top_p=0.95,
-        temperature=1.15,
-        repetition_penalty=2.2,
+        top_p=top_p,
+        temperature=temperature,
+
+        repetition_penalty=2.4,
         no_repeat_ngram_size=3,
-        num_return_sequences=6
+
+        num_return_sequences=4
     )
 
-    texts = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    texts = tokenizer.batch_decode(
+        outputs,
+        skip_special_tokens=True
+    )
 
     cleaned = []
+
     for t in texts:
+
         t = grammar_fix(t)
+
         if t not in cleaned:
             cleaned.append(t)
 
