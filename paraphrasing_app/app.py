@@ -137,18 +137,14 @@ def is_good_sentence(text, original):
 # -------------------------------
 # SCORING FUNCTION
 # -------------------------------
+# -------------------------------
+# SCORING FUNCTION
+# -------------------------------
 def score_sentence(text):
-    scored = [
-    (
-        c,
-        score_sentence(c) + style_match_score(c, style)
-    )
-    for c in valid
-]
 
     score = 0
-    
-    # good sentence length
+
+    # Ideal length
     if 8 <= len(text.split()) <= 22:
         score += 3
 
@@ -156,8 +152,9 @@ def score_sentence(text):
     if "." in text:
         score += 1
 
-    # avoid repetition
+    # repetition penalty
     words = text.lower().split()
+
     if len(words) == len(set(words)):
         score += 2
 
@@ -166,6 +163,55 @@ def score_sentence(text):
     score += unique_ratio * 5
 
     return score
+
+# -------------------------------
+# STYLE MATCH SCORE
+# -------------------------------
+def style_match_score(text, style):
+
+    text = text.lower()
+
+    if style == "formal":
+
+        formal_words = [
+            "therefore",
+            "moreover",
+            "however",
+            "professional",
+            "management",
+            "significantly"
+        ]
+
+        return sum(word in text for word in formal_words)
+
+    elif style == "expressive":
+
+        expressive_words = [
+            "deeply",
+            "powerful",
+            "remarkable",
+            "beautiful",
+            "emotional",
+            "incredible"
+        ]
+
+        return sum(word in text for word in expressive_words)
+
+    elif style == "casual":
+
+        casual_words = [
+            "really",
+            "pretty",
+            "kinda",
+            "stuff",
+            "gonna",
+            "wanna"
+        ]
+
+        return sum(word in text for word in casual_words)
+
+    return 0
+
 # -------------------------------
 # SAVE DATA (CLEAN + NO DUPLICATES)
 # -------------------------------
