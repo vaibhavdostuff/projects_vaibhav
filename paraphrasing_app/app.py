@@ -95,6 +95,7 @@ def normalize_input(text):
 def grammar_fix(text):
     text = text.replace("i and my friends", "my friends and I")
     text = text.replace("me and my friends", "my friends and I")
+    text = text.replace("going for movies", "go watch a movie")
     text = text.replace(" .", ".")
     text = text.replace(" ,", ",")
     text = text.strip()
@@ -137,17 +138,34 @@ def is_good_sentence(text, original):
 # SCORING FUNCTION
 # -------------------------------
 def score_sentence(text):
-    score = len(text.split())
+    scored = [
+    (
+        c,
+        score_sentence(c) + style_match_score(c, style)
+    )
+    for c in valid
+]
 
+    score = 0
+    
+    # good sentence length
+    if 8 <= len(text.split()) <= 22:
+        score += 3
+
+    # punctuation bonus
     if "." in text:
+        score += 1
+
+    # avoid repetition
+    words = text.lower().split()
+    if len(words) == len(set(words)):
         score += 2
 
-    words = text.lower().split()
-    if len(words) != len(set(words)):
-        score -= 3
+    # vocabulary diversity
+    unique_ratio = len(set(words)) / max(len(words), 1)
+    score += unique_ratio * 5
 
     return score
-
 # -------------------------------
 # SAVE DATA (CLEAN + NO DUPLICATES)
 # -------------------------------
@@ -333,26 +351,34 @@ def paraphrase(text):
     {casual_input}
     """
 
+    # -------------------------------
+    # GENERATE DIFFERENT STYLES
+    # -------------------------------
+
     p1_list = generate_text(
-    prompt1,
-    temperature=0.75,
-    top_p=0.88
+        prompt1,
+        temperature=0.72,
+        top_p=0.85
     )
 
     p2_list = generate_text(
         prompt2,
-        temperature=1.15,
-        top_p=0.95
+        temperature=1.18,
+        top_p=0.96
     )
 
     p3_list = generate_text(
         prompt3,
-        temperature=0.95,
-        top_p=0.90
+        temperature=0.92,
+        top_p=0.88
     )
 
+    # light cleanup only
+    p1_list = [grammar_fix(t) for t in p1_list]
+    p2_list = [grammar_fix(t) for t in p2_list]
+    p3_list = [grammar_fix(t) for t in p3_list]
 
-    def select_best(candidates, original):
+    def select_best(candidates, original, style):
 
         valid = []
 
@@ -368,6 +394,8 @@ def paraphrase(text):
 
         if not valid:
             return "Could not generate"
+        
+        
 
         scored = [(c, score_sentence(c)) for c in valid]
         scored.sort(key=lambda x: x[1], reverse=True)
@@ -375,10 +403,10 @@ def paraphrase(text):
         return scored[0][0]
 
     final_results = [
-        select_best(p1_list, clean),
-        select_best(p2_list, clean),
-        select_best(p3_list, clean)
-    ]
+    select_best(p1_list, clean, "formal"),
+    select_best(p2_list, clean, "expressive"),
+    select_best(p3_list, clean, "casual")
+]
     
     styles = ["formal", "expressive", "casual"]
     save_data(text, final_results, styles)
