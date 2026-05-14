@@ -553,3 +553,75 @@ hi how are u lads,"I'm great, how are you lads?",casual,bad
 i am considering to take u guys with me to the the movies this week,I am considering taking u people to the movies this week.,formal,good
 i am considering to take u guys with me to the the movies this week,I would love to have you guys join me at the movie this week.,expressive,good
 i am considering to take u guys with me to the the movies this week,I would like to go for movies this week with you guys.,casual,unrated
+The manager appreciated the team for completing the project before the deadline,The manager appreciated the team for finishing the project before the deadline.,formal,bad
+The manager appreciated the team for completing the project before the deadline,The manager appreciated the team for finishing on time.,expressive,unrated
+The manager appreciated the team for completing the project before the deadline,The manager appreciated the team for finishing the project before the deadline.,casual,good
+The employees attended a meeting to discuss the company’s future goals,The employees attended a meeting to discuss the company’s future goals.,formal,bad
+The employees attended a meeting to discuss the company’s future goals,Some employees attended an employee meeting to discuss their futures.,expressive,bad
+The employees attended a meeting to discuss the company’s future goals,They attended a meeting to discuss the company’s future goals.,casual,bad
+The team defended brilliantly despite being under constant pressure throughout the game,The team defended brilliantly despite being under constant pressure throughout the game.,formal,bad
+The team defended brilliantly despite being under constant pressure throughout the game,The team held tight to the ball throughout the game despite being under constant pressure.,expressive,good
+The team defended brilliantly despite being under constant pressure throughout the game,The team defended brilliantly despite being under constant pressure.,casual,unrated
+The doctors responded quickly when the patient’s condition suddenly worsened,The doctors responded quickly to the patient’s situation.,formal,good
+The doctors responded quickly when the patient’s condition suddenly worsened,The doctors responded quickly and found the patient was in great trouble.,expressive,good
+The doctors responded quickly when the patient’s condition suddenly worsened,The doctors responded quickly to the patient’s condition.,casual,good
+"The composer spent weeks perfecting the background score for the emotional climax scene","The composer dedicated several weeks to refining the background score for the emotional climax scene.",formal,good
+"The composer spent weeks perfecting the background score for the emotional climax scene","The composer poured weeks of passion into crafting the perfect background score for the film’s emotional climax.",expressive,good
+"The composer spent weeks perfecting the background score for the emotional climax scene","The composer spent weeks working on the emotional scene’s background music.",casual,good
+"The band practiced late into the night before performing at the music festival","The band rehearsed extensively late into the night in preparation for the music festival performance.",formal,good
+"The band practiced late into the night before performing at the music festival","The band stayed up all night rehearsing, driven by excitement for the upcoming music festival.",expressive,good
+"The band practiced late into the night before performing at the music festival","The band practiced all night before the festival.",casual,good
+"Riya recorded her vocals multiple times to make the song sound flawless","Riya recorded her vocals repeatedly to ensure the song achieved a flawless sound quality.",formal,good
+"Riya recorded her vocals multiple times to make the song sound flawless","Riya passionately re-recorded her vocals again and again until the song sounded absolutely perfect.",expressive,good
+"Riya recorded her vocals multiple times to make the song sound flawless","Riya recorded her vocals many times to make the song better.",casual,good
+"The guitarist improvised a beautiful solo during the live concert","The guitarist delivered an impressive improvised solo during the live concert performance.",formal,good
+"The guitarist improvised a beautiful solo during the live concert","The guitarist amazed the crowd with a breathtaking improvised solo during the concert.",expressive,good
+"The guitarist improvised a beautiful solo during the live concert","The guitarist played a cool solo during the concert.",casual,good
+"The music producer carefully balanced every instrument during the final mix","The music producer meticulously balanced each instrument during the final mixing process.",formal,good
+"The music producer carefully balanced every instrument during the final mix","The producer skillfully blended every instrument together to create a rich and immersive final mix.",expressive,good
+"The music producer carefully balanced every instrument during the final mix","The producer adjusted all the instruments in the final mix.",casual,good
+"Arjun listened to classical music every evening to relax after work","Arjun listened to classical music each evening as a way to unwind after work.",formal,good
+"Arjun listened to classical music every evening to relax after work","Every evening, Arjun escaped into the soothing world of classical music after a long day at work.",expressive,good
+"Arjun listened to classical music every evening to relax after work","Arjun listened to classical music to relax after work.",casual,good
+"The singer captivated the audience with her powerful stage presence","The singer captivated the audience through her commanding stage presence.",formal,good
+"The singer captivated the audience with her powerful stage presence","The singer completely mesmerized the audience with her electrifying stage presence.",expressive,good
+"The singer captivated the audience with her powerful stage presence","The singer impressed everyone with her stage presence.",casual,good
+"The orchestra performed the symphony flawlessly in front of a packed auditorium","The orchestra executed the symphony flawlessly before a full auditorium audience.",formal,good
+"The orchestra performed the symphony flawlessly in front of a packed auditorium","The orchestra delivered a breathtakingly flawless symphony performance to a packed auditorium.",expressive,good
+"The orchestra performed the symphony flawlessly in front of a packed auditorium","The orchestra played the symphony perfectly in front of a huge crowd.",casual,good
+"Megha wrote heartfelt lyrics inspired by her personal experiences","Megha composed heartfelt lyrics inspired by her personal life experiences.",formal,good
+"Megha wrote heartfelt lyrics inspired by her personal experiences","Drawing from her deepest emotions, Megha wrote heartfelt lyrics inspired by her own experiences.",expressive,good
+"Megha wrote heartfelt lyrics inspired by her personal experiences","Megha wrote emotional lyrics based on her experiences.",casual,good
+"The drummer maintained a steady rhythm throughout the energetic performance","The drummer consistently maintained a steady rhythm throughout the energetic performance.",formal,good
+"The drummer maintained a steady rhythm throughout the energetic performance","The drummer drove the energetic performance forward with an unstoppable rhythm.",expressive,good
+"The drummer maintained a steady rhythm throughout the energetic performance","The drummer kept a steady beat during the performance.",casual,good
+"The cinematographer used natural lighting to enhance the realism of the scene","The cinematographer utilized natural lighting techniques to enhance the realism of the scene.",formal,good
+"The cinematographer used natural lighting to enhance the realism of the scene","The cinematographer beautifully used natural light to make the scene feel raw and realistic.",expressive,good
+"The cinematographer used natural lighting to enhance the realism of the scene","The cinematographer used natural light to make the scene look realistic.",casual,good
+"The director carefully planned every camera angle before filming began","The director meticulously planned each camera angle prior to the commencement of filming.",formal,good
+"The director carefully planned every camera angle before filming began","The director passionately crafted every camera angle before the cameras even started rolling.",expressive,good
+"The director carefully planned every camera angle before filming began","The director planned all the camera angles before filming.",casual,good
+"The film’s color grading gave the entire story a darker emotional tone","The film’s color grading contributed a darker emotional tone to the overall narrative.",formal,good
+"The film’s color grading gave the entire story a darker emotional tone","The movie’s color grading wrapped the entire story in a hauntingly emotional atmosphere.",expressive,good
+"The film’s color grading gave the entire story a darker emotional tone","The movie’s color grading made the story feel darker.",casual,good
+"The crew spent hours setting up the perfect shot for the sunrise sequence","The crew dedicated several hours to preparing the ideal shot for the sunrise sequence.",formal,good
+"The crew spent hours setting up the perfect shot for the sunrise sequence","The crew worked tirelessly for hours to capture the breathtaking sunrise shot perfectly.",expressive,good
+"The crew spent hours setting up the perfect shot for the sunrise sequence","The crew spent hours preparing the sunrise shot.",casual,good
+"The handheld camera movements created a sense of tension during the chase scene","The handheld camera movements effectively created tension throughout the chase scene.",formal,good
+"The handheld camera movements created a sense of tension during the chase scene","The shaky handheld camera movements made the chase scene feel intense and nerve-wracking.",expressive,good
+"The handheld camera movements created a sense of tension during the chase scene","The handheld camera made the chase scene feel tense.",casual,good
+"The editor seamlessly connected multiple scenes to maintain the pacing of the film","The editor seamlessly integrated multiple scenes to preserve the film’s pacing.",formal,good
+"The editor seamlessly connected multiple scenes to maintain the pacing of the film","The editor skillfully stitched the scenes together to keep the film flowing smoothly.",expressive,good
+"The editor seamlessly connected multiple scenes to maintain the pacing of the film","The editor connected the scenes smoothly to keep the movie flowing.",casual,good
+"The wide-angle shots captured the breathtaking beauty of the mountain landscape","The wide-angle shots effectively captured the breathtaking beauty of the mountainous landscape.",formal,good
+"The wide-angle shots captured the breathtaking beauty of the mountain landscape","The wide-angle shots beautifully showcased the majestic beauty of the mountains.",expressive,good
+"The wide-angle shots captured the breathtaking beauty of the mountain landscape","The wide shots showed the beauty of the mountains.",casual,good
+"The actor’s subtle expressions added depth to the emotionally intense scene","The actor’s subtle expressions contributed significant depth to the emotionally intense scene.",formal,good
+"The actor’s subtle expressions added depth to the emotionally intense scene","The actor’s quiet yet powerful expressions made the emotional scene feel deeply authentic.",expressive,good
+"The actor’s subtle expressions added depth to the emotionally intense scene","The actor’s expressions made the emotional scene better.",casual,good
+"The production team recreated an entire historical street for the film shoot","The production team reconstructed an entire historical street for the film production.",formal,good
+"The production team recreated an entire historical street for the film shoot","The production team brought an entire historical street back to life for the movie shoot.",expressive,good
+"The production team recreated an entire historical street for the film shoot","The production team rebuilt a historical street for the movie.",casual,good
+"The slow-motion sequence emphasized the emotional impact of the final scene","The slow-motion sequence effectively emphasized the emotional impact of the concluding scene.",formal,good
+"The slow-motion sequence emphasized the emotional impact of the final scene","The slow-motion sequence made the emotional ending feel even more powerful and unforgettable.",expressive,good
+"The slow-motion sequence emphasized the emotional impact of the final scene","The slow-motion scene made the ending more emotional.",casual,good
