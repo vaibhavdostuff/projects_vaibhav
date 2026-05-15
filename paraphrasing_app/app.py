@@ -3,28 +3,38 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import csv
 import os
+import re
 
 app = Flask(__name__)
 
-# -------------------------------
-# MODEL (CUSTOM OR DEFAULT)
-# -------------------------------
-MODEL_PATH = "./my_paraphrase_model" if os.path.exists("./my_paraphrase_model") else "google/flan-t5-large"
+# =========================================================
+# MODEL SETUP
+# =========================================================
+
+MODEL_PATH = (
+    "./my_paraphrase_model"
+    if os.path.exists("./my_paraphrase_model")
+    else "google/flan-t5-large"
+)
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+
 model = AutoModelForSeq2SeqLM.from_pretrained(
     MODEL_PATH,
     low_cpu_mem_usage=True
 )
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
+
 model = model.to(device)
 model.eval()
 
-# -------------------------------
+# =========================================================
 # INPUT CLEANING
-# -------------------------------
+# =========================================================
+
 def clean_text(text):
+
     text = text.strip()
 
     replacements = {
@@ -32,92 +42,81 @@ def clean_text(text):
         "tmr": "tomorrow",
         "frnds": "friends",
         "pls": "please",
-        "plz": "please"
+        "plz": "please",
+        "u": "you",
+        "ur": "your"
     }
 
     words = text.split()
-    new_words = []
+    cleaned_words = []
 
     for w in words:
+
         lw = w.lower()
+
         if lw in replacements:
-            new_words.append(replacements[lw])
+            cleaned_words.append(replacements[lw])
         else:
-            new_words.append(w)
+            cleaned_words.append(w)
 
-    text = " ".join(new_words)
-    return text
+    text = " ".join(cleaned_words)
 
-# -------------------------------
-# AI NORMALIZATION (SMART FIX)
-# -------------------------------
-def normalize_input(text):
+    # remove extra spaces
+    text = re.sub(r"\s+", " ", text)
 
-    prompt = f"""
-    Rewrite the following sentence correctly.
+    return text.strip()
 
-    Rules:
-    - Keep the SAME meaning
-    - Do NOT add new information
-    - Do NOT explain anything
-    - Only return the corrected sentence
+# =========================================================
+# BASIC GRAMMAR FIX
+# =========================================================
 
-    Sentence: {text}
-    """
-
-    encoding = tokenizer(
-        prompt,
-        return_tensors="pt",
-        truncation=True,
-        padding=True
-    )
-
-    input_ids = encoding["input_ids"].to(device)
-    attention_mask = encoding["attention_mask"].to(device)
-
-    output = model.generate(
-        input_ids=input_ids,
-        attention_mask=attention_mask,
-        max_length=80,
-        do_sample=False
-    )
-
-    fixed = tokenizer.decode(output[0], skip_special_tokens=True)
-
-    if "correct grammar" in fixed.lower():
-        return text
-
-    return fixed
-
-# -------------------------------
-# GRAMMAR FIX
-# -------------------------------
 def grammar_fix(text):
-    text = text.replace("i and my friends", "my friends and I")
-    text = text.replace("me and my friends", "my friends and I")
-    text = text.replace("going for movies", "go watch a movie")
-    text = text.replace(" .", ".")
-    text = text.replace(" ,", ",")
+
     text = text.strip()
 
-    return text[0].upper() + text[1:] if len(text) > 1 else text
+    fixes = {
+        "i and my friends": "my friends and I",
+        "me and my friends": "my friends and I",
+        " .": ".",
+        " ,": ",",
+        " !": "!",
+        " ?": "?",
+        "  ": " "
+    }
 
-# -------------------------------
+    for k, v in fixes.items():
+        text = text.replace(k, v)
+
+    # capitalize first letter
+    if len(text) > 1:
+        text = text[0].upper() + text[1:]
+
+    return text
+
+# =========================================================
 # SIMILARITY CHECK
-# -------------------------------
+# =========================================================
+
 def is_too_similar(a, b):
+
     a_words = set(a.lower().split())
     b_words = set(b.lower().split())
 
-    similarity = len(a_words & b_words) / max(len(b_words), 1)
-    return similarity > 0.8
+    overlap = len(a_words & b_words)
+    similarity = overlap / max(len(b_words), 1)
 
-# -------------------------------
-# QUALITY CHECK (STRICT)
-# -------------------------------
+    return similarity > 0.82
+
+# =========================================================
+# QUALITY CHECK
+# =========================================================
+
 def is_good_sentence(text, original):
 
-    if len(text.split()) < 6:
+    if not text:
+        return False
+
+    if len(text.split()) < 5:
         return False
 
     if text.lower() == original.lower():
@@ -126,136 +125,158 @@ def is_good_sentence(text, original):
     if is_too_similar(text, original):
         return False
 
-    if "i and my friends" in text.lower():
+    if len(text.split()) < len(original.split()) * 0.60:
         return False
 
-    if len(text.split()) < len(original.split()) * 0.7:
+    if "i and my friends" in text.lower():
         return False
 
     return True
 
-# -------------------------------
-# SCORING FUNCTION
-# -------------------------------
-# -------------------------------
-# SCORING FUNCTION
-# -------------------------------
+# =========================================================
+# MAIN SCORING
+# =========================================================
+
 def score_sentence(text):
 
     score = 0
 
-    # Ideal length
-    if 8 <= len(text.split()) <= 22:
-        score += 3
+    words = text.lower().split()
 
-    # punctuation bonus
+    # good length
+    if 8 <= len(words) <= 35:
+        score += 4
+
+    # punctuation
     if "." in text:
         score += 1
 
-    # repetition penalty
-    words = text.lower().split()
-
-    if len(words) == len(set(words)):
-        score += 2
+    if "," in text:
+        score += 1
 
     # vocabulary diversity
     unique_ratio = len(set(words)) / max(len(words), 1)
+
     score += unique_ratio * 5
+
+    # repetition penalty
+    if len(words) != len(set(words)):
+        score -= 2
 
     return score
 
-# -------------------------------
-# STYLE MATCH SCORE
-# -------------------------------
+# =========================================================
+# STYLE MATCHING
+# =========================================================
+
 def style_match_score(text, style):
 
     text = text.lower()
 
+    formal_words = [
+        "therefore",
+        "however",
+        "furthermore",
+        "significantly",
+        "professional",
+        "management",
+        "organization",
+        "consequently",
+        "ultimately"
+    ]
+
+    expressive_words = [
+        "deeply",
+        "remarkable",
+        "incredible",
+        "beautiful",
+        "powerful",
+        "emotional",
+        "immersive",
+        "vivid",
+        "heartfelt"
+    ]
+
+    casual_words = [
+        "really",
+        "pretty",
+        "kinda",
+        "gonna",
+        "wanna",
+        "stuff",
+        "cool",
+        "totally"
+    ]
+
     if style == "formal":
-
-        formal_words = [
-            "therefore",
-            "moreover",
-            "however",
-            "professional",
-            "management",
-            "significantly"
-        ]
-
         return sum(word in text for word in formal_words)
 
     elif style == "expressive":
-
-        expressive_words = [
-            "deeply",
-            "powerful",
-            "remarkable",
-            "beautiful",
-            "emotional",
-            "incredible"
-        ]
-
         return sum(word in text for word in expressive_words)
 
     elif style == "casual":
-
-        casual_words = [
-            "really",
-            "pretty",
-            "kinda",
-            "stuff",
-            "gonna",
-            "wanna"
-        ]
-
         return sum(word in text for word in casual_words)
 
     return 0
 
-# -------------------------------
-# SAVE DATA (CLEAN + NO DUPLICATES)
-# -------------------------------
+# =========================================================
+# CSV SAVE
+# =========================================================
+
 def save_data(input_text, outputs, styles):
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
+
     file_path = os.path.join(base_dir, "data.csv")
 
     file_exists = os.path.isfile(file_path)
 
     existing = set()
+
     if file_exists:
+
         with open(file_path, "r", encoding="utf-8") as f:
+
             reader = csv.reader(f)
+
             next(reader, None)
+
             for row in reader:
+
                 if len(row) >= 2:
                     existing.add((row[0], row[1]))
 
-    # 🧠 fallback if styles not passed (IMPORTANT → no break)
-    if styles is None:
-        styles = ["unknown"] * len(outputs)
-
     with open(file_path, "a", newline="", encoding="utf-8") as f:
+
         writer = csv.writer(f)
 
         if not file_exists:
             writer.writerow(["Input", "Output", "Style", "Quality"])
 
-        for o, s in zip(outputs, styles):
-            if (
-                o != "Could not generate" and
-                len(o.split()) > 5 and
-                o.strip() != "" and
-                (input_text, o) not in existing
-            ):
-                writer.writerow([input_text, o, s, "unrated"])
+        for output, style in zip(outputs, styles):
 
-# -------------------------------
-# UPDATE RATING (SAFE + COMPATIBLE)
-# -------------------------------
+            if (
+                output != "Could not generate"
+                and output.strip() != ""
+                and len(output.split()) >= 5
+                and (input_text, output) not in existing
+            ):
+
+                writer.writerow([
+                    input_text,
+                    output,
+                    style,
+                    "unrated"
+                ])
+
+# =========================================================
+# UPDATE QUALITY
+# =========================================================
+
 def update_quality(input_text, output_text, quality):
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
+
     file_path = os.path.join(base_dir, "data.csv")
 
     rows = []
@@ -263,49 +284,41 @@ def update_quality(input_text, output_text, quality):
     with open(file_path, "r", encoding="utf-8") as f:
         rows = list(csv.reader(f))
 
-    # Detect header format
-    header = rows[0]
-    has_style = len(header) == 4  # ["Input", "Output", "Style", "Quality"]
-
     for i in range(1, len(rows)):
-        if len(rows[i]) < 2:
-            continue  # skip broken rows
 
-        if rows[i][0] == input_text and rows[i][1] == output_text:
+        if len(rows[i]) < 4:
+            continue
 
-            if has_style:
-                # ✅ New format: Input, Output, Style, Quality
-                if len(rows[i]) < 4:
-                    rows[i].append(quality)  # fix broken row
-                else:
-                    rows[i][3] = quality
+        if (
+            rows[i][0] == input_text
+            and rows[i][1] == output_text
+        ):
 
-            else:
-                # ✅ Old format: Input, Output, Quality
-                if len(rows[i]) < 3:
-                    rows[i].append(quality)
-                else:
-                    rows[i][2] = quality
+            rows[i][3] = quality
 
-    # Save back
     with open(file_path, "w", newline="", encoding="utf-8") as f:
+
         writer = csv.writer(f)
         writer.writerows(rows)
 
-# -------------------------------
-# GENERATE TEXT
-# -------------------------------
+# =========================================================
+# TEXT GENERATION
+# =========================================================
+
 def generate_text(
     prompt,
-    temperature=0.9,
-    top_p=0.92
+    temperature=1.0,
+    top_p=0.92,
+    top_k=50,
+    num_return_sequences=6
 ):
 
     encoding = tokenizer(
         prompt,
         return_tensors="pt",
         truncation=True,
-        padding=True
+        padding=True,
+        max_length=512
     )
 
     input_ids = encoding["input_ids"].to(device)
@@ -315,18 +328,20 @@ def generate_text(
         input_ids=input_ids,
         attention_mask=attention_mask,
 
-        max_length=150,
+        max_length=220,
 
         do_sample=True,
 
-        top_k=50,
+        top_k=top_k,
         top_p=top_p,
         temperature=temperature,
 
-        repetition_penalty=2.4,
+        repetition_penalty=2.3,
         no_repeat_ngram_size=3,
 
-        num_return_sequences=4
+        num_return_sequences=num_return_sequences,
+
+        early_stopping=True
     )
 
     texts = tokenizer.batch_decode(
@@ -345,140 +360,243 @@ def generate_text(
 
     return cleaned
 
-# -------------------------------
-# MAIN PARAPHRASE FUNCTION
-# -------------------------------
+# =========================================================
+# BEST OUTPUT SELECTOR
+# =========================================================
+
+def select_best(candidates, original, style):
+
+    valid = []
+
+    for c in candidates:
+
+        if is_good_sentence(c, original):
+
+            duplicate = False
+
+            for v in valid:
+
+                if is_too_similar(c, v):
+                    duplicate = True
+                    break
+
+            if not duplicate:
+                valid.append(c)
+
+    # fallback
+    if not valid:
+
+        for c in candidates:
+
+            if (
+                len(c.split()) >= 5
+                and c.lower() != original.lower()
+            ):
+
+                valid.append(c)
+
+    if not valid:
+        return "Could not generate"
+
+    scored = []
+
+    for c in valid:
+
+        final_score = (
+            score_sentence(c)
+            + style_match_score(c, style)
+        )
+
+        scored.append((c, final_score))
+
+    scored.sort(
+        key=lambda x: x[1],
+        reverse=True
+    )
+
+    return scored[0][0]
+
+# =========================================================
+# MAIN PARAPHRASE
+# =========================================================
+
 def paraphrase(text):
 
     clean = clean_text(text)
 
-    formal_input = clean.replace(" u ", " you ").replace(" wanna ", " want to ")
+    # -----------------------------------------------------
+    # STYLE INPUTS
+    # -----------------------------------------------------
+
+    formal_input = clean
     expressive_input = clean
     casual_input = text
 
+    # -----------------------------------------------------
+    # FORMAL
+    # -----------------------------------------------------
+
     prompt1 = f"""
-    Rewrite the sentence in a highly formal, professional, and polished tone.
+    Rewrite the sentence in a highly formal,
+    professional, polished, and sophisticated tone.
 
     Requirements:
-    - Use sophisticated vocabulary
-    - Improve sentence structure significantly
-    - Make it sound corporate or academic
-    - Preserve the original meaning completely
-    - Avoid casual phrasing
+    - Improve grammar significantly
+    - Use refined vocabulary
+    - Improve structure and readability
+    - Make it sound executive or academic
+    - Preserve the exact original meaning
+    - Avoid casual wording
 
     Sentence:
     {formal_input}
     """
 
+    # -----------------------------------------------------
+    # EXPRESSIVE
+    # -----------------------------------------------------
+
     prompt2 = f"""
-    Rewrite the sentence in a vivid, emotionally engaging, and expressive style.
+    Rewrite the sentence in a vivid,
+    emotionally expressive, and engaging style.
+
     Requirements:
-    - Use powerful and descriptive wording
-    - Make the sentence feel more immersive
+    - Make the sentence feel immersive
+    - Use richer and more descriptive wording
     - Add emotional depth naturally
+    - Make it sound human and dynamic
     - Preserve the original meaning
 
     Sentence:
     {expressive_input}
     """
 
+    # -----------------------------------------------------
+    # CASUAL
+    # -----------------------------------------------------
+
     prompt3 = f"""
-    Rewrite the sentence in a casual and natural conversational tone.
+    Rewrite the sentence in a relaxed,
+    casual conversational tone.
 
     Requirements:
-    - Sound human and relaxed
-    - Use simple everyday language
-    - Keep the meaning unchanged
-    - Avoid sounding too formal
-    - Keep it simple and smooth
+    - Sound natural and human
+    - Use simple everyday wording
+    - Make it smooth and friendly
     - Avoid sophisticated vocabulary
+    - Preserve the exact meaning
 
     Sentence:
     {casual_input}
     """
 
-    # -------------------------------
-    # GENERATE DIFFERENT STYLES
-    # -------------------------------
+    # =====================================================
+    # GENERATE
+    # =====================================================
 
     p1_list = generate_text(
         prompt1,
         temperature=0.72,
-        top_p=0.85
+        top_p=0.88,
+        num_return_sequences=6
     )
 
     p2_list = generate_text(
         prompt2,
-        temperature=1.18,
-        top_p=0.96
+        temperature=1.15,
+        top_p=0.95,
+        num_return_sequences=6
     )
 
     p3_list = generate_text(
         prompt3,
-        temperature=0.92,
-        top_p=0.88
+        temperature=0.95,
+        top_p=0.90,
+        num_return_sequences=6
     )
 
-    # light cleanup only
-    p1_list = [grammar_fix(t) for t in p1_list]
-    p2_list = [grammar_fix(t) for t in p2_list]
-    p3_list = [grammar_fix(t) for t in p3_list]
-
-    def select_best(candidates, original, style):
-
-        valid = []
-
-        for c in candidates:
-            if is_good_sentence(c, original):
-                if not any(is_too_similar(c, v) for v in valid):
-                    valid.append(c)
-
-        if not valid:
-            for c in candidates:
-                if len(c.split()) >= 5 and c.lower() != original.lower():
-                    valid.append(c)
-
-        if not valid:
-            return "Could not generate"
-        
-        
-
-        scored = [(c, score_sentence(c)) for c in valid]
-        scored.sort(key=lambda x: x[1], reverse=True)
-
-        return scored[0][0]
+    # =====================================================
+    # FINAL RESULTS
+    # =====================================================
 
     final_results = [
-    select_best(p1_list, clean, "formal"),
-    select_best(p2_list, clean, "expressive"),
-    select_best(p3_list, clean, "casual")
-]
-    
-    styles = ["formal", "expressive", "casual"]
-    save_data(text, final_results, styles)
+
+        select_best(
+            p1_list,
+            clean,
+            "formal"
+        ),
+
+        select_best(
+            p2_list,
+            clean,
+            "expressive"
+        ),
+
+        select_best(
+            p3_list,
+            clean,
+            "casual"
+        )
+    ]
+
+    styles = [
+        "formal",
+        "expressive",
+        "casual"
+    ]
+
+    save_data(
+        text,
+        final_results,
+        styles
+    )
 
     return final_results
 
-# -------------------------------
+# =========================================================
 # ROUTES
-# -------------------------------
+# =========================================================
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# =========================================================
+# API PARAPHRASE
+# =========================================================
+
 @app.route('/api/paraphrase', methods=['POST'])
 def api_paraphrase():
+
     data = request.get_json()
-    text = data.get('text')
+
+    text = data.get('text', '').strip()
+
+    if not text:
+
+        return jsonify({
+            "error": "No text provided"
+        }), 400
 
     results = paraphrase(text)
+
     return jsonify({
-        'paraphrased_texts': results,
-        'styles': ["formal", "expressive", "casual"]
-        })
+        "paraphrased_texts": results,
+        "styles": [
+            "formal",
+            "expressive",
+            "casual"
+        ]
+    })
+
+# =========================================================
+# API RATE
+# =========================================================
 
 @app.route('/api/rate', methods=['POST'])
 def rate():
+
     data = request.get_json()
 
     update_quality(
@@ -487,10 +605,16 @@ def rate():
         data.get("quality")
     )
 
-    return jsonify({"message": "Rating saved"})
+    return jsonify({
+        "message": "Rating saved"
+    })
 
-# -------------------------------
+# =========================================================
 # RUN
-# -------------------------------
+# =========================================================
+
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    app.run(
+        debug=True
+    )
