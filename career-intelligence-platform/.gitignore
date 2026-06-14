@@ -1,0 +1,42 @@
+# Python
+
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Database
+
+*.db
+career.db
+
+# Environment
+
+.env
+
+# ML
+
+*.pkl
+
+# Node
+
+node_modules/
+
+# VS Code
+
+.vscode/
+
+# Logs
+
+*.log
+
+# Build
+
+dist/
+build/
+
+# OS
+
+.DS_Store
+Thumbs.db
