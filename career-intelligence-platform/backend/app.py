@@ -2,7 +2,6 @@ from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
-
 from config.config import Config
 
 app = Flask(__name__)
@@ -23,6 +22,9 @@ from routes.auth_routes import auth_bp
 from routes.resume_routes import resume_bp
 from routes.ml_routes import ml_bp
 from routes.jobs_routes import jobs_bp
+from routes.github_routes import github_bp
+from routes.interview_routes import interview_bp
+from routes.roadmap_routes import roadmap_bp
 
 app.register_blueprint(
     auth_bp,
@@ -43,6 +45,22 @@ app.register_blueprint(
     jobs_bp,
     url_prefix='/api/jobs'
 )
+
+app.register_blueprint(
+    github_bp,
+    url_prefix='/api/github'
+)
+
+app.register_blueprint(
+    interview_bp,
+    url_prefix='/api/interview'
+)
+
+app.register_blueprint(
+    roadmap_bp,
+    url_prefix='/api/roadmap'
+)
+
 
 # --------------------
 # Create Database
