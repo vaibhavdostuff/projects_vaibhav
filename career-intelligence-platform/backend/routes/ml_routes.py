@@ -1,19 +1,70 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint
+from flask import request
+from flask import jsonify
+
+import os
 import joblib
 
-ml_bp = Blueprint('ml', __name__)
+ml_bp = Blueprint(
+    'ml',
+    __name__
+)
 
-model = joblib.load('ml/career_model.pkl')
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
 
-@ml_bp.route('/predict_role', methods=['POST'])
+MODEL_PATH = os.path.join(
+    BASE_DIR,
+    'ml',
+    'career_model.pkl'
+)
+
+if not os.path.exists(MODEL_PATH):
+    raise FileNotFoundError(
+        f"Model file not found: {MODEL_PATH}"
+    )
+
+model = joblib.load(
+    MODEL_PATH
+)
+
+
+@ml_bp.route(
+    '/predict_role',
+    methods=['POST']
+)
 def predict_role():
 
-    data = request.json
+    try:
 
-    resume_text = data['resume_text']
+        data = request.get_json()
 
-    prediction = model.predict([resume_text])[0]
+        resume_text = data.get(
+            'resume_text'
+        )
 
-    return jsonify({
-        'predicted_role': prediction
-    })
+        if not resume_text:
+
+            return jsonify({
+                'success': False,
+                'error': 'resume_text is required'
+            }), 400
+
+        prediction = model.predict(
+            [resume_text]
+        )[0]
+
+        return jsonify({
+            'success': True,
+            'predicted_role': prediction
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
