@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import request
 from flask import jsonify
 
-from ai.github_analyze import analyze_github
+from ai.github_analyzer import analyze_github
 
 github_bp = Blueprint(
     'github',

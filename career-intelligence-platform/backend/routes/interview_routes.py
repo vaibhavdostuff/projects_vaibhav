@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import request
 from flask import jsonify
 
-from ai.interview_question import (
+from ai.interview_questions import (
     generate_questions
 )
 
