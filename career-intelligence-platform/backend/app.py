@@ -5,13 +5,10 @@ from flask_jwt_extended import JWTManager
 from config.config import Config
 
 app = Flask(__name__)
-
 app.config.from_object(Config)
 
 CORS(app)
-
 db = SQLAlchemy(app)
-
 jwt = JWTManager(app)
 
 # --------------------
@@ -26,41 +23,13 @@ from routes.github_routes import github_bp
 from routes.interview_routes import interview_bp
 from routes.roadmap_routes import roadmap_bp
 
-app.register_blueprint(
-    auth_bp,
-    url_prefix='/api/auth'
-)
-
-app.register_blueprint(
-    resume_bp,
-    url_prefix='/api/resume'
-)
-
-app.register_blueprint(
-    ml_bp,
-    url_prefix='/api/ml'
-)
-
-app.register_blueprint(
-    jobs_bp,
-    url_prefix='/api/jobs'
-)
-
-app.register_blueprint(
-    github_bp,
-    url_prefix='/api/github'
-)
-
-app.register_blueprint(
-    interview_bp,
-    url_prefix='/api/interview'
-)
-
-app.register_blueprint(
-    roadmap_bp,
-    url_prefix='/api/roadmap'
-)
-
+app.register_blueprint(auth_bp,      url_prefix='/api/auth')
+app.register_blueprint(resume_bp,    url_prefix='/api/resume')
+app.register_blueprint(ml_bp,        url_prefix='/api/ml')
+app.register_blueprint(jobs_bp,      url_prefix='/api/jobs')
+app.register_blueprint(github_bp,    url_prefix='/api/github')
+app.register_blueprint(interview_bp, url_prefix='/api/interview')
+app.register_blueprint(roadmap_bp,   url_prefix='/api/roadmap')
 
 # --------------------
 # Create Database
@@ -70,10 +39,19 @@ with app.app_context():
     db.create_all()
 
 @app.route('/')
-
 def home():
-
     return {
         'status': 'running',
         'project': 'Career Intelligence Platform'
     }
+
+# --------------------
+# Entry Point
+# --------------------
+
+if __name__ == '__main__':
+    app.run(
+        host='127.0.0.1',
+        port=5000,
+        debug=False
+    )
